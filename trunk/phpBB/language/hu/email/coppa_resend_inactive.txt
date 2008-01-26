@@ -1,0 +1,44 @@
+Subject: Üdvözlünk a "{SITENAME}" fórumon!
+
+{WELCOME_MSG}
+
+A COPPA szabályainak értelmében az azonosítód jelenleg inaktív.
+
+Nyomtasd ki az alábbi üzenetet, és kérd meg egy szülődet vagy gondviselődet, hogy írja alá, majd küldje el faxon az alábbi FAX-számra:
+
+{FAX_INFO}
+
+vagy küldje el postai levélben a következő postacímre:
+
+{MAIL_INFO}
+
+------------------------------ PERFORÁCIÓ ------------------------------
+Engedély a "{SITENAME}" ({U_BOARD}) oldal fórumához történő csatlakozáshoz.
+
+----------------------------
+Felhasználónév: {USERNAME}
+Jelszó: {PASSWORD}
+----------------------------
+
+ELLENŐRIZTEM A GONDVISELETEMBEN LEVŐ FIATALKORÚ ÁLTAL MEGADOTT INFORMÁCIÓKAT, ÉS HOZZÁJÁRULOK, HOGY AZ ÁLTALA MEGADOTT ADATOKAT A "{SITENAME}" OLDAL FÓRUMÁN TÁROLJÁK.
+ELFOGADOM, HOGY EZEKET AZ ADATOKAT EGY JELSZÓ BEÍRÁSÁVAL BÁRMIKOR MEG LEHET VÁLTOZTATNI.
+ELFOGADOM, HOGY EZEK AZ ADATOK BÁRMIKOR TÖRÖLHETŐEK A "{SITENAME}" OLDAL FÓRUMÁBÓL. 
+
+
+Szülő vagy gondviselő
+(olvasható név): _____________________
+
+(aláírás): __________________ 
+
+Dátum: _______________
+
+------------------------------ PERFORÁCIÓ ------------------------------
+
+
+Amint az adminisztrátorok megkapták a fenti engedélyt faxon vagy postán, az azonosító aktiválásra kerül.
+
+A jelszót ne felejtsd el, mert az adatbázisunkban kódolva szerepel, így nincs mód a későbbiekben a kiderítésére. Ha esetleg mégis elfelejtenéd, akkor a belépési oldalon új jelszót kell igényelned, amelyet hasonlóképpen aktiválni kell használat előtt, mint most.
+
+Köszönjük, hogy regisztráltál!
+
+{EMAIL_SIG}

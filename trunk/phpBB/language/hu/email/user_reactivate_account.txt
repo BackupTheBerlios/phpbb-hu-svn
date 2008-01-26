@@ -1,0 +1,19 @@
+Subject: Aktiváld újra az azonosítód az "{SITENAME}" oldalon!
+
+A fórum egyik adminisztrátora újraaktiválásra kötelezte az azonosítód. Az azonosítód jelenleg inaktív.
+Az azonosítód újraaktiválásához kövesd a következő lépéseket.
+
+Kérjük tartsd meg ezt az üzenetet. Az azonosítód adatai a következőek:
+
+----------------------------
+Felhasználónév: {USERNAME}
+----------------------------
+
+Kérjük, ne felejtsd el a jelszavad, mivel titkosítva került be az adatbázisunkba, így nem tudjuk visszafejteni. Amennyiben megfeledkezel róla, újat tudsz kérni, de azt ugyanilyen módon ismét aktiválnod kell majd.
+
+Az azonosítód újraaktiválásához kattints az alábbi linkre:
+
+{U_ACTIVATE}
+
+
+{EMAIL_SIG}
