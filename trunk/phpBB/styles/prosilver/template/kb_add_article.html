@@ -1,0 +1,92 @@
+<!-- INCLUDE site_header.html -->
+
+<div id="main">
+	<h2 class="kb"><a href="{U_KB}">{L_KB}</a></h2>
+	<p>{L_ADD_ARTICLE_EXPLAIN}</p>
+	
+	<!-- IF S_PREVIEW -->
+	<h3>{L_PREVIEW}</h3>
+	<div class="postbody" style="width: 100%;">
+		<span class="error" style="font-size: 150%">{ARTICLE_TITLE}</span>
+		<p>{ARTICLE_DESC}</p>
+		<strong>{L_DESCRIPTION}:</strong> {ARTICLE_DESC}<br />
+		<div class="content">{PREVIEW_TEXT}</div>
+	</div>
+	<!-- ENDIF -->
+	
+	<h3>{L_ADD_ARTICLE}</h3>
+	<form action="{U_ACTION}" method="post" id="postform">
+		{S_FORM_TOKEN}
+		<!-- IF ERROR -->
+		<div class="panel bg2">
+			<div class="inner"><span class="corners-top"><span></span></span>
+				<p class="error">{ERROR}</p>
+			<span class="corners-bottom"><span></span></span></div>
+		</div>
+		<!-- ENDIF -->
+		<div class="panel bg2">
+			<div class="inner"><span class="corners-top"><span></span></span>
+			<fieldset>
+				<dl>
+				<dl>
+					<dt><label for="form_article_title">{L_ARTICLE_TITLE}:</label></dt>
+					<dd><input type="text" id="form_article_title" name="article_title" size="45" maxlength="60" value="{ARTICLE_TITLE}" class="inputbox medium" /></dd>
+				</dl>
+				<dl>
+					<dt><label for="form_article_name">{L_ARTICLE_NAME}:</label><br /><span>{L_ARTICLE_NAME_EXPLAIN}</span></dt>
+					<dd><input type="text" id="form_article_name" name="article_name" size="45" maxlength="60" value="{ARTICLE_NAME}" class="inputbox medium" /></dd>
+				</dl>
+				<dl>
+					<dt><label for="form_article_desc">{L_ARTICLE_DESCRIPTION}:</label><br /><span>{L_ARTICLE_DESCRIPTION_EXPLAIN}</span></dt>
+					<dd>
+						<textarea id="form_article_desc" name="article_desc" rows="2" cols="20" class="inputbox">{ARTICLE_DESC}</textarea>
+					</dd>
+				</dl>
+			</fieldset>
+			<span class="corners-bottom"><span></span></span></div>
+		</div>
+		<!-- IF .tagcat -->
+		<div class="panel bg2">
+			<div class="inner"><span class="corners-top"><span></span></span>
+			<fieldset>
+				<h3>{L_TAGS}</h3>
+				<!-- BEGIN tagcat -->
+				<dl>
+					<dt><label for="form_report_tags{tagcat.TAGCAT_ID}">{tagcat.TAGCAT_TITLE}:</label></dt>
+					<dd><select id="form_report_tags{tagcat.TAGCAT_ID}" name="article_tags[]" multiple="mulitple" size="{tagcat.SELECT_SIZE}">{tagcat.TAG_OPTIONS}</select></dd>
+				</dl>
+				<!-- END tagcat -->
+			</fieldset>
+			<span class="corners-bottom"><span></span></span></div>
+		</div>
+		<!-- ENDIF -->
+		<div class="panel bg2">
+			<div class="inner"><span class="corners-top"><span></span></span>
+			<fieldset>
+				<h3>{L_ARTICLE_CONTENT}</h3>
+				<!-- INCLUDE posting_buttons.html -->
+				<div id="message-box">
+					<textarea name="article_content" id="message" rows="15" cols="76" tabindex="3" onselect="storeCaret(this);" onclick="storeCaret(this);" onkeyup="storeCaret(this);" class="inputbox">{ARTICLE_CONTENT}</textarea>
+					<!-- IF S_SMILIES_ALLOWED -->
+					<div><label for="disable_smilies"><input type="checkbox" name="disable_smilies" id="disable_smilies"{S_SMILIES_CHECKED} /> {L_DISABLE_SMILIES}</label></div>
+					<!-- ENDIF -->
+					<!-- IF S_LINKS_ALLOWED -->
+					<div><label for="disable_magic_url"><input type="checkbox" name="disable_magic_url" id="disable_magic_url"{S_MAGIC_URL_CHECKED} /> {L_DISABLE_MAGIC_URL}</label></div>
+					<!-- ENDIF -->
+				</div>			
+			</fieldset>
+			<span class="corners-bottom"><span></span></span></div>
+		</div>
+		<div class="panel bg2">
+			<div class="inner"><span class="corners-top"><span></span></span>
+			<fieldset>
+				<h3>{L_SUBMIT_ARTICLE}</h3>
+				<p>{L_SUBMIT_ARTICLE_CONFIRM}</p>
+				<input type="submit" name="preview" value="{L_PREVIEW_ARTICLE}" class="<!-- IF S_PREVIEW_BOLD -->button1<!-- ELSE -->button2<!-- ENDIF -->" /> <input type="submit" name="submit" value="{L_SUBMIT_ARTICLE}" class="<!-- IF S_PREVIEW_BOLD -->button2<!-- ELSE -->button1<!-- ENDIF -->" />
+			</fieldset>
+			<span class="corners-bottom"><span></span></span></div>
+		</div>
+	</form>
+</div>
+
+<!-- INCLUDE site_footer.html -->

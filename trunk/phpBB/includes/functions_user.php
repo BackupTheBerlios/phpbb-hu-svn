@@ -2,7 +2,7 @@
 /**
 *
 * @package phpBB3
-* @version $Id$
+* @version $Id: functions_user.php,v 1.243 2007/12/13 22:23:25 kellanved Exp $
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -1259,6 +1259,45 @@ function validate_num($num, $optional = false, $min = 0, $max = 1E99)
 
 	return false;
 }
+
+/**
+* Validate Date
+* @param String $string a date in the dd-mm-yyyy format
+* @return	boolean
+*/
+function validate_date($date_string, $optional = false)
+{
+	$date = explode('-', $date_string);
+	if ((empty($date) || sizeof($date) != 3) && $optional)
+	{
+		return false;
+	}
+	else if ($optional)
+	{
+		for ($field = 0; $field <= 1; $field++)
+		{
+			$date[$field] = (int) $date[$field];
+			if (empty($date[$field]))
+			{
+				$date[$field] = 1;
+			}
+		}
+		$date[2] = (int) $date[2];
+		// assume an arbitrary leap year
+		if (empty($date[2]))
+		{
+			$date[2] = 1980;
+		}
+	}
+	
+	if (sizeof($date) != 3 || !checkdate($date[1], $date[0], $date[2]))
+	{
+		return 'INVALID';
+	}
+
+	return false;
+}
+
 
 /**
 * Validate Match

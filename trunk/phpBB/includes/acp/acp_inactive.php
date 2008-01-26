@@ -2,7 +2,7 @@
 /**
 *
 * @package acp
-* @version $Id$
+* @version $Id: acp_inactive.php,v 1.19 2007/12/05 13:55:14 acydburn Exp $
 * @copyright (c) 2006 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -29,7 +29,7 @@ class acp_inactive
 		$this->p_master = &$p_master;
 	}
 
-	function main($Id$mode)
+	function main($id, $mode)
 	{
 		global $config, $db, $user, $auth, $template;
 		global $phpbb_root_path, $phpbb_admin_path, $phpEx, $table_prefix;

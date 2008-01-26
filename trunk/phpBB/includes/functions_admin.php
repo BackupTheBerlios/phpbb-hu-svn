@@ -2,7 +2,7 @@
 /**
 *
 * @package acp
-* @version $Id$
+* @version $Id: functions_admin.php,v 1.254 2007/11/17 12:14:27 acydburn Exp $
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -249,7 +249,7 @@ function group_select_options($group_id, $exclude_ids = false, $manage_founder =
 /**
 * Obtain authed forums list
 */
-function get_forum_list($acl_list = 'f_list', $Id$no_cache = false)
+function get_forum_list($acl_list = 'f_list', $id_only = true, $postable_only = false, $no_cache = false)
 {
 	global $db, $auth;
 	static $forum_rows;
@@ -302,7 +302,7 @@ function get_forum_list($acl_list = 'f_list', $Id$no_cache = false)
 
 		if ($acl_list == '' || ($acl_list != '' && $auth->acl_gets($acl_list, $row['forum_id'])))
 		{
-			$rowset[] = ($Id$row;
+			$rowset[] = ($id_only) ? $row['forum_id'] : $row;
 		}
 	}
 
@@ -794,18 +794,18 @@ function delete_posts($where_type, $where_ids, $auto_sync = true, $posted_sync =
 * @param mixed $ids can be: post_ids, topic_ids, attach_ids, user_ids
 * @param bool $resync set this to false if you are deleting posts or topics
 */
-function delete_attachments($mode, $Id$resync = true)
+function delete_attachments($mode, $ids, $resync = true)
 {
 	global $db, $config;
 
-	if (is_array($Id$ids))
+	if (is_array($ids) && sizeof($ids))
 	{
-		$Id$ids);
-		$Id$ids);
+		$ids = array_unique($ids);
+		$ids = array_map('intval', $ids);
 	}
 	else
 	{
-		$Id$ids);
+		$ids = array((int) $ids);
 	}
 
 	if (!sizeof($ids))

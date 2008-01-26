@@ -304,7 +304,7 @@ if (!$config['allow_topic_notify'] && !$config['allow_forum_notify'])
 }
 
 // Select the active module
-$module->set_active($Id$mode);
+$module->set_active($id, $mode);
 
 // Load and execute the relevant module
 $module->load_active();

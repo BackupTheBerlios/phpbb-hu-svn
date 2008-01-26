@@ -1,0 +1,17 @@
+Subject: Hozzászólás törlése
+
+Kedves {USERNAME}!
+
+Az egyik moderátor törölte a "{TOPIC_NAME"} témába írt "{POST_SUBJECT}" témájú hozzászólásod. Ennek lehetséges oka, hogy a kérdésedre már megtalálható a válasz a fórumokban (kérjük, mindig használd a keresőt), vagy a hozzászólásod nem volt a témába illő (kérünk, ügyelj rá, hogy a problémáidnak új témát nyiss).
+
+A moderátornak a törléshez fűzött esetleges megjegyzése alább olvasható: 
+~~~~~~~~~~~~~~~~~~~~~~
+{NOTIFICATION_MESSAGE}
+~~~~~~~~~~~~~~~~~~~~~~
+
+A hozzászólásod a következő volt:
+~~~~~~~~~~~~~~~~~~~~~~
+{POST_CONTENT}
+~~~~~~~~~~~~~~~~~~~~~~
+
+{EMAIL_SIG}

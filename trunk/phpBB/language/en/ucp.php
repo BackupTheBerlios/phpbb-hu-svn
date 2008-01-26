@@ -4,7 +4,7 @@
 * ucp [English]
 *
 * @package language
-* @version $Id$
+* @version $Id: ucp.php,v 1.137 2007/12/13 22:23:25 kellanved Exp $
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -223,6 +223,7 @@ $lang = array_merge($lang, array(
 
 	'IF_FOLDER_FULL'			=> 'If folder is full',
 	'IMPORTANT_NEWS'			=> 'Important announcements',
+	'INVALID_USER_BIRTHDAY'			=> 'The entered birthday is not a valid date.',
 	'INVALID_CHARS_USERNAME'	=> 'The username contains forbidden characters.',
 	'INVALID_CHARS_NEW_PASSWORD'=> 'The password does not contain the required characters.',
 	'ITEMS_REQUIRED'			=> 'The items marked with * are required profile fields and need to be filled out.',

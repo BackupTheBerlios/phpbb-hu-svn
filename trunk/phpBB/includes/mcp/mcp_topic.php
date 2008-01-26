@@ -2,7 +2,7 @@
 /**
 *
 * @package mcp
-* @version $Id$
+* @version $Id: mcp_topic.php,v 1.62 2007/10/12 18:13:50 acydburn Exp $
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -19,7 +19,7 @@ if (!defined('IN_PHPBB'))
 /**
 * View topic in MCP
 */
-function mcp_topic_view($Id$action)
+function mcp_topic_view($id, $mode, $action)
 {
 	global $phpEx, $phpbb_root_path, $config;
 	global $template, $db, $user, $auth, $cache;
@@ -88,12 +88,12 @@ function mcp_topic_view($Id$action)
 
 		if (!$sort)
 		{
-			approve_post($post_id_list, $Id$mode);
+			approve_post($post_id_list, $id, $mode);
 		}
 	}
 
 	// Jumpbox, sort selects and that kind of things
-	make_jumpbox($url . "&amp;i=$Id$topic_info['forum_id'], false, 'm_', true);
+	make_jumpbox($url . "&amp;i=$id&amp;mode=forum_view", $topic_info['forum_id'], false, 'm_', true);
 	$where_sql = ($action == 'reports') ? 'WHERE post_reported = 1 AND ' : 'WHERE';
 
 	$sort_days = $total = 0;
@@ -229,7 +229,7 @@ function mcp_topic_view($Id$action)
 			'S_CHECKED'			=> ($post_id_list && in_array(intval($row['post_id']), $post_id_list)) ? true : false,
 			'S_HAS_ATTACHMENTS'	=> (!empty($attachments[$row['post_id']])) ? true : false,
 
-			'U_POST_DETAILS'	=> "$url&amp;i=$Id$forum_id" : ''),
+			'U_POST_DETAILS'	=> "$url&amp;i=$id&amp;p={$row['post_id']}&amp;mode=post_details" . (($forum_id) ? "&amp;f=$forum_id" : ''),
 			'U_MCP_APPROVE'		=> ($auth->acl_get('m_approve', $topic_info['forum_id'])) ? append_sid("{$phpbb_root_path}mcp.$phpEx", 'i=queue&amp;mode=approve_details&amp;f=' . $topic_info['forum_id'] . '&amp;p=' . $row['post_id']) : '',
 			'U_MCP_REPORT'		=> ($auth->acl_get('m_report', $topic_info['forum_id'])) ? append_sid("{$phpbb_root_path}mcp.$phpEx", 'i=reports&amp;mode=report_details&amp;f=' . $topic_info['forum_id'] . '&amp;p=' . $row['post_id']) : '')
 		);
@@ -295,7 +295,7 @@ function mcp_topic_view($Id$action)
 		'REPORTED_IMG'		=> $user->img('icon_topic_reported', 'POST_REPORTED', false, true),
 		'UNAPPROVED_IMG'	=> $user->img('icon_topic_unapproved', 'POST_UNAPPROVED', false, true),
 
-		'S_MCP_ACTION'		=> "$url&amp;i=$Id$start",
+		'S_MCP_ACTION'		=> "$url&amp;i=$id&amp;mode=$mode&amp;action=$action&amp;start=$start",
 		'S_FORUM_SELECT'	=> ($to_forum_id) ? make_forum_select($to_forum_id, false, false, true, true, true) : make_forum_select($topic_info['forum_id'], false, false, true, true, true),
 		'S_CAN_SPLIT'		=> ($auth->acl_get('m_split', $topic_info['forum_id'])) ? true : false,
 		'S_CAN_MERGE'		=> ($auth->acl_get('m_merge', $topic_info['forum_id'])) ? true : false,
@@ -312,13 +312,13 @@ function mcp_topic_view($Id$action)
 		'S_SHOW_TOPIC_ICONS'	=> $s_topic_icons,
 		'S_TOPIC_ICON'			=> $icon_id,
 
-		'U_SELECT_TOPIC'	=> "$url&amp;i=$Id$forum_id" : ''),
+		'U_SELECT_TOPIC'	=> "$url&amp;i=$id&amp;mode=forum_view&amp;action=merge_select" . (($forum_id) ? "&amp;f=$forum_id" : ''),
 
 		'RETURN_TOPIC'		=> sprintf($user->lang['RETURN_TOPIC'], '<a href="' . append_sid("{$phpbb_root_path}viewtopic.$phpEx", "f={$topic_info['forum_id']}&amp;t={$topic_info['topic_id']}&amp;start=$start") . '">', '</a>'),
 		'RETURN_FORUM'		=> sprintf($user->lang['RETURN_FORUM'], '<a href="' . append_sid("{$phpbb_root_path}viewforum.$phpEx", "f={$topic_info['forum_id']}&amp;start=$start") . '">', '</a>'),
 
 		'PAGE_NUMBER'		=> on_page($total, $posts_per_page, $start),
-		'PAGINATION'		=> (!$posts_per_page) ? '' : generate_pagination(append_sid("{$phpbb_root_path}mcp.$phpEx", "i=$Id$start),
+		'PAGINATION'		=> (!$posts_per_page) ? '' : generate_pagination(append_sid("{$phpbb_root_path}mcp.$phpEx", "i=$id&amp;t={$topic_info['topic_id']}&amp;mode=$mode&amp;action=$action&amp;to_topic_id=$to_topic_id&amp;posts_per_page=$posts_per_page&amp;st=$sort_days&amp;sk=$sort_key&amp;sd=$sort_dir"), $total, $posts_per_page, $start),
 		'TOTAL_POSTS'		=> ($total == 1) ? $user->lang['VIEW_TOPIC_POST'] : sprintf($user->lang['VIEW_TOPIC_POSTS'], $total),
 	));
 }

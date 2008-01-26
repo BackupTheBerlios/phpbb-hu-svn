@@ -2,7 +2,7 @@
 /**
 *
 * @package phpBB3
-* @version $Id$
+* @version $Id: auth.php,v 1.88 2007/10/05 14:30:07 acydburn Exp $
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -422,7 +422,7 @@ class auth
 				{
 					if (isset($auth_ary[$opt]))
 					{
-						$bitstring[$Id$opt];
+						$bitstring[$id] = $auth_ary[$opt];
 
 						$option_key = substr($opt, 0, strpos($opt, '_') + 1);
 

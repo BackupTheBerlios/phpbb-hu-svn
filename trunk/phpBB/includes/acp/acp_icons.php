@@ -2,7 +2,7 @@
 /**
 *
 * @package acp
-* @version $Id$
+* @version $Id: acp_icons.php,v 1.40 2007/10/21 11:26:24 acydburn Exp $
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -24,7 +24,7 @@ class acp_icons
 {
 	var $u_action;
 
-	function main($Id$mode)
+	function main($id, $mode)
 	{
 		global $db, $user, $auth, $template, $cache;
 		global $config, $phpbb_root_path, $phpbb_admin_path, $phpEx;

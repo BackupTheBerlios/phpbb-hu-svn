@@ -2,7 +2,7 @@
 /**
 *
 * @package phpBB3
-* @version $Id$
+* @version $Id: create_schema_files.php 2 2008-01-26 21:50:36Z fberci $
 * @copyright (c) 2006 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -12,7 +12,7 @@
 * If you overwrite the original schema files please make sure you save the file with UNIX linefeeds.
 */
 
-die("Please read the first lines of this script for instructions on how to enable it");
+//die("Please read the first lines of this script for instructions on how to enable it");
 
 @set_time_limit(0);
 
@@ -1819,6 +1819,7 @@ function get_schema_struct()
 			'user_notify'				=> array('BOOL', 0),
 			'user_notify_pm'			=> array('BOOL', 1),
 			'user_notify_type'			=> array('TINT:4', 0),
+			'user_site_notify_type'		=> array('TINT:4', 0),
 			'user_allow_pm'				=> array('BOOL', 1),
 			'user_allow_viewonline'		=> array('BOOL', 1),
 			'user_allow_viewemail'		=> array('BOOL', 1),
@@ -1882,6 +1883,157 @@ function get_schema_struct()
 			'foe'					=> array('BOOL', 0),
 		),
 		'PRIMARY_KEY'	=> array('user_id', 'zebra_id'),
+	);
+
+	/**
+	* CUSTOM (SITE) STRUCTURE
+	*/
+
+	/**
+	* Bug tracker
+	*/
+	$schema_data['phpbb_bugs_projects'] = array(
+		'COLUMNS'		=> array(
+			'project_id'			=> array('UINT', NULL, 'auto_increment'),
+			'forum_id'				=> array('UINT', 0),
+			'project_name'			=> array('VCHAR', ''),
+			'project_title'			=> array('XSTEXT_UNI', '', 'true_sort'),
+		),
+		'PRIMARY_KEY'	=> 'project_id',
+		'KEYS'			=> array(
+			'forum_id'				=> array('INDEX', 'forum_id'),
+			'project_name'			=> array('UNIQUE', 'project_name'),
+		),
+	);
+
+	$schema_data['phpbb_bugs_reports'] = array(
+		'COLUMNS'		=> array(
+			'report_id'				=> array('UINT', NULL, 'auto_increment'),
+			'topic_id'				=> array('UINT', 0),
+			'project_id'			=> array('UINT', 0),
+			'report_title'			=> array('XSTEXT_UNI', '', 'true_sort'),
+			'report_desc'			=> array('MTEXT_UNI', ''),
+			'report_component'		=> array('UINT', 0),
+			'report_version'		=> array('UINT', 0),	
+			'report_status'			=> array('UINT', 1),
+			'report_closed'			=> array('TIMESTAMP', 0),
+			'report_assigned'		=> array('UINT', 0),
+		),
+		'PRIMARY_KEY'	=> 'report_id',
+		'KEYS'			=> array(
+			'project_id'			=> array('INDEX', 'project_id'),
+			'topic_id'				=> array('INDEX', 'topic_id'),
+		),
+	);
+
+	$schema_data['phpbb_bugs_components'] = array(
+		'COLUMNS'		=> array(
+			'component_id'			=> array('UINT', NULL, 'auto_increment'),
+			'project_id'			=> array('UINT', 0),
+			'component_title'		=> array('XSTEXT_UNI', '', 'true_sort'),
+		),
+		'PRIMARY_KEY'	=> 'component_id',
+		'KEYS'			=> array(
+			'project_id'			=> array('INDEX', 'project_id'),
+		),
+	);
+
+	$schema_data['phpbb_bugs_statuses'] = array(
+		'COLUMNS'		=> array(
+			'status_id'				=> array('UINT', NULL, 'auto_increment'),
+			'status_title'			=> array('XSTEXT_UNI', '', 'true_sort'),
+			'status_closed'			=> array('BOOL', 0),
+		),
+		'PRIMARY_KEY'	=> 'status_id',
+	);
+
+	$schema_data['phpbb_bugs_versions'] = array(
+		'COLUMNS'		=> array(
+			'version_id'			=> array('UINT', NULL, 'auto_increment'),
+			'project_id'			=> array('UINT', 0),
+			'version_title'			=> array('XSTEXT_UNI', '', 'true_sort'),
+			'accept_new'			=> array('BOOL', 0),
+		),
+		'PRIMARY_KEY'	=> 'version_id',
+		'KEYS'			=> array(
+			'project_id'			=> array('INDEX', 'project_id'),
+			'accept_new'			=> array('INDEX', 'accept_new'),
+		),
+	);
+
+	/**
+	* Knowledge base
+	*/
+	$schema_data['phpbb_kb_articles'] = array(
+		'COLUMNS'		=> array(
+			'article_id'			=> array('UINT', NULL, 'auto_increment'),
+			'topic_id'				=> array('UINT', 0),
+			//'article_title'			=> array('XSTEXT_UNI', '', 'true_sort'),
+			'article_name'			=> array('VCHAR', ''),
+			'article_desc'			=> array('STEXT_UNI', ''),
+			'article_content'		=> array('MTEXT_UNI', ''),
+	),
+		'PRIMARY_KEY'	=> 'article_id',
+		'KEYS'			=> array(
+			'topic_id'				=> array('INDEX', 'topic_id'),
+			'article_name'			=> array('UNIQUE', 'article_name'),
+		),
+	);
+
+	// phpbb_tagcats
+	$schema_data['phpbb_tagcats'] = array(
+		'COLUMNS'		=> array(
+			'tagcat_id'				=> array('UINT', NULL, 'auto_increment'),
+			'tagcat_name'			=> array('VCHAR', ''),
+			'tagcat_title'			=> array('XSTEXT_UNI', '', 'true_sort'),
+			'tagcat_module'			=> array('TINT:1', 0),
+	),
+		'PRIMARY_KEY'	=> 'tagcat_id',
+		'KEYS'			=> array(
+			'tagcat_module'			=> array('INDEX', 'tagcat_module'),
+		),
+	);
+
+	// phpbb_tags
+	$schema_data['phpbb_tags'] = array(
+		'COLUMNS'		=> array(
+			'tag_id'				=> array('UINT', NULL, 'auto_increment'),
+			'tagcat_id'				=> array('UINT', 0),
+			'tag_name'				=> array('VCHAR', ''),
+			'tag_title'				=> array('XSTEXT_UNI', '', 'true_sort'),
+	),
+		'PRIMARY_KEY'	=> 'tag_id',
+		'KEYS'			=> array(
+			'tagcat_id'				=> array('INDEX', 'tagcat_id'),
+		),
+	);
+
+	// phpbb_tagmatch
+	$schema_data['phpbb_tagmatch'] = array(
+		'COLUMNS'		=> array(
+			'tag_id'				=> array('UINT', 0),
+			'topic_id'				=> array('UINT', 0),
+	),
+		'KEYS'			=> array(
+			'tagmatch'				=> array('UNIQUE', array('tag_id', 'topic_id')),
+		),
+	);
+
+	// phpbb_pages
+	$schema_data['phpbb_pages'] = array(
+		'COLUMNS'		=> array(
+			'page_id'				=> array('UINT', NULL, 'auto_increment'),
+			'page_url'				=> array('VCHAR', ''),
+			'page_section'			=> array('VCHAR', ''),
+			'page_file'				=> array('VCHAR', ''),
+			'page_title'			=> array('XSTEXT_UNI', ''),
+			'page_content'			=> array('MTEXT_UNI', ''),
+			'page_comments'			=> array('TEXT_UNI', ''),
+	),
+		'PRIMARY_KEY'	=> 'page_id',
+		'KEYS'			=> array(
+			'page_url'				=> array('UNIQUE', 'page_url'),
+		),
 	);
 
 	return $schema_data;

@@ -2,7 +2,7 @@
 /**
 *
 * @package phpBB3
-* @version $Id$
+* @version $Id: functions_profile_fields.php,v 1.57 2007/11/15 19:54:36 kellanved Exp $
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -407,7 +407,7 @@ class custom_profile
 			$tpl_fields = array();
 			$tpl_fields['row'] = $tpl_fields['blockrow'] = array();
 
-			foreach ($profile_row as $Id$ident_ary)
+			foreach ($profile_row as $ident => $ident_ary)
 			{
 				$value = $this->get_profile_value($ident_ary);
 
@@ -417,10 +417,10 @@ class custom_profile
 				}
 
 				$tpl_fields['row'] += array(
-					'PROFILE_' . strtoupper($Id$value,
-					'PROFILE_' . strtoupper($Id$ident_ary['data']['field_type'],
-					'PROFILE_' . strtoupper($Id$ident_ary['data']['lang_name'],
-					'PROFILE_' . strtoupper($Id$ident_ary['data']['lang_explain'],
+					'PROFILE_' . strtoupper($ident) . '_VALUE'	=> $value,
+					'PROFILE_' . strtoupper($ident) . '_TYPE'	=> $ident_ary['data']['field_type'],
+					'PROFILE_' . strtoupper($ident) . '_NAME'	=> $ident_ary['data']['lang_name'],
+					'PROFILE_' . strtoupper($ident) . '_EXPLAIN'=> $ident_ary['data']['lang_explain'],
 
 					'S_PROFILE_' . strtoupper($ident)			=> true
 				);

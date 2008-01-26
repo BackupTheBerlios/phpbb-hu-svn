@@ -2,7 +2,7 @@
 /**
 *
 * @package phpBB3
-* @version $Id$
+* @version $Id: search.php 2 2008-01-26 21:50:36Z fberci $
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -51,6 +51,7 @@ $search_forum	= request_var('fid', array(0));
 if (!$auth->acl_get('u_search') || !$auth->acl_getf_global('f_search') || !$config['load_search'])
 {
 	$template->assign_var('S_NO_SEARCH', true);
+	http_status(403);
 	trigger_error('NO_SEARCH');
 }
 
@@ -58,6 +59,7 @@ if (!$auth->acl_get('u_search') || !$auth->acl_getf_global('f_search') || !$conf
 if ($user->load && $config['limit_search_load'] && ($user->load > doubleval($config['limit_search_load'])))
 {
 	$template->assign_var('S_NO_SEARCH', true);
+	http_status(503);
 	trigger_error('NO_SEARCH_TIME');
 }
 
@@ -395,12 +397,12 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 
 			while ($row = $db->sql_fetchrow($result))
 			{
-				$Id$field];
+				$id_ary[] = $row[$field];
 			}
 			$db->sql_freeresult($result);
 
-			$total_match_count = sizeof($Id$start;
-			$Id$per_page);
+			$total_match_count = sizeof($id_ary) + $start;
+			$id_ary = array_slice($id_ary, 0, $per_page);
 		}
 		else
 		{
@@ -415,16 +417,16 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 
 	if (!empty($search->search_query))
 	{
-		$total_match_count = $search->keyword_search($show_results, $search_fields, $search_terms, $sort_by_sql, $sort_key, $sort_dir, $sort_days, $ex_fid_ary, $m_approve_fid_ary, $topic_id, $author_id_ary, $Id$per_page);
+		$total_match_count = $search->keyword_search($show_results, $search_fields, $search_terms, $sort_by_sql, $sort_key, $sort_dir, $sort_days, $ex_fid_ary, $m_approve_fid_ary, $topic_id, $author_id_ary, $id_ary, $start, $per_page);
 	}
 	else if (sizeof($author_id_ary))
 	{
 		$firstpost_only = ($search_fields === 'firstpost') ? true : false;
-		$total_match_count = $search->author_search($show_results, $firstpost_only, $sort_by_sql, $sort_key, $sort_dir, $sort_days, $ex_fid_ary, $m_approve_fid_ary, $topic_id, $author_id_ary, $Id$per_page);
+		$total_match_count = $search->author_search($show_results, $firstpost_only, $sort_by_sql, $sort_key, $sort_dir, $sort_days, $ex_fid_ary, $m_approve_fid_ary, $topic_id, $author_id_ary, $id_ary, $start, $per_page);
 	}
 
 	// For some searches we need to print out the "no results" page directly to allow re-sorting/refining the search options.
-	if (!sizeof($Id$search_id)
+	if (!sizeof($id_ary) && !$search_id)
 	{
 		trigger_error('NO_SEARCH_RESULTS');
 	}

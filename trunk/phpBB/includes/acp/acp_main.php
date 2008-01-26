@@ -2,7 +2,7 @@
 /**
 *
 * @package acp
-* @version $Id$
+* @version $Id: acp_main.php,v 1.52 2007/11/27 15:13:50 kellanved Exp $
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -23,7 +23,7 @@ class acp_main
 {
 	var $u_action;
 
-	function main($Id$mode)
+	function main($id, $mode)
 	{
 		global $config, $db, $user, $auth, $template;
 		global $phpbb_root_path, $phpbb_admin_path, $phpEx;

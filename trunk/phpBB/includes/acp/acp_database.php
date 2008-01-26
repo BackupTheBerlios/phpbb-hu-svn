@@ -2,7 +2,7 @@
 /**
 *
 * @package acp
-* @version $Id$
+* @version $Id: acp_database.php,v 1.82 2007/10/05 14:36:32 acydburn Exp $
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -23,7 +23,7 @@ class acp_database
 {
 	var $u_action;
 
-	function main($Id$mode)
+	function main($id, $mode)
 	{
 		global $db, $user, $auth, $template, $table_prefix;
 		global $config, $phpbb_root_path, $phpbb_admin_path, $phpEx;
@@ -1207,9 +1207,9 @@ class postgres_extractor extends base_extractor
 
 		if (!empty($index_rows))
 		{
-			foreach ($index_rows as $Id$props)
+			foreach ($index_rows as $idx_name => $props)
 			{
-				$index_create[] = 'CREATE ' . ($props['unique'] ? 'UNIQUE ' : '') . "INDEX $Id$props['column_names']) . ");";
+				$index_create[] = 'CREATE ' . ($props['unique'] ? 'UNIQUE ' : '') . "INDEX $idx_name ON $table_name (" . implode(', ', $props['column_names']) . ");";
 			}
 		}
 

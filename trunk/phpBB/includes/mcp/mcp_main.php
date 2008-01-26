@@ -2,7 +2,7 @@
 /**
 *
 * @package mcp
-* @version $Id$
+* @version $Id: mcp_main.php,v 1.73 2007/10/05 14:36:33 acydburn Exp $
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -31,7 +31,7 @@ class mcp_main
 		$this->p_master = &$p_master;
 	}
 
-	function main($Id$mode)
+	function main($id, $mode)
 	{
 		global $auth, $db, $user, $template, $action;
 		global $config, $phpbb_root_path, $phpEx;
@@ -140,7 +140,7 @@ class mcp_main
 
 				$user->add_lang('acp/common');
 
-				mcp_front_view($Id$action);
+				mcp_front_view($id, $mode, $action);
 
 				$this->tpl_name = 'mcp_front';
 				$this->page_title = 'MCP_MAIN';
@@ -163,7 +163,7 @@ class mcp_main
 
 				$forum_info = $forum_info[$forum_id];
 
-				mcp_forum_view($Id$forum_info);
+				mcp_forum_view($id, $mode, $action, $forum_info);
 
 				$this->tpl_name = 'mcp_forum';
 				$this->page_title = 'MCP_MAIN_FORUM_VIEW';
@@ -172,7 +172,7 @@ class mcp_main
 			case 'topic_view':
 				include($phpbb_root_path . 'includes/mcp/mcp_topic.' . $phpEx);
 
-				mcp_topic_view($Id$action);
+				mcp_topic_view($id, $mode, $action);
 
 				$this->tpl_name = 'mcp_topic';
 				$this->page_title = 'MCP_MAIN_TOPIC_VIEW';
@@ -181,7 +181,7 @@ class mcp_main
 			case 'post_details':
 				include($phpbb_root_path . 'includes/mcp/mcp_post.' . $phpEx);
 
-				mcp_post_details($Id$action);
+				mcp_post_details($id, $mode, $action);
 
 				$this->tpl_name = ($action == 'whois') ? 'mcp_whois' : 'mcp_post';
 				$this->page_title = 'MCP_MAIN_POST_DETAILS';
@@ -218,7 +218,7 @@ function lock_unlock($action, $ids)
 
 	$orig_ids = $ids;
 
-	if (!check_ids($Id$sql_id, array('m_lock')))
+	if (!check_ids($ids, $table, $sql_id, array('m_lock')))
 	{
 		// Make sure that for f_user_lock only the lock action is triggered.
 		if ($action != 'lock')
@@ -226,9 +226,9 @@ function lock_unlock($action, $ids)
 			return;
 		}
 
-		$Id$orig_ids;
+		$ids = $orig_ids;
 
-		if (!check_ids($Id$sql_id, array('f_user_lock')))
+		if (!check_ids($ids, $table, $sql_id, array('f_user_lock')))
 		{
 			return;
 		}
@@ -251,18 +251,18 @@ function lock_unlock($action, $ids)
 			WHERE ' . $db->sql_in_set($sql_id, $ids);
 		$db->sql_query($sql);
 
-		$data = ($action == 'lock' || $action == 'unlock') ? get_topic_data($Id$ids);
+		$data = ($action == 'lock' || $action == 'unlock') ? get_topic_data($ids) : get_post_data($ids);
 
-		foreach ($data as $Id$row)
+		foreach ($data as $id => $row)
 		{
 			add_log('mod', $row['forum_id'], $row['topic_id'], 'LOG_' . strtoupper($action), $row['topic_title']);
 		}
 
-		$success_msg = $l_prefix . ((sizeof($Id$action == 'lock_post') ? 'LOCKED' : 'UNLOCKED') . '_SUCCESS';
+		$success_msg = $l_prefix . ((sizeof($ids) == 1) ? '' : 'S') . '_' . (($action == 'lock' || $action == 'lock_post') ? 'LOCKED' : 'UNLOCKED') . '_SUCCESS';
 	}
 	else
 	{
-		confirm_box(false, strtoupper($action) . '_' . $l_prefix . ((sizeof($Id$s_hidden_fields);
+		confirm_box(false, strtoupper($action) . '_' . $l_prefix . ((sizeof($ids) == 1) ? '' : 'S'), $s_hidden_fields);
 	}
 
 	$redirect = request_var('redirect', "index.$phpEx");
@@ -855,7 +855,7 @@ function mcp_delete_post($post_ids)
 
 		$post_data = get_post_data($post_ids);
 
-		foreach ($post_data as $Id$row)
+		foreach ($post_data as $id => $row)
 		{
 			add_log('mod', $row['forum_id'], $row['topic_id'], 'LOG_DELETE_POST', $row['post_subject']);
 		}

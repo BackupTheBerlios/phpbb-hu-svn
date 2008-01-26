@@ -2,7 +2,7 @@
 /**
 *
 * @package acp
-* @version $Id$
+* @version $Id: acp_styles.php,v 1.117 2007/10/21 11:26:24 acydburn Exp $
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -29,7 +29,7 @@ class acp_styles
 	var $imageset_cfg;
 	var $imageset_keys;
 
-	function main($Id$mode)
+	function main($id, $mode)
 	{
 		global $db, $user, $auth, $template, $cache;
 		global $config, $phpbb_root_path, $phpbb_admin_path, $phpEx;
@@ -97,8 +97,9 @@ parse_css_file = {PARSE_CSS_FILE}
 			'logos' => array(
 				'site_logo',
 			),
+			// Buttons array modified to include our own additional add report icon
 			'buttons'	=> array(
-				'icon_back_top', 'icon_contact_aim', 'icon_contact_email', 'icon_contact_icq', 'icon_contact_jabber', 'icon_contact_msnm', 'icon_contact_pm', 'icon_contact_yahoo', 'icon_contact_www', 'icon_post_delete', 'icon_post_edit', 'icon_post_info', 'icon_post_quote', 'icon_post_report', 'icon_user_online', 'icon_user_offline', 'icon_user_profile', 'icon_user_search', 'icon_user_warn', 'button_pm_forward', 'button_pm_new', 'button_pm_reply', 'button_topic_locked', 'button_topic_new', 'button_topic_reply',
+				'icon_back_top', 'icon_contact_aim', 'icon_contact_email', 'icon_contact_icq', 'icon_contact_jabber', 'icon_contact_msnm', 'icon_contact_pm', 'icon_contact_yahoo', 'icon_contact_www', 'icon_post_delete', 'icon_post_edit', 'icon_post_info', 'icon_post_quote', 'icon_post_report', 'icon_user_online', 'icon_user_offline', 'icon_user_profile', 'icon_user_search', 'icon_user_warn', 'button_pm_forward', 'button_pm_new', 'button_pm_reply', 'button_topic_locked', 'button_topic_new', 'button_topic_reply', 'button_report_new',
 			),
 			'icons'		=> array(
 				'icon_post_target', 'icon_post_target_unread', 'icon_topic_attach', 'icon_topic_latest', 'icon_topic_newest', 'icon_topic_reported', 'icon_topic_unapproved', 'icon_friend', 'icon_foe',
@@ -2392,9 +2393,9 @@ parse_css_file = {PARSE_CSS_FILE}
 
 		if (sizeof($matches))
 		{
-			foreach ($matches[0] as $Id$match)
+			foreach ($matches[0] as $idx => $match)
 			{
-				$stylesheet = str_replace($match, acp_styles::load_css_file($theme_row['theme_path'], $matches[1][$Id$stylesheet);
+				$stylesheet = str_replace($match, acp_styles::load_css_file($theme_row['theme_path'], $matches[1][$idx]), $stylesheet);
 			}
 		}
 
@@ -2871,7 +2872,7 @@ parse_css_file = {PARSE_CSS_FILE}
 			 			$this->test_installed($element, $error, $root_path, ${'reqd_' . $element}, $style_row[$element . '_id'], $style_row[$element . '_name'], $style_row[$element . '_copyright']);
 	* Is this element installed? If not, grab its cfg details
 	*/
-	function test_installed($element, &$error, $root_path, $reqd_name, &$Id$copyright)
+	function test_installed($element, &$error, $root_path, $reqd_name, &$id, &$name, &$copyright)
 	{
 		global $db, $user;
 
@@ -2902,7 +2903,7 @@ parse_css_file = {PARSE_CSS_FILE}
 		if ($row = $db->sql_fetchrow($result))
 		{
 			$name = $row[$element . '_name'];
-			$Id$element . '_id'];
+			$id = $row[$element . '_id'];
 		}
 		else
 		{
@@ -2926,7 +2927,7 @@ parse_css_file = {PARSE_CSS_FILE}
 	/**
 	* Install/Add style
 	*/
-	function install_style(&$error, $action, $root_path, &$Id$imageset_path = false)
+	function install_style(&$error, $action, $root_path, &$id, $name, $path, $copyright, $active, $default, &$style_row, $template_root_path = false, $template_path = false, $theme_root_path = false, $theme_path = false, $imageset_root_path = false, $imageset_path = false)
 	{
 		global $config, $db, $user;
 
@@ -3001,7 +3002,7 @@ parse_css_file = {PARSE_CSS_FILE}
 			' . $db->sql_build_array('INSERT', $sql_ary);
 		$db->sql_query($sql);
 
-		$Id$db->sql_nextid();
+		$id = $db->sql_nextid();
 
 		if ($default)
 		{
@@ -3021,7 +3022,7 @@ parse_css_file = {PARSE_CSS_FILE}
 	/**
 	* Install/add an element, doing various checks as we go
 	*/
-	function install_element($mode, &$error, $action, $root_path, &$Id$store_db = 0)
+	function install_element($mode, &$error, $action, $root_path, &$id, $name, $path, $copyright, $store_db = 0)
 	{
 		global $phpbb_root_path, $db, $user;
 
@@ -3071,7 +3072,7 @@ parse_css_file = {PARSE_CSS_FILE}
 			// If it exist, we just use the style on installation
 			if ($action == 'install')
 			{
-				$Id$mode . '_id'];
+				$id = $row[$mode . '_id'];
 				return false;
 			}
 
@@ -3137,12 +3138,12 @@ parse_css_file = {PARSE_CSS_FILE}
 			" . $db->sql_build_array('INSERT', $sql_ary);
 		$db->sql_query($sql);
 
-		$Id$db->sql_nextid();
+		$id = $db->sql_nextid();
 
 		if ($mode == 'template' && $store_db)
 		{
 			$filelist = filelist("{$root_path}template", '', 'html');
-			$this->store_templates('insert', $Id$filelist);
+			$this->store_templates('insert', $id, $path, $filelist);
 		}
 		else if ($mode == 'imageset')
 		{

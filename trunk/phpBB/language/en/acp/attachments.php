@@ -4,7 +4,7 @@
 * acp_attachments [English]
 *
 * @package language
-* @version $Id$
+* @version $Id: attachments.php,v 1.31 2007/10/04 15:07:24 acydburn Exp $
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *

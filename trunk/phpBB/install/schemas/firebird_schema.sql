@@ -1,5 +1,5 @@
 #
-# $Id$
+# $Id: firebird_schema.sql 2 2008-01-26 21:50:36Z fberci $
 #
 
 
@@ -1332,6 +1332,7 @@ CREATE TABLE phpbb_users (
 	user_notify INTEGER DEFAULT 0 NOT NULL,
 	user_notify_pm INTEGER DEFAULT 1 NOT NULL,
 	user_notify_type INTEGER DEFAULT 0 NOT NULL,
+	user_site_notify_type INTEGER DEFAULT 0 NOT NULL,
 	user_allow_pm INTEGER DEFAULT 1 NOT NULL,
 	user_allow_viewonline INTEGER DEFAULT 1 NOT NULL,
 	user_allow_viewemail INTEGER DEFAULT 1 NOT NULL,
@@ -1429,5 +1430,231 @@ CREATE TABLE phpbb_zebra (
 );;
 
 ALTER TABLE phpbb_zebra ADD PRIMARY KEY (user_id, zebra_id);;
+
+
+# Table: 'phpbb_bugs_projects'
+CREATE TABLE phpbb_bugs_projects (
+	project_id INTEGER NOT NULL,
+	forum_id INTEGER DEFAULT 0 NOT NULL,
+	project_name VARCHAR(255) CHARACTER SET NONE DEFAULT '' NOT NULL,
+	project_title VARCHAR(100) CHARACTER SET UTF8 DEFAULT '' NOT NULL COLLATE UNICODE
+);;
+
+ALTER TABLE phpbb_bugs_projects ADD PRIMARY KEY (project_id);;
+
+CREATE INDEX phpbb_bugs_projects_forum_id ON phpbb_bugs_projects(forum_id);;
+CREATE UNIQUE INDEX phpbb_bugs_projects_project_name ON phpbb_bugs_projects(project_name);;
+
+CREATE GENERATOR phpbb_bugs_projects_gen;;
+SET GENERATOR phpbb_bugs_projects_gen TO 0;;
+
+CREATE TRIGGER t_phpbb_bugs_projects FOR phpbb_bugs_projects
+BEFORE INSERT
+AS
+BEGIN
+	NEW.project_id = GEN_ID(phpbb_bugs_projects_gen, 1);
+END;;
+
+
+# Table: 'phpbb_bugs_reports'
+CREATE TABLE phpbb_bugs_reports (
+	report_id INTEGER NOT NULL,
+	topic_id INTEGER DEFAULT 0 NOT NULL,
+	project_id INTEGER DEFAULT 0 NOT NULL,
+	report_title VARCHAR(100) CHARACTER SET UTF8 DEFAULT '' NOT NULL COLLATE UNICODE,
+	report_desc BLOB SUB_TYPE TEXT CHARACTER SET UTF8 DEFAULT '' NOT NULL,
+	report_component INTEGER DEFAULT 0 NOT NULL,
+	report_version INTEGER DEFAULT 0 NOT NULL,
+	report_status INTEGER DEFAULT 1 NOT NULL,
+	report_closed INTEGER DEFAULT 0 NOT NULL,
+	report_assigned INTEGER DEFAULT 0 NOT NULL
+);;
+
+ALTER TABLE phpbb_bugs_reports ADD PRIMARY KEY (report_id);;
+
+CREATE INDEX phpbb_bugs_reports_project_id ON phpbb_bugs_reports(project_id);;
+CREATE INDEX phpbb_bugs_reports_topic_id ON phpbb_bugs_reports(topic_id);;
+
+CREATE GENERATOR phpbb_bugs_reports_gen;;
+SET GENERATOR phpbb_bugs_reports_gen TO 0;;
+
+CREATE TRIGGER t_phpbb_bugs_reports FOR phpbb_bugs_reports
+BEFORE INSERT
+AS
+BEGIN
+	NEW.report_id = GEN_ID(phpbb_bugs_reports_gen, 1);
+END;;
+
+
+# Table: 'phpbb_bugs_components'
+CREATE TABLE phpbb_bugs_components (
+	component_id INTEGER NOT NULL,
+	project_id INTEGER DEFAULT 0 NOT NULL,
+	component_title VARCHAR(100) CHARACTER SET UTF8 DEFAULT '' NOT NULL COLLATE UNICODE
+);;
+
+ALTER TABLE phpbb_bugs_components ADD PRIMARY KEY (component_id);;
+
+CREATE INDEX phpbb_bugs_components_project_id ON phpbb_bugs_components(project_id);;
+
+CREATE GENERATOR phpbb_bugs_components_gen;;
+SET GENERATOR phpbb_bugs_components_gen TO 0;;
+
+CREATE TRIGGER t_phpbb_bugs_components FOR phpbb_bugs_components
+BEFORE INSERT
+AS
+BEGIN
+	NEW.component_id = GEN_ID(phpbb_bugs_components_gen, 1);
+END;;
+
+
+# Table: 'phpbb_bugs_statuses'
+CREATE TABLE phpbb_bugs_statuses (
+	status_id INTEGER NOT NULL,
+	status_title VARCHAR(100) CHARACTER SET UTF8 DEFAULT '' NOT NULL COLLATE UNICODE,
+	status_closed INTEGER DEFAULT 0 NOT NULL
+);;
+
+ALTER TABLE phpbb_bugs_statuses ADD PRIMARY KEY (status_id);;
+
+
+CREATE GENERATOR phpbb_bugs_statuses_gen;;
+SET GENERATOR phpbb_bugs_statuses_gen TO 0;;
+
+CREATE TRIGGER t_phpbb_bugs_statuses FOR phpbb_bugs_statuses
+BEFORE INSERT
+AS
+BEGIN
+	NEW.status_id = GEN_ID(phpbb_bugs_statuses_gen, 1);
+END;;
+
+
+# Table: 'phpbb_bugs_versions'
+CREATE TABLE phpbb_bugs_versions (
+	version_id INTEGER NOT NULL,
+	project_id INTEGER DEFAULT 0 NOT NULL,
+	version_title VARCHAR(100) CHARACTER SET UTF8 DEFAULT '' NOT NULL COLLATE UNICODE,
+	accept_new INTEGER DEFAULT 0 NOT NULL
+);;
+
+ALTER TABLE phpbb_bugs_versions ADD PRIMARY KEY (version_id);;
+
+CREATE INDEX phpbb_bugs_versions_project_id ON phpbb_bugs_versions(project_id);;
+CREATE INDEX phpbb_bugs_versions_accept_new ON phpbb_bugs_versions(accept_new);;
+
+CREATE GENERATOR phpbb_bugs_versions_gen;;
+SET GENERATOR phpbb_bugs_versions_gen TO 0;;
+
+CREATE TRIGGER t_phpbb_bugs_versions FOR phpbb_bugs_versions
+BEFORE INSERT
+AS
+BEGIN
+	NEW.version_id = GEN_ID(phpbb_bugs_versions_gen, 1);
+END;;
+
+
+# Table: 'phpbb_kb_articles'
+CREATE TABLE phpbb_kb_articles (
+	article_id INTEGER NOT NULL,
+	topic_id INTEGER DEFAULT 0 NOT NULL,
+	article_name VARCHAR(255) CHARACTER SET NONE DEFAULT '' NOT NULL,
+	article_desc VARCHAR(255) CHARACTER SET UTF8 DEFAULT '' NOT NULL COLLATE UNICODE,
+	article_content BLOB SUB_TYPE TEXT CHARACTER SET UTF8 DEFAULT '' NOT NULL
+);;
+
+ALTER TABLE phpbb_kb_articles ADD PRIMARY KEY (article_id);;
+
+CREATE INDEX phpbb_kb_articles_topic_id ON phpbb_kb_articles(topic_id);;
+CREATE UNIQUE INDEX phpbb_kb_articles_article_name ON phpbb_kb_articles(article_name);;
+
+CREATE GENERATOR phpbb_kb_articles_gen;;
+SET GENERATOR phpbb_kb_articles_gen TO 0;;
+
+CREATE TRIGGER t_phpbb_kb_articles FOR phpbb_kb_articles
+BEFORE INSERT
+AS
+BEGIN
+	NEW.article_id = GEN_ID(phpbb_kb_articles_gen, 1);
+END;;
+
+
+# Table: 'phpbb_tagcats'
+CREATE TABLE phpbb_tagcats (
+	tagcat_id INTEGER NOT NULL,
+	tagcat_name VARCHAR(255) CHARACTER SET NONE DEFAULT '' NOT NULL,
+	tagcat_title VARCHAR(100) CHARACTER SET UTF8 DEFAULT '' NOT NULL COLLATE UNICODE,
+	tagcat_module INTEGER DEFAULT 0 NOT NULL
+);;
+
+ALTER TABLE phpbb_tagcats ADD PRIMARY KEY (tagcat_id);;
+
+CREATE INDEX phpbb_tagcats_tagcat_module ON phpbb_tagcats(tagcat_module);;
+
+CREATE GENERATOR phpbb_tagcats_gen;;
+SET GENERATOR phpbb_tagcats_gen TO 0;;
+
+CREATE TRIGGER t_phpbb_tagcats FOR phpbb_tagcats
+BEFORE INSERT
+AS
+BEGIN
+	NEW.tagcat_id = GEN_ID(phpbb_tagcats_gen, 1);
+END;;
+
+
+# Table: 'phpbb_tags'
+CREATE TABLE phpbb_tags (
+	tag_id INTEGER NOT NULL,
+	tagcat_id INTEGER DEFAULT 0 NOT NULL,
+	tag_name VARCHAR(255) CHARACTER SET NONE DEFAULT '' NOT NULL,
+	tag_title VARCHAR(100) CHARACTER SET UTF8 DEFAULT '' NOT NULL COLLATE UNICODE
+);;
+
+ALTER TABLE phpbb_tags ADD PRIMARY KEY (tag_id);;
+
+CREATE INDEX phpbb_tags_tagcat_id ON phpbb_tags(tagcat_id);;
+
+CREATE GENERATOR phpbb_tags_gen;;
+SET GENERATOR phpbb_tags_gen TO 0;;
+
+CREATE TRIGGER t_phpbb_tags FOR phpbb_tags
+BEFORE INSERT
+AS
+BEGIN
+	NEW.tag_id = GEN_ID(phpbb_tags_gen, 1);
+END;;
+
+
+# Table: 'phpbb_tagmatch'
+CREATE TABLE phpbb_tagmatch (
+	tag_id INTEGER DEFAULT 0 NOT NULL,
+	topic_id INTEGER DEFAULT 0 NOT NULL
+);;
+
+CREATE UNIQUE INDEX phpbb_tagmatch_tagmatch ON phpbb_tagmatch(tag_id, topic_id);;
+
+# Table: 'phpbb_pages'
+CREATE TABLE phpbb_pages (
+	page_id INTEGER NOT NULL,
+	page_url VARCHAR(255) CHARACTER SET NONE DEFAULT '' NOT NULL,
+	page_section VARCHAR(255) CHARACTER SET NONE DEFAULT '' NOT NULL,
+	page_file VARCHAR(255) CHARACTER SET NONE DEFAULT '' NOT NULL,
+	page_title VARCHAR(100) CHARACTER SET UTF8 DEFAULT '' NOT NULL COLLATE UNICODE,
+	page_content BLOB SUB_TYPE TEXT CHARACTER SET UTF8 DEFAULT '' NOT NULL,
+	page_comments BLOB SUB_TYPE TEXT CHARACTER SET UTF8 DEFAULT '' NOT NULL
+);;
+
+ALTER TABLE phpbb_pages ADD PRIMARY KEY (page_id);;
+
+CREATE UNIQUE INDEX phpbb_pages_page_url ON phpbb_pages(page_url);;
+
+CREATE GENERATOR phpbb_pages_gen;;
+SET GENERATOR phpbb_pages_gen TO 0;;
+
+CREATE TRIGGER t_phpbb_pages FOR phpbb_pages
+BEFORE INSERT
+AS
+BEGIN
+	NEW.page_id = GEN_ID(phpbb_pages_gen, 1);
+END;;
 
 

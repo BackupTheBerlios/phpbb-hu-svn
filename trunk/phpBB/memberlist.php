@@ -2,7 +2,7 @@
 /**
 *
 * @package phpBB3
-* @version $Id$
+* @version $Id: memberlist.php 2 2008-01-26 21:50:36Z fberci $
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -47,9 +47,11 @@ switch ($mode)
 		{
 			if ($user->data['user_id'] != ANONYMOUS)
 			{
+				http_status(401);
 				trigger_error('NO_VIEW_USERS');
 			}
 
+			http_status(403);
 			login_box('', ((isset($user->lang['LOGIN_EXPLAIN_' . strtoupper($mode)])) ? $user->lang['LOGIN_EXPLAIN_' . strtoupper($mode)] : $user->lang['LOGIN_EXPLAIN_MEMBERLIST']));
 		}
 	break;
@@ -103,9 +105,9 @@ switch ($mode)
 
 				if ($forum_id)
 				{
-					foreach ($Id$id)
+					foreach ($id_ary as $id)
 					{
-						$forum_id_ary[$Id$forum_id;
+						$forum_id_ary[$id][] = $forum_id;
 					}
 				}
 			}
@@ -127,7 +129,7 @@ switch ($mode)
 
 		// Get group memberships for the admin id ary...
 		$admin_memberships = group_memberships($admin_group_id, $admin_id_ary);
-
+		
 		$admin_user_ids = array();
 		
 		if (!empty($admin_memberships))
@@ -141,10 +143,9 @@ switch ($mode)
 		unset($admin_memberships);
 
 		$sql = 'SELECT forum_id, forum_name
-			FROM ' . FORUMS_TABLE . '
-			WHERE forum_type = ' . FORUM_POST;
+			FROM ' . FORUMS_TABLE;
 		$result = $db->sql_query($sql);
-		
+
 		$forums = array();
 		while ($row = $db->sql_fetchrow($result))
 		{
@@ -268,7 +269,6 @@ switch ($mode)
 	break;
 
 	case 'contact':
-
 		$page_title = $user->lang['IM_USER'];
 		$template_html = 'memberlist_im.html';
 
@@ -328,46 +328,36 @@ switch ($mode)
 		switch ($action)
 		{
 			case 'jabber':
-				add_form_key('memberlist_messaging');
-
 				if ($submit && @extension_loaded('xml') && $config['jab_enable'])
 				{
-					if (check_form_key('memberlist_messaging'))
+					include_once($phpbb_root_path . 'includes/functions_messenger.' . $phpEx);
+
+					$subject = sprintf($user->lang['IM_JABBER_SUBJECT'], $user->data['username'], $config['server_name']);
+					$message = utf8_normalize_nfc(request_var('message', '', true));
+
+					if (empty($message))
 					{
-
-						include_once($phpbb_root_path . 'includes/functions_messenger.' . $phpEx);
-
-						$subject = sprintf($user->lang['IM_JABBER_SUBJECT'], $user->data['username'], $config['server_name']);
-						$message = utf8_normalize_nfc(request_var('message', '', true));
-
-						if (empty($message))
-						{
-							trigger_error('EMPTY_MESSAGE_IM');
-						}
-
-						$messenger = new messenger(false);
-
-						$messenger->template('profile_send_im', $row['user_lang']);
-						$messenger->subject(htmlspecialchars_decode($subject));
-
-						$messenger->replyto($user->data['user_email']);
-						$messenger->im($row['user_jabber'], $row['username']);
-
-						$messenger->assign_vars(array(
-							'BOARD_CONTACT'	=> $config['board_contact'],
-							'FROM_USERNAME'	=> htmlspecialchars_decode($user->data['username']),
-							'TO_USERNAME'	=> htmlspecialchars_decode($row['username']),
-							'MESSAGE'		=> htmlspecialchars_decode($message))
-						);
-
-						$messenger->send(NOTIFY_IM);
-
-						$s_select = 'S_SENT_JABBER';
+						trigger_error('EMPTY_MESSAGE_IM');
 					}
-					else
-					{
-						trigger_error('FORM_INVALID');
-					}
+
+					$messenger = new messenger(false);
+
+					$messenger->template('profile_send_im', $row['user_lang']);
+					$messenger->subject(htmlspecialchars_decode($subject));
+
+					$messenger->replyto($user->data['user_email']);
+					$messenger->im($row['user_jabber'], $row['username']);
+
+					$messenger->assign_vars(array(
+						'BOARD_CONTACT'	=> $config['board_contact'],
+						'FROM_USERNAME'	=> htmlspecialchars_decode($user->data['username']),
+						'TO_USERNAME'	=> htmlspecialchars_decode($row['username']),
+						'MESSAGE'		=> htmlspecialchars_decode($message))
+					);
+
+					$messenger->send(NOTIFY_IM);
+
+					$s_select = 'S_SENT_JABBER';
 				}
 			break;
 		}
@@ -375,11 +365,6 @@ switch ($mode)
 		// Send vars to the template
 		$template->assign_vars(array(
 			'IM_CONTACT'	=> $row[$sql_field],
-			'A_IM_CONTACT'	=> addslashes($row[$sql_field]),
-
-			'U_AIM_CONTACT'	=> ($action == 'aim') ? 'aim:addbuddy?screenname=' . urlencode($row[$sql_field]) : '',
-			'U_AIM_MESSAGE'	=> ($action == 'aim') ? 'aim:goim?screenname=' . urlencode($row[$sql_field]) . '&amp;message=' . urlencode($config['sitename']) : '',
-
 			'USERNAME'		=> $row['username'],
 			'CONTACT_NAME'	=> $row[$sql_field],
 			'SITENAME'		=> $config['sitename'],
@@ -599,7 +584,7 @@ switch ($mode)
 					$inactive_reason = $user->lang['INACTIVE_REASON_REMIND'];
 				break;
 			}
-
+	
 			$template->assign_vars(array(
 				'S_USER_INACTIVE'		=> true,
 				'USER_INACTIVE_REASON'	=> $inactive_reason)
@@ -617,8 +602,6 @@ switch ($mode)
 		// Send an email
 		$page_title = $user->lang['SEND_EMAIL'];
 		$template_html = 'memberlist_email.html';
-
-		add_form_key('memberlist_email');
 
 		if (!$config['email_enable'])
 		{
@@ -726,10 +709,6 @@ switch ($mode)
 
 		if ($submit)
 		{
-			if (!check_form_key('memberlist_email'))
-			{
-				$error[] = 'FORM_INVALID';
-			}
 			if ($user_id)
 			{
 				if (!$subject)
@@ -851,7 +830,7 @@ switch ($mode)
 			$template->assign_vars(array(
 				'S_SEND_USER'	=> true,
 				'USERNAME'		=> $row['username'],
-
+	
 				'L_EMAIL_BODY_EXPLAIN'	=> $user->lang['EMAIL_BODY_EXPLAIN'],
 				'S_POST_ACTION'			=> append_sid("{$phpbb_root_path}memberlist.$phpEx", 'mode=email&amp;u=' . $user_id))
 			);
@@ -917,14 +896,10 @@ switch ($mode)
 		// then only admins can make use of this (for ACP functionality)
 		$sql_select = $sql_where_data = $sql_from = $sql_where = $order_by = '';
 
-
 		$form			= request_var('form', '');
 		$field			= request_var('field', '');
-		$select_single 	= request_var('select_single', false);
+		$select_single 	= request_var('select_single', false);	
 
-		// We validate form and field here, only id/class allowed
-		$form = (!preg_match('/^[a-z0-9_-]+$/i', $form)) ? '' : $form;
-		$field = (!preg_match('/^[a-z0-9_-]+$/i', $field)) ? '' : $field;
 		if ($mode == 'searchuser' && ($config['load_search'] || $auth->acl_get('a_')))
 		{
 			$username	= request_var('username', '', true);
@@ -1180,47 +1155,27 @@ switch ($mode)
 
 		// Build a relevant pagination_url
 		$params = $sort_params = array();
-
-		// We do not use request_var() here directly to save some calls (not all variables are set)
-		$check_params = array(
-			'g'				=> array('g', 0),
-			'sk'			=> array('sk', $default_key),
-			'sd'			=> array('sd', 'a'),
-			'form'			=> array('form', ''),
-			'field'			=> array('field', ''),
-			'select_single'	=> array('select_single', 0),
-			'username'		=> array('username', '', true),
-			'email'			=> array('email', ''),
-			'icq'			=> array('icq', ''),
-			'aim'			=> array('aim', ''),
-			'yahoo'			=> array('yahoo', ''),
-			'msn'			=> array('msn', ''),
-			'jabber'		=> array('jabber', ''),
-			'search_group_id'	=> array('search_group_id', 0),
-			'joined_select'	=> array('joined_select', 'lt'),
-			'active_select'	=> array('active_select', 'lt'),
-			'count_select'	=> array('count_select', 'eq'),
-			'joined'		=> array('joined', ''),
-			'active'		=> array('active', ''),
-			'count'			=> (request_var('count', '') !== '') ? array('count', 0) : array('count', ''),
-			'ipdomain'		=> array('ip', ''),
-			'first_char'	=> array('first_char', ''),
-		);
-
-		foreach ($check_params as $key => $call)
+		foreach (array('_POST', '_GET') as $global_var)
 		{
-			if (!isset($_REQUEST[$key]))
+			foreach ($$global_var as $key => $var)
 			{
-				continue;
-			}
+				if ($global_var == '_POST')
+				{
+					unset($_GET[$key]);
+				}
 
-			$param = call_user_func_array('request_var', $call);
-			$param = urlencode($key) . '=' . ((is_string($param)) ? urlencode($param) : $param);
-			$params[] = $param;
+				if (in_array($key, array('submit', 'start', 'mode', 'char')) || empty($var))
+				{
+					continue;
+				}
 
-			if ($key != 'sk' && $key != 'sd')
-			{
-				$sort_params[] = $param;
+				$param = urlencode($key) . '=' . urlencode(htmlspecialchars($var));
+				$params[] = $param;
+
+				if (!in_array($key, array('sk', 'sd')))
+				{
+					$sort_params[] = $param;
+				}
 			}
 		}
 
@@ -1229,7 +1184,9 @@ switch ($mode)
 		$params[] = "mode=$mode";
 		$sort_params[] = "mode=$mode";
 		$pagination_url = append_sid("{$phpbb_root_path}memberlist.$phpEx", implode('&amp;', $params));
-		$sort_url = append_sid("{$phpbb_root_path}memberlist.$phpEx", implode('&amp;', $sort_params));
+		$s_mode_action = append_sid("{$phpbb_root_path}memberlist.$phpEx", implode('&amp;', $params) . "&amp;form=$form");
+		// Do not do append_sid yet
+		$sort_url = "{$phpbb_root_path}memberlist.$phpEx?" . implode('&amp;', $sort_params);
 
 		unset($params, $sort_params);
 
@@ -1346,13 +1303,13 @@ switch ($mode)
 			}
 			$result = $db->sql_query($sql);
 
-			$id_cache = array();
+					$id_cache = array();
 			while ($row = $db->sql_fetchrow($result))
 			{
 				$row['session_time'] = (!empty($session_times[$row['user_id']])) ? $session_times[$row['user_id']] : 0;
 				$row['last_visit'] = (!empty($row['session_time'])) ? $row['session_time'] : $row['user_lastvisit'];
 
-				$Id$row;
+				$id_cache[$row['user_id']] = $row;
 			}
 			$db->sql_freeresult($result);
 
@@ -1370,13 +1327,13 @@ switch ($mode)
 			if ($sort_key == 'l')
 			{
 				$lesser_than = ($sort_dir == 'a') ? -1 : 1;
-				uasort($Id$lesser_than * -1));"));
+				uasort($id_cache, create_function('$first, $second', "return (\$first['last_visit'] == \$second['last_visit']) ? 0 : ((\$first['last_visit'] < \$second['last_visit']) ? $lesser_than : ($lesser_than * -1));"));
 			}
 
 			for ($i = 0, $end = sizeof($user_list); $i < $end; ++$i)
 			{
 				$user_id = $user_list[$i];
-				$row =& $Id$user_id];
+				$row =& $id_cache[$user_id];
 
 				$cp_row = array();
 				if ($config['load_cpf_memberlist'])
@@ -1408,7 +1365,7 @@ switch ($mode)
 					}
 				}
 
-				unset($Id$user_id]);
+				unset($id_cache[$user_id]);
 			}
 		}
 

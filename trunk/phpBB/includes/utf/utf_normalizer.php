@@ -2,7 +2,7 @@
 /**
 *
 * @package utf
-* @version $Id$
+* @version $Id: utf_normalizer.php,v 1.16 2007/10/05 14:36:34 acydburn Exp $
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -1374,7 +1374,7 @@ class utf_normalizer
 					else
 					{
 						// Hangul syllable
-						$Id$utf_char[2]) & 0x3F)) - UNICODE_HANGUL_SBASE;
+						$idx = (((ord($utf_char[0]) & 0x0F) << 12) | ((ord($utf_char[1]) & 0x3F) << 6) | (ord($utf_char[2]) & 0x3F)) - UNICODE_HANGUL_SBASE;
 
 						// LIndex can only range from 0 to 18, therefore it cannot influence the first two bytes of the L Jamo, which allows us to hardcode them (based on LBase).
 						//

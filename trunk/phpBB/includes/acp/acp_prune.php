@@ -2,7 +2,7 @@
 /**
 *
 * @package acp
-* @version $Id$
+* @version $Id: acp_prune.php,v 1.29 2007/10/05 14:36:32 acydburn Exp $
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -23,7 +23,7 @@ class acp_prune
 {
 	var $u_action;
 
-	function main($Id$mode)
+	function main($id, $mode)
 	{
 		global $user, $phpEx, $phpbb_admin_path, $phpbb_root_path;
 
@@ -35,13 +35,13 @@ class acp_prune
 			case 'forums':
 				$this->tpl_name = 'acp_prune_forums';
 				$this->page_title = 'ACP_PRUNE_FORUMS';
-				$this->prune_forums($Id$mode);
+				$this->prune_forums($id, $mode);
 			break;
 
 			case 'users':
 				$this->tpl_name = 'acp_prune_users';
 				$this->page_title = 'ACP_PRUNE_USERS';
-				$this->prune_users($Id$mode);
+				$this->prune_users($id, $mode);
 			break;
 		}
 	}
@@ -49,7 +49,7 @@ class acp_prune
 	/**
 	* Prune forums
 	*/
-	function prune_forums($Id$mode)
+	function prune_forums($id, $mode)
 	{
 		global $db, $user, $auth, $template, $cache;
 		global $config, $phpbb_root_path, $phpbb_admin_path, $phpEx;
@@ -226,7 +226,7 @@ class acp_prune
 	/**
 	* Prune users
 	*/
-	function prune_users($Id$mode)
+	function prune_users($id, $mode)
 	{
 		global $db, $user, $auth, $template, $cache;
 		global $config, $phpbb_root_path, $phpbb_admin_path, $phpEx;

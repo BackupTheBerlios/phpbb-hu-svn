@@ -2,7 +2,7 @@
 /**
 *
 * @package acp
-* @version $Id$
+* @version $Id: acp_board.php,v 1.82 2007/10/09 11:21:07 kellanved Exp $
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -25,7 +25,7 @@ class acp_board
 	var $u_action;
 	var $new_config = array();
 
-	function main($Id$mode)
+	function main($id, $mode)
 	{
 		global $db, $user, $auth, $template;
 		global $config, $phpbb_root_path, $phpbb_admin_path, $phpEx;

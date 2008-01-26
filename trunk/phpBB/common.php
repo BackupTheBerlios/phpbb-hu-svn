@@ -2,7 +2,7 @@
 /**
 *
 * @package phpBB3
-* @version $Id$
+* @version $Id: common.php 2 2008-01-26 21:50:36Z fberci $
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -191,6 +191,7 @@ require($phpbb_root_path . 'includes/functions_content.' . $phpEx);
 require($phpbb_root_path . 'includes/constants.' . $phpEx);
 require($phpbb_root_path . 'includes/db/' . $dbms . '.' . $phpEx);
 require($phpbb_root_path . 'includes/utf/utf_tools.' . $phpEx);
+require($phpbb_root_path . 'includes/site/functions_site.' . $phpEx);
 
 // Set PHP error handler to ours
 set_error_handler(defined('PHPBB_MSG_HANDLER') ? PHPBB_MSG_HANDLER : 'msg_handler');
@@ -220,4 +221,7 @@ foreach ($cache->obtain_hooks() as $hook)
 	@include($phpbb_root_path . 'includes/hooks/' . $hook . '.' . $phpEx);
 }
 
+// Initialise url rewrite class (can only be done after initialising the hooks class)
+require($phpbb_root_path . 'includes/site/url_rewrite.' . $phpEx);
+$url_rewriter = new url_rewriter();
 ?>

@@ -2,7 +2,7 @@
 /**
 *
 * @package acp
-* @version $Id$
+* @version $Id: acp_users.php,v 1.143 2007/12/13 22:23:25 kellanved Exp $
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -29,7 +29,7 @@ class acp_users
 		$this->p_master = &$p_master;
 	}
 
-	function main($Id$mode)
+	function main($id, $mode)
 	{
 		global $config, $db, $user, $auth, $template, $cache;
 		global $phpbb_root_path, $phpbb_admin_path, $phpEx, $table_prefix, $file_uploads;
@@ -146,7 +146,7 @@ class acp_users
 
 		$template->assign_vars(array(
 			'U_BACK'			=> $this->u_action,
-			'U_MODE_SELECT'		=> append_sid("{$phpbb_admin_path}index.$phpEx", "i=$Id$user_id"),
+			'U_MODE_SELECT'		=> append_sid("{$phpbb_admin_path}index.$phpEx", "i=$id&amp;u=$user_id"),
 			'U_ACTION'			=> $this->u_action . '&amp;u=' . $user_id,
 			'S_FORM_OPTIONS'	=> $s_form_options,
 			'MANAGED_USERNAME'	=> $user_row['username'])
@@ -1060,9 +1060,11 @@ class acp_users
 					list($data['bday_day'], $data['bday_month'], $data['bday_year']) = explode('-', $user_row['user_birthday']);
 				}
 
-				$data['bday_day'] = request_var('bday_day', $data['bday_day']);
-				$data['bday_month'] = request_var('bday_month', $data['bday_month']);
-				$data['bday_year'] = request_var('bday_year', $data['bday_year']);
+				$data['bday_day']		= request_var('bday_day', $data['bday_day']);
+				$data['bday_month']		= request_var('bday_month', $data['bday_month']);
+				$data['bday_year']		= request_var('bday_year', $data['bday_year']);
+				$data['user_birthday']	= sprintf('%2d-%2d-%4d', $data['bday_day'], $data['bday_month'], $data['bday_year']);
+
 
 				if ($submit)
 				{
@@ -1085,6 +1087,7 @@ class acp_users
 						'bday_day'		=> array('num', true, 1, 31),
 						'bday_month'	=> array('num', true, 1, 12),
 						'bday_year'		=> array('num', true, 1901, gmdate('Y', time())),
+						'user_birthday'	=> array('date', true),
 					));
 
 					// validate custom profile fields
@@ -1111,7 +1114,7 @@ class acp_users
 							'user_from'		=> $data['location'],
 							'user_occ'		=> $data['occupation'],
 							'user_interests'=> $data['interests'],
-							'user_birthday'	=> sprintf('%2d-%2d-%4d', $data['bday_day'], $data['bday_month'], $data['bday_year']),
+							'user_birthday'	=> $data['user_birthday'],
 						);
 
 						$sql = 'UPDATE ' . USERS_TABLE . '
@@ -1887,7 +1890,7 @@ class acp_users
 					$group_data[$type][$i]['group_name']	= $row['group_name'];
 					$group_data[$type][$i]['group_leader']	= ($row['group_leader']) ? 1 : 0;
 
-					$Id$row['group_id'];
+					$id_ary[] = $row['group_id'];
 
 					$i++;
 				}
@@ -1896,7 +1899,7 @@ class acp_users
 				// Select box for other groups
 				$sql = 'SELECT group_id, group_name, group_type, group_founder_manage
 					FROM ' . GROUPS_TABLE . '
-					' . ((sizeof($Id$id_ary, true) : '') . '
+					' . ((sizeof($id_ary)) ? 'WHERE ' . $db->sql_in_set('group_id', $id_ary, true) : '') . '
 					ORDER BY group_type DESC, group_name ASC';
 				$result = $db->sql_query($sql);
 

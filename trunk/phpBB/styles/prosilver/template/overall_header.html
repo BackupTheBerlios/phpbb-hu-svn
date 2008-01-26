@@ -11,8 +11,11 @@
 <meta name="copyright" content="2002-2006 phpBB Group" />
 <meta name="keywords" content="" />
 <meta name="description" content="" />
+<!-- IF BASE_HREF -->
+<base href="{BASE_HREF}" />
+<!-- ENDIF -->
 {META}
-<title>{SITENAME} &bull; <!-- IF S_IN_MCP -->{L_MCP} &bull; <!-- ELSEIF S_IN_UCP -->{L_UCP} &bull; <!-- ENDIF -->{PAGE_TITLE}</title>
+<title>{PAGE_TITLE}<!-- IF S_IN_MCP --> &bull; {L_MCP}<!-- ELSEIF S_IN_UCP --> &bull; {L_UCP}<!-- ENDIF --> | {SITENAME}</title>
 
 <!--
 	phpBB style name: prosilver
@@ -57,7 +60,7 @@
 	*/
 	window.onload = function()
 	{
-		for (i = 0; i <= onload_functions.length; i++)
+		for (i = 0; i < onload_functions.length; i++)
 		{
 			eval(onload_functions[i]);
 		}
@@ -65,7 +68,7 @@
 
 	window.onunload = function()
 	{
-		for (i = 0; i <= onunload_functions.length; i++)
+		for (i = 0; i < onunload_functions.length; i++)
 		{
 			eval(onunload_functions[i]);
 		}
@@ -89,7 +92,7 @@
 
 </head>
 
-<body id="phpbb" class="section-{SCRIPT_NAME} {S_CONTENT_DIRECTION}">
+<body id="phpbb" class="forum section-{SCRIPT_NAME} {S_CONTENT_DIRECTION}">
 
 <div id="wrap">
 	<a id="top" name="top" accesskey="t"></a>

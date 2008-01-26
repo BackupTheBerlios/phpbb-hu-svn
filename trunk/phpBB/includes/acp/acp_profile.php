@@ -2,7 +2,7 @@
 /**
 *
 * @package acp
-* @version $Id$
+* @version $Id: acp_profile.php,v 1.61 2007/11/15 19:54:37 kellanved Exp $
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -26,7 +26,7 @@ class acp_profile
 	var $edit_lang_id;
 	var $lang_defs;
 
-	function main($Id$mode)
+	function main($id, $mode)
 	{
 		global $config, $db, $user, $auth, $template, $cache;
 		global $phpbb_root_path, $phpbb_admin_path, $phpEx, $table_prefix;
@@ -840,7 +840,7 @@ class acp_profile
 		{
 			$active_lang = (!$row['field_active']) ? 'ACTIVATE' : 'DEACTIVATE';
 			$active_value = (!$row['field_active']) ? 'activate' : 'deactivate';
-			$Id$row['field_id'];
+			$id = $row['field_id'];
 
 			$s_need_edit = (sizeof($this->lang_defs['diff'][$row['field_id']])) ? true : false;
 

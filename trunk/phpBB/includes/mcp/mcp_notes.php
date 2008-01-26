@@ -2,7 +2,7 @@
 /**
 *
 * @package mcp
-* @version $Id$
+* @version $Id: mcp_notes.php,v 1.43 2007/10/05 14:36:33 acydburn Exp $
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -31,7 +31,7 @@ class mcp_notes
 		$this->p_master = &$p_master;
 	}
 
-	function main($Id$mode)
+	function main($id, $mode)
 	{
 		global $auth, $db, $user, $template;
 		global $config, $phpbb_root_path, $phpEx;

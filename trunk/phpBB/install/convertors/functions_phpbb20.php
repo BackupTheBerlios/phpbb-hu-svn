@@ -2,7 +2,7 @@
 /**
 *
 * @package install
-* @version $Id$
+* @version $Id: functions_phpbb20.php 2 2008-01-26 21:50:36Z fberci $
 * @copyright (c) 2006 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -488,7 +488,7 @@ function phpbb_user_id($user_id)
 			FROM {$convert->src_table_prefix}users
 			WHERE user_id = 1";
 		$result = $src_db->sql_query($sql);
-		$Id$src_db->sql_fetchfield('user_id');
+		$id = (int) $src_db->sql_fetchfield('user_id');
 		$src_db->sql_freeresult($result);
 
 		// Try to get the maximum user id possible...
@@ -1242,6 +1242,9 @@ function phpbb_prepare_message($message)
 	$message = str_replace('>', '&gt;', $message);
 	$message = str_replace('<br />', "\n", $message);
 
+	// phpbb.hu extension: convert [bev] BBCodes to [bev][/bev] as phpBB 3.0 can only handle this
+	$message = str_replace('[bev/]', "[bev][/bev]", $message);
+
 	// make the post UTF-8
 	$message = phpbb_set_encoding($message);
 
@@ -1882,6 +1885,14 @@ function phpbb_check_username_collisions()
 	}
 
 	$db->sql_query($drop_sql);
+}
+
+/**
+* Converts the value of the post order field to the new format (custom modification)
+*/
+function phpbb_convert_post_order_format($dir)
+{
+	return $dir == 'asc' ? 'a' : 'd';
 }
 
 ?>

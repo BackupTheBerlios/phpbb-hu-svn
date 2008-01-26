@@ -4,7 +4,7 @@
 * acp_styles [Hungarian]
 *
 * @package language
-* @version $Id$
+* @version $Id: styles.php,v 1.13 2007/11/08 20:56:23 fberci Exp $
 * @copyright (c) 2007 „Magyar phpBB Közösség fordítók”
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 * Original copyright: (c) 2005 phpBB Group

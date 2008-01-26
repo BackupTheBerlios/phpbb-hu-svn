@@ -1,0 +1,77 @@
+<!-- INCLUDE site_header.html -->
+
+<div id="main">
+	<h2 class="bugs"><a href="{U_BUG_TRACKER}">{L_BUG_TRACKER}</a></h2>
+
+	<div class="topic-actions">
+		<!-- IF S_DISPLAY_POST_INFO -->
+		<div class="buttons">
+			<div class="<!-- IF S_IS_LOCKED -->locked-icon<!-- ELSE -->newreport-icon<!-- ENDIF -->"><a href="{U_ADD_REPORT}" title="<!-- IF S_IS_LOCKED -->{L_FORUM_LOCKED}<!-- ELSE -->{L_ADD_REPORT}<!-- ENDIF -->"><span></span><!-- IF S_IS_LOCKED -->{L_FORUM_LOCKED}<!-- ELSE -->{L_ADD_REPORT}<!-- ENDIF --></a></div>
+		</div>
+		<!-- ENDIF -->
+		<div class="search-box">
+			<form id="form_report_closed" action="{U_ACTION}" method="get">
+				<label for="form_closed">
+					<strong>{L_FILTER}:</strong>
+				</label>
+				<select id="form_closed" name="closed" onchange="document.getElementById('form_report_closed').submit()">
+					<option value="-1"<!-- IF FILT_CLOSED == -1 --> selected="selected"<!-- ENDIF -->>{L_ALL_BUGS}</option>
+					<option value="0"<!-- IF FILT_CLOSED == 0 --> selected="selected"<!-- ENDIF -->>{L_OPEN_BUGS}</option>
+					<option value="1"<!-- IF FILT_CLOSED == 1 --> selected="selected"<!-- ENDIF -->>{L_CLOSED_BUGS}</option>
+				</select>
+				<noscript><input type="submit" name="submit" value="{L_SUBMIT}" class="button2" /></noscript>
+				{S_FILTER_HIDDEN_FIELDS}
+			</form>
+		</div>
+		<div class="pagination">
+			<!-- IF U_MY_ASSIGNED_REPORTS --><a href="{U_MY_ASSIGNED_REPORTS}" class="no-underline">{L_MY_ASSIGNED_REPORTS}</a> &bull;<!-- ENDIF -->
+			<a href="{U_MY_REPORTS}" class="no-underline">{L_MY_REPORTS}</a>
+		</div>
+	</div>
+	<!-- IF .reports -->
+	<div class="forabg">
+	<div class="inner"><span class="corners-top"><span></span></span>
+	<table id="bugs-reports" class="table1" cellspacing="0">
+		<thead>
+			<tr>
+				<th width="5%">#</th>
+				<th width="45%">{L_BUG_TITLE}</th>
+				<th width="15%">{L_COMPONENT}</th>
+				<th width="20%">{L_ASSIGNED_TO}</th>
+				<th width="15%">{L_STATUS}</th>
+			</tr>
+		</thead>
+		<tbody>
+			<!-- BEGIN reports -->
+			<tr class="<!-- IF reports.S_ROW_COUNT is even -->bg1<!-- ELSE -->bg2<!-- ENDIF -->">
+				<td>{reports.REPORT_ID}</td>
+				<td><!-- IF reports.S_UNREAD_TOPIC -->{NEWEST_POST_IMG} <!-- ENDIF --><a href="{reports.REPORT_URL}" class="no-underline">{reports.REPORT_TITLE}</a><br />{reports.LONG_INFO}</td>
+				<td>{reports.REPORT_COMPONENT}</td>
+				<td>{reports.REPORT_ASSIGNED_FULL}</td>
+				<td>{reports.REPORT_STATUS}</td>
+			</tr>
+			<!-- END reports -->
+		</tbody>
+	</table>
+	<span class="corners-bottom"><span></span></span></div>
+	</div>
+	<!-- ELSE -->
+	<div class="panel">
+		<div class="inner"><span class="corners-top"><span></span></span>
+		<strong>{L_NO_REPORTS}</strong>
+		<span class="corners-bottom"><span></span></span></div>
+	</div>
+	<!-- ENDIF -->
+	<div class="topic-actions">
+		<!-- IF S_DISPLAY_POST_INFO -->
+		<div class="buttons">
+			<div class="<!-- IF S_IS_LOCKED -->locked-icon<!-- ELSE -->newreport-icon<!-- ENDIF -->"><a href="{U_ADD_REPORT}" title="<!-- IF S_IS_LOCKED -->{L_FORUM_LOCKED}<!-- ELSE -->{L_ADD_REPORT}<!-- ENDIF -->"><span></span><!-- IF S_IS_LOCKED -->{L_FORUM_LOCKED}<!-- ELSE -->{L_ADD_REPORT}<!-- ENDIF --></a></div>
+		</div>
+		<!-- ENDIF -->
+		<div class="pagination">
+			{TOTAL_REPORTS}<!-- IF PAGINATION --> &bull; {PAGE_NUMBER} &bull; <span>{PAGINATION}</span><!-- ENDIF -->
+		</div>
+	</div>
+</div>
+
+<!-- INCLUDE site_footer.html -->

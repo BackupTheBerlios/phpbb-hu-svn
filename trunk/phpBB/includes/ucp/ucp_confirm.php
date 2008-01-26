@@ -2,7 +2,7 @@
 /**
 *
 * @package VC
-* @version $Id$
+* @version $Id: ucp_confirm.php,v 1.27 2007/10/05 14:36:33 acydburn Exp $
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -33,7 +33,7 @@ class ucp_confirm
 {
 	var $u_action;
 
-	function main($Id$mode)
+	function main($id, $mode)
 	{
 		global $db, $user, $phpbb_root_path, $config, $phpEx;
 

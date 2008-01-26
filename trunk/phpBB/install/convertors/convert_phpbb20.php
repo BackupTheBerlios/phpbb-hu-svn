@@ -2,7 +2,7 @@
 /**
 *
 * @package install
-* @version $Id$
+* @version $Id: convert_phpbb20.php 2 2008-01-26 21:50:36Z fberci $
 * @copyright (c) 2006 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -909,7 +909,8 @@ if (!$get_info)
 				array('',							'users.user_sig_bbcode_uid AS old_bbcode_uid',	''),
 				array('user_sig_bbcode_bitfield',	'',												'get_bbcode_bitfield'),
 				array('',							'users.user_regdate AS post_time',				''),
-
+				array('user_post_order',			'users.user_post_sortby_dir',					'phpbb_convert_post_order_format'),
+				
 				'where'			=> 'users.user_id <> -1',
 			),
 		),

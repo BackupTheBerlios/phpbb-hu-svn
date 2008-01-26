@@ -1,0 +1,23 @@
+Subject: Hiba #{REPORT_ID} - hibajelentés állapotának megváltoztatása
+
+Kedves {USERNAME}!
+
+Ezt az értesítés azért kapod, mivel feliratkoztál a "{REPORT_TITLE}" hibajelentésre, aminek állapotát {PERFORMER} megváltoztatta.  
+
+-------------------------
+Régi állapot:	{OLD_STATUS}
+Új állapot:		{NEW_STATUS}
+Lezárva:		{IS_CLOSED}
+-------------------------
+
+Amennyiben nem kívánsz további értesítést kapni, látogass el a hibajelentés oldalára, és iratkozz le a jelentésről.
+
+Hibajelentés adatok
+-------------------------
+Azonosító:	{REPORT_ID}
+Megnevezés:	{REPORT_TITLE}
+Projekt:	{PROJECT_TITLE}
+URL:		{U_REPORT}
+-------------------------
+
+{EMAIL_SIG}

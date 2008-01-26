@@ -2,7 +2,7 @@
 /**
 *
 * @package acp
-* @version $Id$
+* @version $Id: acp_permissions.php,v 1.65 2007/10/05 14:36:32 acydburn Exp $
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -24,7 +24,7 @@ class acp_permissions
 	var $u_action;
 	var $permission_dropdown;
 	
-	function main($Id$mode)
+	function main($id, $mode)
 	{
 		global $db, $user, $auth, $template, $cache;
 		global $config, $phpbb_root_path, $phpbb_admin_path, $phpEx;
@@ -598,7 +598,7 @@ class acp_permissions
 			$ids = array();
 			while ($row = $db->sql_fetchrow($result))
 			{
-				$Id$sql_id];
+				$ids[] = $row[$sql_id];
 			}
 			$db->sql_freeresult($result);
 		}
@@ -976,7 +976,7 @@ class acp_permissions
 			}
 			unset($hold_ary);
 
-			foreach ($groups as $Id$row)
+			foreach ($groups as $id => $row)
 			{
 				switch ($row['auth_setting'])
 				{

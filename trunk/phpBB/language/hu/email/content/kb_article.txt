@@ -1,0 +1,8 @@
+[b]Útmutató címe:[/b] [url={U_ARTICLE}]{ARTICLE_TITLE}[/url]
+[b]Útmutató leírása:[/b] {ARTICLE_DESC}
+[b]Címkék:[/b] {ARTICLE_TAGS}
+
+[b]Útmutató tartalma:[/b]
+{ARTICLE_CONTENT}
+
+[url={U_ARTICLE}][b]« Vissza az útmutatóhoz[/b][/url]

@@ -4,7 +4,7 @@
 * acp_users [English]
 *
 * @package language
-* @version $Id$
+* @version $Id: users.php,v 1.32 2007/10/08 14:38:26 acydburn Exp $
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *

@@ -1,6 +1,6 @@
 /*
 
- $Id$
+ $Id: mssql_schema.sql 2 2008-01-26 21:50:36Z fberci $
 
 */
 
@@ -1599,6 +1599,7 @@ CREATE TABLE [phpbb_users] (
 	[user_notify] [int] DEFAULT (0) NOT NULL ,
 	[user_notify_pm] [int] DEFAULT (1) NOT NULL ,
 	[user_notify_type] [int] DEFAULT (0) NOT NULL ,
+	[user_site_notify_type] [int] DEFAULT (0) NOT NULL ,
 	[user_allow_pm] [int] DEFAULT (1) NOT NULL ,
 	[user_allow_viewonline] [int] DEFAULT (1) NOT NULL ,
 	[user_allow_viewemail] [int] DEFAULT (1) NOT NULL ,
@@ -1701,6 +1702,234 @@ ALTER TABLE [phpbb_zebra] WITH NOCHECK ADD
 		[user_id],
 		[zebra_id]
 	)  ON [PRIMARY] 
+GO
+
+
+/*
+	Table: 'phpbb_bugs_projects'
+*/
+CREATE TABLE [phpbb_bugs_projects] (
+	[project_id] [int] IDENTITY (1, 1) NOT NULL ,
+	[forum_id] [int] DEFAULT (0) NOT NULL ,
+	[project_name] [varchar] (255) DEFAULT ('') NOT NULL ,
+	[project_title] [varchar] (100) DEFAULT ('') NOT NULL 
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [phpbb_bugs_projects] WITH NOCHECK ADD 
+	CONSTRAINT [PK_phpbb_bugs_projects] PRIMARY KEY  CLUSTERED 
+	(
+		[project_id]
+	)  ON [PRIMARY] 
+GO
+
+CREATE  INDEX [forum_id] ON [phpbb_bugs_projects]([forum_id]) ON [PRIMARY]
+GO
+
+CREATE  UNIQUE  INDEX [project_name] ON [phpbb_bugs_projects]([project_name]) ON [PRIMARY]
+GO
+
+
+/*
+	Table: 'phpbb_bugs_reports'
+*/
+CREATE TABLE [phpbb_bugs_reports] (
+	[report_id] [int] IDENTITY (1, 1) NOT NULL ,
+	[topic_id] [int] DEFAULT (0) NOT NULL ,
+	[project_id] [int] DEFAULT (0) NOT NULL ,
+	[report_title] [varchar] (100) DEFAULT ('') NOT NULL ,
+	[report_desc] [text] DEFAULT ('') NOT NULL ,
+	[report_component] [int] DEFAULT (0) NOT NULL ,
+	[report_version] [int] DEFAULT (0) NOT NULL ,
+	[report_status] [int] DEFAULT (1) NOT NULL ,
+	[report_closed] [int] DEFAULT (0) NOT NULL ,
+	[report_assigned] [int] DEFAULT (0) NOT NULL 
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+ALTER TABLE [phpbb_bugs_reports] WITH NOCHECK ADD 
+	CONSTRAINT [PK_phpbb_bugs_reports] PRIMARY KEY  CLUSTERED 
+	(
+		[report_id]
+	)  ON [PRIMARY] 
+GO
+
+CREATE  INDEX [project_id] ON [phpbb_bugs_reports]([project_id]) ON [PRIMARY]
+GO
+
+CREATE  INDEX [topic_id] ON [phpbb_bugs_reports]([topic_id]) ON [PRIMARY]
+GO
+
+
+/*
+	Table: 'phpbb_bugs_components'
+*/
+CREATE TABLE [phpbb_bugs_components] (
+	[component_id] [int] IDENTITY (1, 1) NOT NULL ,
+	[project_id] [int] DEFAULT (0) NOT NULL ,
+	[component_title] [varchar] (100) DEFAULT ('') NOT NULL 
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [phpbb_bugs_components] WITH NOCHECK ADD 
+	CONSTRAINT [PK_phpbb_bugs_components] PRIMARY KEY  CLUSTERED 
+	(
+		[component_id]
+	)  ON [PRIMARY] 
+GO
+
+CREATE  INDEX [project_id] ON [phpbb_bugs_components]([project_id]) ON [PRIMARY]
+GO
+
+
+/*
+	Table: 'phpbb_bugs_statuses'
+*/
+CREATE TABLE [phpbb_bugs_statuses] (
+	[status_id] [int] IDENTITY (1, 1) NOT NULL ,
+	[status_title] [varchar] (100) DEFAULT ('') NOT NULL ,
+	[status_closed] [int] DEFAULT (0) NOT NULL 
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [phpbb_bugs_statuses] WITH NOCHECK ADD 
+	CONSTRAINT [PK_phpbb_bugs_statuses] PRIMARY KEY  CLUSTERED 
+	(
+		[status_id]
+	)  ON [PRIMARY] 
+GO
+
+
+/*
+	Table: 'phpbb_bugs_versions'
+*/
+CREATE TABLE [phpbb_bugs_versions] (
+	[version_id] [int] IDENTITY (1, 1) NOT NULL ,
+	[project_id] [int] DEFAULT (0) NOT NULL ,
+	[version_title] [varchar] (100) DEFAULT ('') NOT NULL ,
+	[accept_new] [int] DEFAULT (0) NOT NULL 
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [phpbb_bugs_versions] WITH NOCHECK ADD 
+	CONSTRAINT [PK_phpbb_bugs_versions] PRIMARY KEY  CLUSTERED 
+	(
+		[version_id]
+	)  ON [PRIMARY] 
+GO
+
+CREATE  INDEX [project_id] ON [phpbb_bugs_versions]([project_id]) ON [PRIMARY]
+GO
+
+CREATE  INDEX [accept_new] ON [phpbb_bugs_versions]([accept_new]) ON [PRIMARY]
+GO
+
+
+/*
+	Table: 'phpbb_kb_articles'
+*/
+CREATE TABLE [phpbb_kb_articles] (
+	[article_id] [int] IDENTITY (1, 1) NOT NULL ,
+	[topic_id] [int] DEFAULT (0) NOT NULL ,
+	[article_name] [varchar] (255) DEFAULT ('') NOT NULL ,
+	[article_desc] [varchar] (255) DEFAULT ('') NOT NULL ,
+	[article_content] [text] DEFAULT ('') NOT NULL 
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+ALTER TABLE [phpbb_kb_articles] WITH NOCHECK ADD 
+	CONSTRAINT [PK_phpbb_kb_articles] PRIMARY KEY  CLUSTERED 
+	(
+		[article_id]
+	)  ON [PRIMARY] 
+GO
+
+CREATE  INDEX [topic_id] ON [phpbb_kb_articles]([topic_id]) ON [PRIMARY]
+GO
+
+CREATE  UNIQUE  INDEX [article_name] ON [phpbb_kb_articles]([article_name]) ON [PRIMARY]
+GO
+
+
+/*
+	Table: 'phpbb_tagcats'
+*/
+CREATE TABLE [phpbb_tagcats] (
+	[tagcat_id] [int] IDENTITY (1, 1) NOT NULL ,
+	[tagcat_name] [varchar] (255) DEFAULT ('') NOT NULL ,
+	[tagcat_title] [varchar] (100) DEFAULT ('') NOT NULL ,
+	[tagcat_module] [int] DEFAULT (0) NOT NULL 
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [phpbb_tagcats] WITH NOCHECK ADD 
+	CONSTRAINT [PK_phpbb_tagcats] PRIMARY KEY  CLUSTERED 
+	(
+		[tagcat_id]
+	)  ON [PRIMARY] 
+GO
+
+CREATE  INDEX [tagcat_module] ON [phpbb_tagcats]([tagcat_module]) ON [PRIMARY]
+GO
+
+
+/*
+	Table: 'phpbb_tags'
+*/
+CREATE TABLE [phpbb_tags] (
+	[tag_id] [int] IDENTITY (1, 1) NOT NULL ,
+	[tagcat_id] [int] DEFAULT (0) NOT NULL ,
+	[tag_name] [varchar] (255) DEFAULT ('') NOT NULL ,
+	[tag_title] [varchar] (100) DEFAULT ('') NOT NULL 
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [phpbb_tags] WITH NOCHECK ADD 
+	CONSTRAINT [PK_phpbb_tags] PRIMARY KEY  CLUSTERED 
+	(
+		[tag_id]
+	)  ON [PRIMARY] 
+GO
+
+CREATE  INDEX [tagcat_id] ON [phpbb_tags]([tagcat_id]) ON [PRIMARY]
+GO
+
+
+/*
+	Table: 'phpbb_tagmatch'
+*/
+CREATE TABLE [phpbb_tagmatch] (
+	[tag_id] [int] DEFAULT (0) NOT NULL ,
+	[topic_id] [int] DEFAULT (0) NOT NULL 
+) ON [PRIMARY]
+GO
+
+CREATE  UNIQUE  INDEX [tagmatch] ON [phpbb_tagmatch]([tag_id], [topic_id]) ON [PRIMARY]
+GO
+
+
+/*
+	Table: 'phpbb_pages'
+*/
+CREATE TABLE [phpbb_pages] (
+	[page_id] [int] IDENTITY (1, 1) NOT NULL ,
+	[page_url] [varchar] (255) DEFAULT ('') NOT NULL ,
+	[page_section] [varchar] (255) DEFAULT ('') NOT NULL ,
+	[page_file] [varchar] (255) DEFAULT ('') NOT NULL ,
+	[page_title] [varchar] (100) DEFAULT ('') NOT NULL ,
+	[page_content] [text] DEFAULT ('') NOT NULL ,
+	[page_comments] [varchar] (4000) DEFAULT ('') NOT NULL 
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+ALTER TABLE [phpbb_pages] WITH NOCHECK ADD 
+	CONSTRAINT [PK_phpbb_pages] PRIMARY KEY  CLUSTERED 
+	(
+		[page_id]
+	)  ON [PRIMARY] 
+GO
+
+CREATE  UNIQUE  INDEX [page_url] ON [phpbb_pages]([page_url]) ON [PRIMARY]
 GO
 
 

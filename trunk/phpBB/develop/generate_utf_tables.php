@@ -2,7 +2,7 @@
 /**
 *
 * @package phpBB3
-* @version $Id$
+* @version $Id: generate_utf_tables.php,v 1.7 2007/10/04 11:33:32 acydburn Exp $
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -404,10 +404,10 @@ foreach ($map as $cp => $map_to)
 }
 unset($map);
 
-foreach ($file_contents as $Id$contents)
+foreach ($file_contents as $idx => $contents)
 {
-	echo "Writing to search_indexer_$Id$phpEx\n";
-	$fp = fopen($phpbb_root_path . 'includes/utf/data/search_indexer_' . $Id$phpEx, 'wb');
+	echo "Writing to search_indexer_$idx.$phpEx\n";
+	$fp = fopen($phpbb_root_path . 'includes/utf/data/search_indexer_' . $idx . '.' . $phpEx, 'wb');
 	fwrite($fp, '<?php return ' . my_var_export($contents) . ';');
 	fclose($fp);
 }

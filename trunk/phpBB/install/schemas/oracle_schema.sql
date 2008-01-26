@@ -1,45 +1,45 @@
 /*
 
- $Id$
+ $Id: oracle_schema.sql 2 2008-01-26 21:50:36Z fberci $
 
 */
 
-/*
-  This first section is optional, however its probably the best method
-  of running phpBB on Oracle. If you already have a tablespace and user created
-  for phpBB you can leave this section commented out!
-
-  The first set of statements create a phpBB tablespace and a phpBB user,
-  make sure you change the password of the phpBB user before you run this script!!
-*/
-
-/*
-CREATE TABLESPACE "PHPBB"
-	LOGGING
-	DATAFILE 'E:\ORACLE\ORADATA\LOCAL\PHPBB.ora'
-	SIZE 10M
-	AUTOEXTEND ON NEXT 10M
-	MAXSIZE 100M;
-
-CREATE USER "PHPBB"
-	PROFILE "DEFAULT"
-	IDENTIFIED BY "phpbb_password"
-	DEFAULT TABLESPACE "PHPBB"
-	QUOTA UNLIMITED ON "PHPBB"
-	ACCOUNT UNLOCK;
-
-GRANT ANALYZE ANY TO "PHPBB";
-GRANT CREATE SEQUENCE TO "PHPBB";
-GRANT CREATE SESSION TO "PHPBB";
-GRANT CREATE TABLE TO "PHPBB";
-GRANT CREATE TRIGGER TO "PHPBB";
-GRANT CREATE VIEW TO "PHPBB";
-GRANT "CONNECT" TO "PHPBB";
-
-COMMIT;
-DISCONNECT;
-
-CONNECT phpbb/phpbb_password;
+/*
+  This first section is optional, however its probably the best method
+  of running phpBB on Oracle. If you already have a tablespace and user created
+  for phpBB you can leave this section commented out!
+
+  The first set of statements create a phpBB tablespace and a phpBB user,
+  make sure you change the password of the phpBB user before you run this script!!
+*/
+
+/*
+CREATE TABLESPACE "PHPBB"
+	LOGGING
+	DATAFILE 'E:\ORACLE\ORADATA\LOCAL\PHPBB.ora'
+	SIZE 10M
+	AUTOEXTEND ON NEXT 10M
+	MAXSIZE 100M;
+
+CREATE USER "PHPBB"
+	PROFILE "DEFAULT"
+	IDENTIFIED BY "phpbb_password"
+	DEFAULT TABLESPACE "PHPBB"
+	QUOTA UNLIMITED ON "PHPBB"
+	ACCOUNT UNLOCK;
+
+GRANT ANALYZE ANY TO "PHPBB";
+GRANT CREATE SEQUENCE TO "PHPBB";
+GRANT CREATE SESSION TO "PHPBB";
+GRANT CREATE TABLE TO "PHPBB";
+GRANT CREATE TRIGGER TO "PHPBB";
+GRANT CREATE VIEW TO "PHPBB";
+GRANT "CONNECT" TO "PHPBB";
+
+COMMIT;
+DISCONNECT;
+
+CONNECT phpbb/phpbb_password;
 */
 /*
 	Table: 'phpbb_attachments'
@@ -1749,6 +1749,7 @@ CREATE TABLE phpbb_users (
 	user_notify number(1) DEFAULT '0' NOT NULL,
 	user_notify_pm number(1) DEFAULT '1' NOT NULL,
 	user_notify_type number(4) DEFAULT '0' NOT NULL,
+	user_site_notify_type number(4) DEFAULT '0' NOT NULL,
 	user_allow_pm number(1) DEFAULT '1' NOT NULL,
 	user_allow_viewonline number(1) DEFAULT '1' NOT NULL,
 	user_allow_viewemail number(1) DEFAULT '1' NOT NULL,
@@ -1869,6 +1870,307 @@ CREATE TABLE phpbb_zebra (
 	foe number(1) DEFAULT '0' NOT NULL,
 	CONSTRAINT pk_phpbb_zebra PRIMARY KEY (user_id, zebra_id)
 )
+/
+
+
+/*
+	Table: 'phpbb_bugs_projects'
+*/
+CREATE TABLE phpbb_bugs_projects (
+	project_id number(8) NOT NULL,
+	forum_id number(8) DEFAULT '0' NOT NULL,
+	project_name varchar2(255) DEFAULT '' ,
+	project_title varchar2(300) DEFAULT '' ,
+	CONSTRAINT pk_phpbb_bugs_projects PRIMARY KEY (project_id),
+	CONSTRAINT u_phpbb_project_name UNIQUE (project_name)
+)
+/
+
+CREATE INDEX phpbb_bugs_projects_forum_id ON phpbb_bugs_projects (forum_id)
+/
+
+CREATE SEQUENCE phpbb_bugs_projects_seq
+/
+
+CREATE OR REPLACE TRIGGER t_phpbb_bugs_projects
+BEFORE INSERT ON phpbb_bugs_projects
+FOR EACH ROW WHEN (
+	new.project_id IS NULL OR new.project_id = 0
+)
+BEGIN
+	SELECT phpbb_bugs_projects_seq.nextval
+	INTO :new.project_id
+	FROM dual;
+END;
+/
+
+
+/*
+	Table: 'phpbb_bugs_reports'
+*/
+CREATE TABLE phpbb_bugs_reports (
+	report_id number(8) NOT NULL,
+	topic_id number(8) DEFAULT '0' NOT NULL,
+	project_id number(8) DEFAULT '0' NOT NULL,
+	report_title varchar2(300) DEFAULT '' ,
+	report_desc clob DEFAULT '' ,
+	report_component number(8) DEFAULT '0' NOT NULL,
+	report_version number(8) DEFAULT '0' NOT NULL,
+	report_status number(8) DEFAULT '1' NOT NULL,
+	report_closed number(11) DEFAULT '0' NOT NULL,
+	report_assigned number(8) DEFAULT '0' NOT NULL,
+	CONSTRAINT pk_phpbb_bugs_reports PRIMARY KEY (report_id)
+)
+/
+
+CREATE INDEX phpbb_bugs_reports_project_id ON phpbb_bugs_reports (project_id)
+/
+CREATE INDEX phpbb_bugs_reports_topic_id ON phpbb_bugs_reports (topic_id)
+/
+
+CREATE SEQUENCE phpbb_bugs_reports_seq
+/
+
+CREATE OR REPLACE TRIGGER t_phpbb_bugs_reports
+BEFORE INSERT ON phpbb_bugs_reports
+FOR EACH ROW WHEN (
+	new.report_id IS NULL OR new.report_id = 0
+)
+BEGIN
+	SELECT phpbb_bugs_reports_seq.nextval
+	INTO :new.report_id
+	FROM dual;
+END;
+/
+
+
+/*
+	Table: 'phpbb_bugs_components'
+*/
+CREATE TABLE phpbb_bugs_components (
+	component_id number(8) NOT NULL,
+	project_id number(8) DEFAULT '0' NOT NULL,
+	component_title varchar2(300) DEFAULT '' ,
+	CONSTRAINT pk_phpbb_bugs_components PRIMARY KEY (component_id)
+)
+/
+
+CREATE INDEX phpbb_bugs_components_project_id ON phpbb_bugs_components (project_id)
+/
+
+CREATE SEQUENCE phpbb_bugs_components_seq
+/
+
+CREATE OR REPLACE TRIGGER t_phpbb_bugs_components
+BEFORE INSERT ON phpbb_bugs_components
+FOR EACH ROW WHEN (
+	new.component_id IS NULL OR new.component_id = 0
+)
+BEGIN
+	SELECT phpbb_bugs_components_seq.nextval
+	INTO :new.component_id
+	FROM dual;
+END;
+/
+
+
+/*
+	Table: 'phpbb_bugs_statuses'
+*/
+CREATE TABLE phpbb_bugs_statuses (
+	status_id number(8) NOT NULL,
+	status_title varchar2(300) DEFAULT '' ,
+	status_closed number(1) DEFAULT '0' NOT NULL,
+	CONSTRAINT pk_phpbb_bugs_statuses PRIMARY KEY (status_id)
+)
+/
+
+
+CREATE SEQUENCE phpbb_bugs_statuses_seq
+/
+
+CREATE OR REPLACE TRIGGER t_phpbb_bugs_statuses
+BEFORE INSERT ON phpbb_bugs_statuses
+FOR EACH ROW WHEN (
+	new.status_id IS NULL OR new.status_id = 0
+)
+BEGIN
+	SELECT phpbb_bugs_statuses_seq.nextval
+	INTO :new.status_id
+	FROM dual;
+END;
+/
+
+
+/*
+	Table: 'phpbb_bugs_versions'
+*/
+CREATE TABLE phpbb_bugs_versions (
+	version_id number(8) NOT NULL,
+	project_id number(8) DEFAULT '0' NOT NULL,
+	version_title varchar2(300) DEFAULT '' ,
+	accept_new number(1) DEFAULT '0' NOT NULL,
+	CONSTRAINT pk_phpbb_bugs_versions PRIMARY KEY (version_id)
+)
+/
+
+CREATE INDEX phpbb_bugs_versions_project_id ON phpbb_bugs_versions (project_id)
+/
+CREATE INDEX phpbb_bugs_versions_accept_new ON phpbb_bugs_versions (accept_new)
+/
+
+CREATE SEQUENCE phpbb_bugs_versions_seq
+/
+
+CREATE OR REPLACE TRIGGER t_phpbb_bugs_versions
+BEFORE INSERT ON phpbb_bugs_versions
+FOR EACH ROW WHEN (
+	new.version_id IS NULL OR new.version_id = 0
+)
+BEGIN
+	SELECT phpbb_bugs_versions_seq.nextval
+	INTO :new.version_id
+	FROM dual;
+END;
+/
+
+
+/*
+	Table: 'phpbb_kb_articles'
+*/
+CREATE TABLE phpbb_kb_articles (
+	article_id number(8) NOT NULL,
+	topic_id number(8) DEFAULT '0' NOT NULL,
+	article_name varchar2(255) DEFAULT '' ,
+	article_desc varchar2(765) DEFAULT '' ,
+	article_content clob DEFAULT '' ,
+	CONSTRAINT pk_phpbb_kb_articles PRIMARY KEY (article_id),
+	CONSTRAINT u_phpbb_article_name UNIQUE (article_name)
+)
+/
+
+CREATE INDEX phpbb_kb_articles_topic_id ON phpbb_kb_articles (topic_id)
+/
+
+CREATE SEQUENCE phpbb_kb_articles_seq
+/
+
+CREATE OR REPLACE TRIGGER t_phpbb_kb_articles
+BEFORE INSERT ON phpbb_kb_articles
+FOR EACH ROW WHEN (
+	new.article_id IS NULL OR new.article_id = 0
+)
+BEGIN
+	SELECT phpbb_kb_articles_seq.nextval
+	INTO :new.article_id
+	FROM dual;
+END;
+/
+
+
+/*
+	Table: 'phpbb_tagcats'
+*/
+CREATE TABLE phpbb_tagcats (
+	tagcat_id number(8) NOT NULL,
+	tagcat_name varchar2(255) DEFAULT '' ,
+	tagcat_title varchar2(300) DEFAULT '' ,
+	tagcat_module number(1) DEFAULT '0' NOT NULL,
+	CONSTRAINT pk_phpbb_tagcats PRIMARY KEY (tagcat_id)
+)
+/
+
+CREATE INDEX phpbb_tagcats_tagcat_module ON phpbb_tagcats (tagcat_module)
+/
+
+CREATE SEQUENCE phpbb_tagcats_seq
+/
+
+CREATE OR REPLACE TRIGGER t_phpbb_tagcats
+BEFORE INSERT ON phpbb_tagcats
+FOR EACH ROW WHEN (
+	new.tagcat_id IS NULL OR new.tagcat_id = 0
+)
+BEGIN
+	SELECT phpbb_tagcats_seq.nextval
+	INTO :new.tagcat_id
+	FROM dual;
+END;
+/
+
+
+/*
+	Table: 'phpbb_tags'
+*/
+CREATE TABLE phpbb_tags (
+	tag_id number(8) NOT NULL,
+	tagcat_id number(8) DEFAULT '0' NOT NULL,
+	tag_name varchar2(255) DEFAULT '' ,
+	tag_title varchar2(300) DEFAULT '' ,
+	CONSTRAINT pk_phpbb_tags PRIMARY KEY (tag_id)
+)
+/
+
+CREATE INDEX phpbb_tags_tagcat_id ON phpbb_tags (tagcat_id)
+/
+
+CREATE SEQUENCE phpbb_tags_seq
+/
+
+CREATE OR REPLACE TRIGGER t_phpbb_tags
+BEFORE INSERT ON phpbb_tags
+FOR EACH ROW WHEN (
+	new.tag_id IS NULL OR new.tag_id = 0
+)
+BEGIN
+	SELECT phpbb_tags_seq.nextval
+	INTO :new.tag_id
+	FROM dual;
+END;
+/
+
+
+/*
+	Table: 'phpbb_tagmatch'
+*/
+CREATE TABLE phpbb_tagmatch (
+	tag_id number(8) DEFAULT '0' NOT NULL,
+	topic_id number(8) DEFAULT '0' NOT NULL,
+	CONSTRAINT u_phpbb_tagmatch UNIQUE (tag_id, topic_id)
+)
+/
+
+
+/*
+	Table: 'phpbb_pages'
+*/
+CREATE TABLE phpbb_pages (
+	page_id number(8) NOT NULL,
+	page_url varchar2(255) DEFAULT '' ,
+	page_section varchar2(255) DEFAULT '' ,
+	page_file varchar2(255) DEFAULT '' ,
+	page_title varchar2(300) DEFAULT '' ,
+	page_content clob DEFAULT '' ,
+	page_comments clob DEFAULT '' ,
+	CONSTRAINT pk_phpbb_pages PRIMARY KEY (page_id),
+	CONSTRAINT u_phpbb_page_url UNIQUE (page_url)
+)
+/
+
+
+CREATE SEQUENCE phpbb_pages_seq
+/
+
+CREATE OR REPLACE TRIGGER t_phpbb_pages
+BEFORE INSERT ON phpbb_pages
+FOR EACH ROW WHEN (
+	new.page_id IS NULL OR new.page_id = 0
+)
+BEGIN
+	SELECT phpbb_pages_seq.nextval
+	INTO :new.page_id
+	FROM dual;
+END;
 /
 
 

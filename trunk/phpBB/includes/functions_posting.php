@@ -2,7 +2,7 @@
 /**
 *
 * @package phpBB3
-* @version $Id$
+* @version $Id: functions_posting.php,v 1.274 2007/11/27 15:13:49 kellanved Exp $
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -119,7 +119,7 @@ function generate_smilies($mode, $forum_id)
 * @param	mixed	$ids				topic/forum ids
 * @param	bool	$return_update_sql	true: SQL query shall be returned, false: execute SQL
 */
-function update_post_information($type, $Id$return_update_sql = false)
+function update_post_information($type, $ids, $return_update_sql = false)
 {
 	global $db;
 
@@ -129,7 +129,7 @@ function update_post_information($type, $Id$return_update_sql = false)
 	}
 	if (!is_array($ids))
 	{
-		$Id$ids);
+		$ids = array($ids);
 	}
 
 
@@ -189,7 +189,7 @@ function update_post_information($type, $Id$return_update_sql = false)
 
 	if ($type == 'forum')
 	{
-		$empty_forums = array_merge($empty_forums, array_diff($Id$not_empty_forums));
+		$empty_forums = array_merge($empty_forums, array_diff($ids, $not_empty_forums));
 
 		foreach ($empty_forums as $void => $forum_id)
 		{
@@ -221,7 +221,7 @@ function update_post_information($type, $Id$return_update_sql = false)
 		}
 		$db->sql_freeresult($result);
 	}
-	unset($empty_forums, $Id$last_post_ids);
+	unset($empty_forums, $ids, $last_post_ids);
 
 	if ($return_update_sql || !sizeof($update_sql))
 	{
@@ -258,7 +258,7 @@ function posting_gen_topic_icons($mode, $icon_id)
 
 	if (sizeof($icons))
 	{
-		foreach ($icons as $Id$data)
+		foreach ($icons as $id => $data)
 		{
 			if ($data['display'])
 			{
@@ -268,8 +268,8 @@ function posting_gen_topic_icons($mode, $icon_id)
 					'ICON_WIDTH'	=> $data['width'],
 					'ICON_HEIGHT'	=> $data['height'],
 	
-					'S_CHECKED'			=> ($Id$icon_id) ? true : false,
-					'S_ICON_CHECKED'	=> ($Id$icon_id) ? ' checked="checked"' : '')
+					'S_CHECKED'			=> ($id == $icon_id) ? true : false,
+					'S_ICON_CHECKED'	=> ($id == $icon_id) ? ' checked="checked"' : '')
 				);
 			}
 		}
@@ -901,7 +901,7 @@ function load_drafts($topic_id = 0, $forum_id = 0, $id = 0)
 		{
 			// Either display as PM draft if forum_id and topic_id are empty or if access to the forums has been denied afterwards...
 			$link_pm = true;
-			$insert_url = append_sid("{$phpbb_root_path}ucp.$phpEx", "i=$Id$draft['draft_id']}");
+			$insert_url = append_sid("{$phpbb_root_path}ucp.$phpEx", "i=$id&amp;mode=compose&amp;d={$draft['draft_id']}");
 		}
 
 		$template->assign_block_vars('draftrow', array(

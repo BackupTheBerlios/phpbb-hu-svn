@@ -2,7 +2,7 @@
 /**
 *
 * @package mcp
-* @version $Id$
+* @version $Id: mcp_post.php,v 1.62 2007/10/05 14:36:33 acydburn Exp $
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -19,7 +19,7 @@ if (!defined('IN_PHPBB'))
 /**
 * Handling actions in post details screen
 */
-function mcp_post_details($Id$action)
+function mcp_post_details($id, $mode, $action)
 {
 	global $phpEx, $phpbb_root_path, $config;
 	global $template, $db, $user, $auth, $cache;
@@ -52,8 +52,8 @@ function mcp_post_details($Id$action)
 				include($phpbb_root_path . 'includes/functions_user.' . $phpEx);
 
 				$template->assign_vars(array(
-					'RETURN_POST'	=> sprintf($user->lang['RETURN_POST'], '<a href="' . append_sid("{$phpbb_root_path}mcp.$phpEx", "i=$Id$post_id") . '">', '</a>'),
-					'U_RETURN_POST'	=> append_sid("{$phpbb_root_path}mcp.$phpEx", "i=$Id$post_id"),
+					'RETURN_POST'	=> sprintf($user->lang['RETURN_POST'], '<a href="' . append_sid("{$phpbb_root_path}mcp.$phpEx", "i=$id&amp;mode=$mode&amp;p=$post_id") . '">', '</a>'),
+					'U_RETURN_POST'	=> append_sid("{$phpbb_root_path}mcp.$phpEx", "i=$id&amp;mode=$mode&amp;p=$post_id"),
 					'L_RETURN_POST'	=> sprintf($user->lang['RETURN_POST'], '', ''),
 					'WHOIS'			=> user_ipwhois($ip),
 				));
@@ -221,8 +221,8 @@ function mcp_post_details($Id$action)
 		'POST_IPADDR'			=> ($auth->acl_get('m_info', $post_info['forum_id']) && request_var('lookup', '')) ? @gethostbyaddr($post_info['poster_ip']) : '',
 		'POST_ID'				=> $post_info['post_id'],
 
-		'U_LOOKUP_IP'			=> ($auth->acl_get('m_info', $post_info['forum_id'])) ? "$url&amp;i=$Id$post_info['poster_ip']}#ip" : '',
-		'U_WHOIS'				=> ($auth->acl_get('m_info', $post_info['forum_id'])) ? append_sid("{$phpbb_root_path}mcp.$phpEx", "i=$Id$post_info['poster_ip']}") : '',
+		'U_LOOKUP_IP'			=> ($auth->acl_get('m_info', $post_info['forum_id'])) ? "$url&amp;i=$id&amp;mode=$mode&amp;lookup={$post_info['poster_ip']}#ip" : '',
+		'U_WHOIS'				=> ($auth->acl_get('m_info', $post_info['forum_id'])) ? append_sid("{$phpbb_root_path}mcp.$phpEx", "i=$id&amp;mode=$mode&amp;action=whois&amp;p=$post_id&amp;ip={$post_info['poster_ip']}") : '',
 	));
 
 	// Get User Notes
@@ -366,8 +366,8 @@ function mcp_post_details($Id$action)
 				'NUM_POSTS'		=> $row['postings'],
 				'L_POST_S'		=> ($row['postings'] == 1) ? $user->lang['POST'] : $user->lang['POSTS'],
 
-				'U_LOOKUP_IP'	=> ($rdns_ip_num == $row['poster_ip'] || $rdns_ip_num == 'all') ? '' : "$url&amp;i=$Id$row['poster_ip']}#ip",
-				'U_WHOIS'		=> append_sid("{$phpbb_root_path}mcp.$phpEx", "i=$Id$row['poster_ip']}"))
+				'U_LOOKUP_IP'	=> ($rdns_ip_num == $row['poster_ip'] || $rdns_ip_num == 'all') ? '' : "$url&amp;i=$id&amp;mode=post_details&amp;rdns={$row['poster_ip']}#ip",
+				'U_WHOIS'		=> append_sid("{$phpbb_root_path}mcp.$phpEx", "i=$id&amp;mode=$mode&amp;action=whois&amp;p=$post_id&amp;ip={$row['poster_ip']}"))
 			);
 		}
 		$db->sql_freeresult($result);

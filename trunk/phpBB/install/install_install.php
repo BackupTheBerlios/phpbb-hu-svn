@@ -2,7 +2,7 @@
 /**
 *
 * @package install
-* @version $Id$
+* @version $Id: install_install.php,v 1.180 2007/11/19 16:44:30 acydburn Exp $
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -2156,6 +2156,10 @@ class install_install extends module
 				'ACP_MODULE_MANAGEMENT',
 			),
 			'ACP_CAT_DOT_MODS'		=> null,
+			'ACP_CAT_SITE'			=> array(
+				'ACP_SITE_MANAGEMENT',
+				'ACP_BUG_TRACKER',
+			),
 		),
 		'mcp'	=> array(
 			'MCP_MAIN'		=> null,

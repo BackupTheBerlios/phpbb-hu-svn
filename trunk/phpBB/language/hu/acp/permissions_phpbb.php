@@ -3,7 +3,7 @@
 * acp_permissions (phpBB Permission Set) [Hungarian]
 *
 * @package language
-* @version $Id$
+* @version $Id: permissions_phpbb.php,v 1.11 2007/11/08 20:56:23 fberci Exp $
 * @copyright (c) 2007 „Magyar phpBB Közösség fordítók”
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 * Original copyright: (c) 2005 phpBB Group

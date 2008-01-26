@@ -2,7 +2,7 @@
 /**
 *
 * @package ucp
-* @version $Id$
+* @version $Id: ucp_zebra.php,v 1.44 2007/10/05 14:36:34 acydburn Exp $
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -24,7 +24,7 @@ class ucp_zebra
 {
 	var $u_action;
 
-	function main($Id$mode)
+	function main($id, $mode)
 	{
 		global $config, $db, $user, $auth, $template, $phpbb_root_path, $phpEx;
 

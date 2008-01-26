@@ -2,7 +2,7 @@
 /**
 *
 * @package phpBB3
-* @version $Id$
+* @version $Id: posting.php 2 2008-01-26 21:50:36Z fberci $
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -520,12 +520,12 @@ if ($save && $user->data['is_registered'] && $auth->acl_get('u_savedrafts') && (
 	}
 	else
 	{
-		if (!$subject || !utf8_clean_string($subject))
+		if (utf8_clean_string($subject) === '')
 		{
 			$error[] = $user->lang['EMPTY_SUBJECT'];
 		}
 
-		if (!$message)
+		if (utf8_clean_string($message) === '')
 		{
 			$error[] = $user->lang['TOO_FEW_CHARS'];
 		}
@@ -769,7 +769,7 @@ if ($submit || $preview || $refresh)
 	}
 
 	// Parse subject
-	if (!$preview && !$refresh && !utf8_clean_string($post_data['post_subject']) && ($mode == 'post' || ($mode == 'edit' && $post_data['topic_first_post_id'] == $post_id)))
+	if (!$preview && !$refresh && utf8_clean_string($post_data['post_subject']) === '' && ($mode == 'post' || ($mode == 'edit' && $post_data['topic_first_post_id'] == $post_id)))
 	{
 		$error[] = $user->lang['EMPTY_SUBJECT'];
 	}
@@ -1411,8 +1411,9 @@ function upload_popup($forum_style = 0)
 */
 function handle_post_delete($forum_id, $topic_id, $post_id, &$post_data)
 {
-	global $user, $db, $auth;
+	global $user, $db, $auth, $template;
 	global $phpbb_root_path, $phpEx;
+	global $url_rewriter;
 
 	// If moderator removing post or user itself removing post, present a confirmation screen
 	if ($auth->acl_get('m_delete', $forum_id) || ($post_data['poster_id'] == $user->data['user_id'] && $user->data['is_registered'] && $auth->acl_get('f_delete', $forum_id) && $post_id == $post_data['topic_last_post_id']))
@@ -1423,6 +1424,9 @@ function handle_post_delete($forum_id, $topic_id, $post_id, &$post_data)
 			'mode'	=> 'delete')
 		);
 
+		// We will need this here (delete notification)
+		$user->add_lang('site');
+	
 		if (confirm_box(true))
 		{
 			$data = array(
@@ -1439,6 +1443,20 @@ function handle_post_delete($forum_id, $topic_id, $post_id, &$post_data)
 
 			$next_post_id = delete_post($forum_id, $topic_id, $post_id, $data);
 
+			// Send notification
+			if ($auth->acl_get('m_delete', $forum_id) && isset($_POST['send_notif']))
+			{
+				decode_message($post_data['post_text'], $post_data['bbcode_uid']);
+				send_notification(array($post_data['poster_id']), 'post_delete', array(
+					'MODERATOR_USERNAME'	=> $user->data['username'],
+					'NOTIFICATION_MESSAGE'	=> utf8_normalize_nfc(request_var('notif_msg', '', true)),
+					'POST_CONTENT'			=> $post_data['post_text'],
+					'POST_SUBJECT'			=> $post_data['post_subject'],
+					'TOPIC_NAME'			=> $post_data['topic_title'],
+					'U_TOPIC'				=> generate_board_url() . '/' . $url_rewriter->rewrite("viewtopic.$phpEx", "f=" . $post_data['forum_id'] . '&t=' . $post_data['topic_id']),
+				));
+			}
+			
 			if ($post_data['topic_first_post_id'] == $post_data['topic_last_post_id'])
 			{
 				add_log('mod', $forum_id, $topic_id, 'LOG_DELETE_TOPIC', $post_data['topic_title']);
@@ -1460,7 +1478,9 @@ function handle_post_delete($forum_id, $topic_id, $post_id, &$post_data)
 		}
 		else
 		{
-			confirm_box(false, 'DELETE_MESSAGE', $s_hidden_fields);
+			$template->assign_vars(array('S_IS_MODERATOR' => $auth->acl_get('m_delete', $forum_id) && $post_data['poster_id'] != $user->data['user_id']));
+			
+			confirm_box(false, 'DELETE_MESSAGE', $s_hidden_fields, 'post_delete_confirm_body.html');
 		}
 	}
 

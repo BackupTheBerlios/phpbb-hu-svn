@@ -2,7 +2,7 @@
 /**
 *
 * @package ucp
-* @version $Id$
+* @version $Id: ucp_register.php,v 1.127 2007/10/09 17:35:23 kellanved Exp $
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -25,7 +25,7 @@ class ucp_register
 {
 	var $u_action;
 
-	function main($Id$mode)
+	function main($id, $mode)
 	{
 		global $config, $db, $user, $auth, $template, $phpbb_root_path, $phpEx;
 

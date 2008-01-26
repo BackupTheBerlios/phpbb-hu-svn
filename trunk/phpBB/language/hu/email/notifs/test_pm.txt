@@ -1,0 +1,8 @@
+Subject: Teszt
+
+Kedves {USERNAME}!
+
+Ez egy [b]próba[/b] privát üzenet. :!: Remélehetőleg működni fog. Ha nem, addig is http://phpbb.hu
+
+alább jön a változó szöveg:
+{VALTOZO}

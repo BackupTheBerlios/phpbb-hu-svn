@@ -1,11 +1,11 @@
 <?php
 // -------------------------------------------------------------
 //
-// $Id$
+// $Id: add_permissions.php,v 1.9 2007/04/22 18:08:37 acydburn Exp $
 //
 // FILENAME  : add_permissions.php
 // STARTED   : Sat Nov 06, 2004
-// COPYRIGHT : ï¿½ 2004 phpBB Group
+// COPYRIGHT : © 2004 phpBB Group
 // WWW       : http://www.phpbb.com/
 // LICENCE   : GPL vs2.0 [ see /docs/COPYING ] 
 // 
@@ -250,7 +250,7 @@ function mass_auth($ug_type, $forum_id, $ug_id, $acl_list, $setting)
 			$sql = 'SELECT group_id FROM ' . GROUPS_TABLE . " 
 				WHERE group_name = '" . strtoupper($ug_id) . "'";
 			$result = $db->sql_query_limit($sql, 1);
-			$Id$result);
+			$id = (int) $db->sql_fetchfield('group_id', 0, $result);
 			$db->sql_freeresult($result);
 
 			if (!$id)
@@ -321,7 +321,7 @@ function mass_auth($ug_type, $forum_id, $ug_id, $acl_list, $setting)
 	$db->sql_freeresult($result);
 
 	$table = ($ug_type == 'user') ? ACL_USERS_TABLE : ACL_GROUPS_TABLE;
-	$Id$ug_type . '_id';
+	$id_field  = $ug_type . '_id';
 
 	$sql_ary = array();
 	foreach ($forum_id as $forum)
@@ -343,7 +343,7 @@ function mass_auth($ug_type, $forum_id, $ug_id, $acl_list, $setting)
 						$sql_ary['delete'][] = "DELETE FROM $table 
 							WHERE forum_id = $forum
 								AND auth_option_id = $auth_option_id
-								AND $Id$ug_id";
+								AND $id_field = $ug_id";
 					}
 					break;
 
@@ -356,7 +356,7 @@ function mass_auth($ug_type, $forum_id, $ug_id, $acl_list, $setting)
 					{
 						$sql_ary['update'][] = "UPDATE " . $table . " 
 							SET auth_setting = $setting 
-							WHERE $Id$ug_id 
+							WHERE $id_field = $ug_id 
 								AND forum_id = $forum 
 								AND auth_option_id = $auth_option_id";
 					}
@@ -386,7 +386,7 @@ function mass_auth($ug_type, $forum_id, $ug_id, $acl_list, $setting)
 					default:
 						foreach ($sql_subary as $sql)
 						{
-							$sql = "INSERT INTO $table ($Id$sql)";
+							$sql = "INSERT INTO $table ($id_field, forum_id, auth_option_id, auth_setting) VALUES ($sql)";
 							$result = $db->sql_query($sql);
 							$sql = '';
 						}
@@ -394,7 +394,7 @@ function mass_auth($ug_type, $forum_id, $ug_id, $acl_list, $setting)
 
 				if ($sql != '')
 				{
-					$sql = "INSERT INTO $table ($Id$sql";
+					$sql = "INSERT INTO $table ($id_field, forum_id, auth_option_id, auth_setting) $sql";
 					$result = $db->sql_query($sql);
 				}
 				break;

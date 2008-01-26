@@ -2,7 +2,7 @@
 /**
 *
 * @package ucp
-* @version $Id$
+* @version $Id: ucp_prefs.php,v 1.54 2007/10/05 14:36:34 acydburn Exp $
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -25,7 +25,7 @@ class ucp_prefs
 {
 	var $u_action;
 
-	function main($Id$mode)
+	function main($id, $mode)
 	{
 		global $config, $db, $user, $auth, $template, $phpbb_root_path, $phpEx;
 
@@ -39,6 +39,7 @@ class ucp_prefs
 				add_form_key('ucp_prefs_personal');
 				$data = array(
 					'notifymethod'	=> request_var('notifymethod', $user->data['user_notify_type']),
+					'sitenotifymethod'	=> request_var('sitenotifymethod', $user->data['user_site_notify_type']),
 					'dateformat'	=> request_var('dateformat', $user->data['user_dateformat'], true),
 					'lang'			=> basename(request_var('lang', $user->data['user_lang'])),
 					'style'			=> request_var('style', (int) $user->data['user_style']),
@@ -77,6 +78,7 @@ class ucp_prefs
 							'user_allow_viewemail'	=> $data['viewemail'],
 							'user_allow_massemail'	=> $data['massemail'],
 							'user_allow_viewonline'	=> ($auth->acl_get('u_hideonline')) ? !$data['hideonline'] : $user->data['user_allow_viewonline'],
+							'user_site_notify_type'	=> $data['sitenotifymethod'],
 							'user_notify_type'		=> $data['notifymethod'],
 							'user_notify_pm'		=> $data['notifypm'],
 							'user_options'			=> $user->data['user_options'],
@@ -127,6 +129,10 @@ class ucp_prefs
 					'S_NOTIFY_EMAIL'	=> ($data['notifymethod'] == NOTIFY_EMAIL) ? true : false,
 					'S_NOTIFY_IM'		=> ($data['notifymethod'] == NOTIFY_IM) ? true : false,
 					'S_NOTIFY_BOTH'		=> ($data['notifymethod'] == NOTIFY_BOTH) ? true : false,
+					'S_SNOTIFY_EMAIL'	=> ($data['sitenotifymethod'] == NOTIFY_EMAIL) ? true : false,
+					'S_SNOTIFY_PM'		=> ($data['sitenotifymethod'] == NOTIFY_PM) ? true : false,
+					'S_SNOTIFY_SBOTH'	=> ($data['sitenotifymethod'] == NOTIFY_SBOTH) ? true : false,
+					'S_SNOTIFY_NO'		=> ($data['sitenotifymethod'] == NOTIFY_NO) ? true : false,
 					'S_VIEW_EMAIL'		=> $data['viewemail'],
 					'S_MASS_EMAIL'		=> $data['massemail'],
 					'S_ALLOW_PM'		=> $data['allowpm'],
@@ -180,11 +186,6 @@ class ucp_prefs
 						'post_sk'	=> array('string', false, 1, 1),
 						'post_sd'	=> array('string', false, 1, 1),
 					));
-
-					if (!check_form_key('ucp_prefs_view'))
-					{
-						$error[] = 'FORM_INVALID';
-					}
 
 					if (!sizeof($error))
 					{

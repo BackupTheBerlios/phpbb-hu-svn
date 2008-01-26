@@ -2,7 +2,7 @@
 /**
 *
 * @package ucp
-* @version $Id$
+* @version $Id: ucp_pm_viewfolder.php,v 1.58 2007/10/05 14:36:34 acydburn Exp $
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -20,7 +20,7 @@ if (!defined('IN_PHPBB'))
 * View message folder
 * Called from ucp_pm with mode == 'view' && action == 'view_folder'
 */
-function view_folder($Id$folder)
+function view_folder($id, $mode, $folder_id, $folder)
 {
 	global $user, $template, $auth, $db, $cache;
 	global $phpbb_root_path, $config, $phpEx;
@@ -171,7 +171,7 @@ function view_folder($Id$folder)
 				{
 					foreach ($adr_ary as $type => $id_ary)
 					{
-						foreach ($Id$_id)
+						foreach ($id_ary as $ug_id => $_id)
 						{
 							if ($type == 'u')
 							{
@@ -199,8 +199,8 @@ function view_folder($Id$folder)
 				$folder_alt = ($row['pm_unread']) ? 'NEW_MESSAGES' : 'NO_NEW_MESSAGES';
 
 				// Generate all URIs ...
-				$view_message_url = append_sid("{$phpbb_root_path}ucp.$phpEx", "i=$Id$message_id");
-				$remove_message_url = append_sid("{$phpbb_root_path}ucp.$phpEx", "i=$Id$message_id");
+				$view_message_url = append_sid("{$phpbb_root_path}ucp.$phpEx", "i=$id&amp;mode=view&amp;f=$folder_id&amp;p=$message_id");
+				$remove_message_url = append_sid("{$phpbb_root_path}ucp.$phpEx", "i=$id&amp;mode=compose&amp;action=delete&amp;p=$message_id");
 
 				$row_indicator = '';
 				foreach ($color_rows as $var)

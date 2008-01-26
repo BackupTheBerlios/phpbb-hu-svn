@@ -4,7 +4,7 @@
 * posting [English]
 *
 * @package language
-* @version $Id$
+* @version $Id: posting.php,v 1.50 2007/11/28 20:09:01 kellanved Exp $
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *

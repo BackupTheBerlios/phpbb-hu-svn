@@ -2,7 +2,7 @@
 /**
 *
 * @package phpBB3
-* @version $Id$
+* @version $Id: session.php,v 1.317 2007/11/04 12:07:46 acydburn Exp $
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -1439,7 +1439,7 @@ class user extends session
 			if (sizeof($matches))
 			{
 				$content = '';
-				foreach ($matches[0] as $Id$match)
+				foreach ($matches[0] as $idx => $match)
 				{
 					if ($content = @file_get_contents("{$phpbb_root_path}styles/{$this->theme['theme_path']}/theme/" . $matches[1][$idx]))
 					{

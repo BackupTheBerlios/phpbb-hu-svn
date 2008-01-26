@@ -2,7 +2,7 @@
 /**
 *
 * @package phpBB3
-* @version $Id$
+* @version $Id: constants.php 2 2008-01-26 21:50:36Z fberci $
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -108,6 +108,9 @@ define('TRACK_POSTED', 1);
 define('NOTIFY_EMAIL', 0);
 define('NOTIFY_IM', 1);
 define('NOTIFY_BOTH', 2);
+define('NOTIFY_PM', 3);
+define('NOTIFY_NO', 4);
+define('NOTIFY_SBOTH', 5);
 
 // Email Priority Settings
 define('MAIL_LOW_PRIORITY', 4);
@@ -240,6 +243,31 @@ define('WORDS_TABLE',				$table_prefix . 'words');
 define('ZEBRA_TABLE',				$table_prefix . 'zebra');
 
 // Additional tables
+define('BUGS_COMPONENTS_TABLE',		$table_prefix . 'bugs_components');
+define('BUGS_PROJECTS_TABLE',		$table_prefix . 'bugs_projects');
+define('BUGS_REPORTS_TABLE',		$table_prefix . 'bugs_reports');
+define('BUGS_STATUSES_TABLE',		$table_prefix . 'bugs_statuses');
+define('BUGS_VERSIONS_TABLE',		$table_prefix . 'bugs_versions');
+define('KB_ARTICLES_TABLE',			$table_prefix . 'kb_articles');
+define('PAGES_TABLE',				$table_prefix . 'pages');
+define('TAGCATS_TABLE',				$table_prefix . 'tagcats');
+define('TAGMATCH_TABLE',			$table_prefix . 'tagmatch');
+define('TAGS_TABLE',				$table_prefix . 'tags');
 
+
+/**
+* Some additional config data for the site
+*/
+// The user id of the bot/moderator account
+define('BOT_USER', 2163);
+
+// CMS - forum relations
+define('CMS_FORUM_ID', 50); // The forum id of the category containing the site-related contents
+define('BUGS_FORUM_ID', 51);
+define('KB_FORUM_ID', 183);
+
+// Tag modules
+define('TAG_KB', 1);
+define('TAG_MODS', 2);
 
 ?>

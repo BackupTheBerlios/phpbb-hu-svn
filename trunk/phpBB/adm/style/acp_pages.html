@@ -1,0 +1,113 @@
+<!-- INCLUDE overall_header.html -->
+
+<a name="maincontent"></a>
+
+<!-- IF S_EDIT_PAGE -->
+
+	<a href="{U_BACK}" style="float: {S_CONTENT_FLOW_END};">&laquo; {L_BACK}</a>
+
+	<h1>{L_TITLE} :: {PAGE_TITLE_V}</h1>
+
+	<p>{L_PAGE_EDIT_EXPLAIN}</p>
+
+	<!-- IF S_ERROR -->
+		<div class="errorbox">
+			<h3>{L_WARNING}</h3>
+			<p>{ERROR_MSG}</p>
+		</div>
+	<!-- ENDIF -->
+
+	<form id="pageedit" method="post" action="{U_EDIT_ACTION}">
+
+	<fieldset>
+		<legend>{L_PAGE_DETAILS}</legend>
+		<dl>
+			<dt><label for="page_title">{L_PAGE_TITLE}:</label></dt>
+			<dd><input class="text medium" type="text" id="page_title" name="page_title" value="{PAGE_TITLE_V}" maxlength="100" /></dd>
+		</dl>
+		<dl>
+			<dt><label for="page_url">{L_PAGE_URL}:</label><br />{L_PAGE_URL_EXPLAIN}</dt>
+			<dd><input class="text medium" type="text" id="page_url" name="page_url" value="{PAGE_URL}" maxlength="255" /></dd>
+		</dl>
+		<dl>
+			<dt><label for="page_file">{L_PAGE_FILE}:</label><br />{L_PAGE_FILE_EXPLAIN}</dt>
+			<dd><input class="text medium" type="text" id="page_file" name="page_file" value="{PAGE_FILE}" maxlength="255" /></dd>
+		</dl>
+		<dl>
+			<dt><label for="page_section">{L_PAGE_SECTION}:</label><br />{L_PAGE_SECTION_EXPLAIN}</dt>
+			<dd><input class="text" type="text" id="page_section" name="page_section" value="{PAGE_SECTION}" maxlength="255" /></dd>
+		</dl>
+	</fieldset>
+
+	<fieldset>
+		<legend>{L_PAGE_CONTENT}</legend>
+		<dl>
+			<dt><label for="text_rows">{L_EDITOR_HEIGHT}:</label></dt>
+			<dd><input id="text_rows" type="text" maxlength="3" value="{TEXT_ROWS}" /> <input class="button2" type="button" name="update" onclick="this.form.page_content.rows = (this.form.text_rows.value);" value="{L_UPDATE}" /></dd>
+		</dl>
+		<textarea id="page_content" name="page_content" style="font-family:'Courier New', monospace;font-size:9pt;line-height:125%;width:100%;" cols="80" rows="{TEXT_ROWS}">{PAGE_CONTENT}</textarea>
+		<dl style="margin-top: 1em;">
+			<dt><label for="page_comments">{L_PAGE_COMMENTS}:</label><br /><span>{L_PAGE_COMMENTS_EXPLAIN}</span></dt>
+			<dd><textarea id="page_comments" name="page_comments" rows="8" cols="70">{PAGE_COMMENTS}</textarea></dd>
+		</dl>
+	</fieldset>
+
+	<fieldset class="submit-buttons">
+		<legend>{L_SUBMIT}</legend>
+		<input class="button1" type="submit" id="submit" name="update" value="{L_SUBMIT}" />&nbsp;
+		<input class="button2" type="reset" id="reset" name="reset" value="{L_RESET}" />
+		{S_FORM_TOKEN}
+	</fieldset>
+
+	</form>
+
+<!-- ELSE -->
+
+	<h1>{L_ACP_PAGES}</h1>
+
+	<p>{L_ACP_PAGES_EXPLAIN}</p>
+
+	<!-- IF .page -->
+	<table cellspacing="1">
+		<thead>
+		<tr>
+			<th>{L_PAGE_SECTION}</th>
+			<th>{L_PAGE_URL}</th>
+			<th>{L_PAGE_TITLE}</th>
+			<th>{L_PAGE_FILE}</th>
+			<th>{L_ACTION}</th>
+		</tr>
+		</thead>
+		<tbody>
+		<!-- BEGIN page -->
+			<!-- IF tagcats.S_ROW_COUNT is even --><tr class="row1"><!-- ELSE --><tr class="row2"><!-- ENDIF -->
+				<td>{page.PAGE_SECTION}</td>
+				<td>{page.PAGE_URL}</td>
+				<td>{page.PAGE_TITLE}</td>
+				<td>{page.PAGE_FILE}</td>
+				<td style="vertical-align: top; width: 60px; text-align: right; white-space: nowrap;">
+					<a href="{page.U_EDIT}">{ICON_EDIT}</a>
+					<a href="{page.U_DELETE}">{ICON_DELETE}</a>
+				</td>
+			</tr>
+		<!-- END page -->
+		</tbody>
+	</table>
+	<!-- ELSE -->
+	<p>{L_NO_PAGES}</p>
+	<!-- ENDIF -->
+
+	<form id="statuses" method="post" action="{U_ACTION}">
+
+	<fieldset class="quick">
+		<input type="hidden" name="action" value="add" />
+
+		<input type="text" name="page_title" value="" maxlength="100" />
+		<input class="button2" name="addpage" type="submit" value="{L_ADD_PAGE}" />
+	</fieldset>
+
+	</form>
+
+<!-- ENDIF -->
+
+<!-- INCLUDE overall_footer.html -->

@@ -2,7 +2,7 @@
 /**
 *
 * @package search
-* @version $Id$
+* @version $Id: fulltext_mysql.php,v 1.51 2007/11/29 18:26:20 davidmj Exp $
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -328,14 +328,14 @@ class fulltext_mysql extends search_backend
 	* @param	array		&$m_approve_fid_ary	specifies an array of forum ids in which the searcher is allowed to view unapproved posts
 	* @param	int			&$topic_id			is set to 0 or a topic id, if it is not 0 then only posts in this topic should be searched
 	* @param	array		&$author_ary		an array of author ids if the author should be ignored during the search the array is empty
-	* @param	array		&$Id$per_page, should be ordered
+	* @param	array		&$id_ary			passed by reference, to be filled with ids for the page specified by $start and $per_page, should be ordered
 	* @param	int			$start				indicates the first index of the page
 	* @param	int			$per_page			number of ids each page is supposed to contain
 	* @return	boolean|int						total number of results
 	*
 	* @access	public
 	*/
-	function keyword_search($type, &$fields, &$terms, &$sort_by_sql, &$sort_key, &$sort_dir, &$sort_days, &$ex_fid_ary, &$m_approve_fid_ary, &$topic_id, &$author_ary, &$Id$per_page)
+	function keyword_search($type, &$fields, &$terms, &$sort_by_sql, &$sort_key, &$sort_dir, &$sort_days, &$ex_fid_ary, &$m_approve_fid_ary, &$topic_id, &$author_ary, &$id_ary, $start, $per_page)
 	{
 		global $config, $db;
 
@@ -361,7 +361,7 @@ class fulltext_mysql extends search_backend
 
 		// try reading the results from cache
 		$result_count = 0;
-		if ($this->obtain_ids($search_key, $result_count, $Id$sort_dir) == SEARCH_RESULT_IN_CACHE)
+		if ($this->obtain_ids($search_key, $result_count, $id_ary, $start, $per_page, $sort_dir) == SEARCH_RESULT_IN_CACHE)
 		{
 			return $result_count;
 		}
@@ -454,11 +454,11 @@ class fulltext_mysql extends search_backend
 
 		while ($row = $db->sql_fetchrow($result))
 		{
-			$Id$field];
+			$id_ary[] = $row[$field];
 		}
 		$db->sql_freeresult($result);
 
-		$Id$id_ary);
+		$id_ary = array_unique($id_ary);
 
 		if (!sizeof($id_ary))
 		{
@@ -480,8 +480,8 @@ class fulltext_mysql extends search_backend
 		}
 
 		// store the ids, from start on then delete anything that isn't on the current page because we only need ids for one page
-		$this->save_ids($search_key, implode(' ', $this->split_words), $author_ary, $result_count, $Id$sort_dir);
-		$Id$per_page);
+		$this->save_ids($search_key, implode(' ', $this->split_words), $author_ary, $result_count, $id_ary, $start, $sort_dir);
+		$id_ary = array_slice($id_ary, 0, (int) $per_page);
 
 		return $result_count;
 	}
@@ -489,12 +489,12 @@ class fulltext_mysql extends search_backend
 	/**
 	* Performs a search on an author's posts without caring about message contents. Depends on display specific params
 	*
-	* @param array &$Id$per_page, should be ordered
+	* @param array &$id_ary passed by reference, to be filled with ids for the page specified by $start and $per_page, should be ordered
 	* @param int $start indicates the first index of the page
 	* @param int $per_page number of ids each page is supposed to contain
 	* @return total number of results
 	*/
-	function author_search($type, $firstpost_only, &$sort_by_sql, &$sort_key, &$sort_dir, &$sort_days, &$ex_fid_ary, &$m_approve_fid_ary, &$topic_id, &$author_ary, &$Id$per_page)
+	function author_search($type, $firstpost_only, &$sort_by_sql, &$sort_key, &$sort_dir, &$sort_days, &$ex_fid_ary, &$m_approve_fid_ary, &$topic_id, &$author_ary, &$id_ary, $start, $per_page)
 	{
 		global $config, $db;
 
@@ -521,7 +521,7 @@ class fulltext_mysql extends search_backend
 
 		// try reading the results from cache
 		$result_count = 0;
-		if ($this->obtain_ids($search_key, $result_count, $Id$sort_dir) == SEARCH_RESULT_IN_CACHE)
+		if ($this->obtain_ids($search_key, $result_count, $id_ary, $start, $per_page, $sort_dir) == SEARCH_RESULT_IN_CACHE)
 		{
 			return $result_count;
 		}
@@ -609,7 +609,7 @@ class fulltext_mysql extends search_backend
 
 		while ($row = $db->sql_fetchrow($result))
 		{
-			$Id$field];
+			$id_ary[] = $row[$field];
 		}
 		$db->sql_freeresult($result);
 
@@ -629,8 +629,8 @@ class fulltext_mysql extends search_backend
 
 		if (sizeof($id_ary))
 		{
-			$this->save_ids($search_key, '', $author_ary, $result_count, $Id$sort_dir);
-			$Id$per_page);
+			$this->save_ids($search_key, '', $author_ary, $result_count, $id_ary, $start, $sort_dir);
+			$id_ary = array_slice($id_ary, 0, $per_page);
 
 			return $result_count;
 		}

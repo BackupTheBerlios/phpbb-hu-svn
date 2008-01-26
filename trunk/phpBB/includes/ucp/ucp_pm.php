@@ -1,7 +1,7 @@
 <?php
 /**
 * @package ucp
-* @version $Id$
+* @version $Id: ucp_pm.php,v 1.47 2007/11/07 10:45:38 acydburn Exp $
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -41,7 +41,7 @@ class ucp_pm
 {
 	var $u_action;
 
-	function main($Id$mode)
+	function main($id, $mode)
 	{
 		global $user, $template, $phpbb_root_path, $auth, $phpEx, $db, $config;
 
@@ -123,7 +123,7 @@ class ucp_pm
 				}
 
 				include($phpbb_root_path . 'includes/ucp/ucp_pm_compose.' . $phpEx);
-				compose_pm($Id$action);
+				compose_pm($id, $mode, $action);
 
 				$tpl_file = 'posting_body';
 			break;
@@ -141,7 +141,7 @@ class ucp_pm
 				get_folder($user->data['user_id']);
 
 				include($phpbb_root_path . 'includes/ucp/ucp_pm_options.' . $phpEx);
-				message_options($Id$global_rule_conditions);
+				message_options($id, $mode, $global_privmsgs_rules, $global_rule_conditions);
 
 				$tpl_file = 'ucp_pm_options';
 			break;
@@ -156,7 +156,7 @@ class ucp_pm
 
 				$module = new ucp_main($this);
 				$module->u_action = $this->u_action;
-				$module->main($Id$mode);
+				$module->main($id, $mode);
 
 				$this->tpl_name = $module->tpl_name;
 				$this->page_title = 'UCP_PM_DRAFTS';
@@ -381,7 +381,7 @@ class ucp_pm
 				if ($action == 'view_folder')
 				{
 					include($phpbb_root_path . 'includes/ucp/ucp_pm_viewfolder.' . $phpEx);
-					view_folder($Id$folder);
+					view_folder($id, $mode, $folder_id, $folder);
 
 					$tpl_file = 'ucp_pm_viewfolder';
 				}
@@ -398,7 +398,7 @@ class ucp_pm
 					}
 
 					include($phpbb_root_path . 'includes/ucp/ucp_pm_viewmessage.' . $phpEx);
-					view_message($Id$message_row);
+					view_message($id, $mode, $folder_id, $msg_id, $folder, $message_row);
 
 					$tpl_file = ($view == 'print') ? 'ucp_pm_viewmessage_print' : 'ucp_pm_viewmessage';
 				}

@@ -2,7 +2,7 @@
 /**
 *
 * @package phpBB3
-* @version $Id$
+* @version $Id: functions_privmsgs.php,v 1.85 2007/11/07 10:45:38 acydburn Exp $
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -1074,7 +1074,7 @@ function rebuild_header($check_ary)
 		preg_match_all('/:?(u|g)_([0-9]+):?/', $address_field, $match);
 
 		$u = $g = array();
-		foreach ($match[1] as $Id$type)
+		foreach ($match[1] as $id => $type)
 		{
 			${$type}[] = (int) $match[2][$id];
 		}
@@ -1086,7 +1086,7 @@ function rebuild_header($check_ary)
 			{
 				foreach ($$type as $id)
 				{
-					$address[$type][$Id$check_type;
+					$address[$type][$id] = $check_type;
 				}
 			}
 		}
@@ -1112,7 +1112,7 @@ function write_pm_addresses($check_ary, $author_id, $plaintext = false)
 			preg_match_all('/:?(u|g)_([0-9]+):?/', $address_field, $match);
 
 			$u = $g = array();
-			foreach ($match[1] as $Id$type)
+			foreach ($match[1] as $id => $type)
 			{
 				${$type}[] = (int) $match[2][$id];
 			}
@@ -1202,7 +1202,7 @@ function write_pm_addresses($check_ary, $author_id, $plaintext = false)
 
 			foreach ($address as $type => $adr_ary)
 			{
-				foreach ($adr_ary as $Id$row)
+				foreach ($adr_ary as $id => $row)
 				{
 					$tpl_ary = array(
 						'IS_GROUP'	=> ($type == 'group') ? true : false,
@@ -1216,8 +1216,8 @@ function write_pm_addresses($check_ary, $author_id, $plaintext = false)
 					if ($type == 'user')
 					{
 						$tpl_ary = array_merge($tpl_ary, array(
-							'U_VIEW'		=> get_username_string('profile', $Id$row['colour']),
-							'NAME_FULL'		=> get_username_string('full', $Id$row['colour']),
+							'U_VIEW'		=> get_username_string('profile', $id, $row['name'], $row['colour']),
+							'NAME_FULL'		=> get_username_string('full', $id, $row['name'], $row['colour']),
 						));
 					}
 					else
@@ -1302,12 +1302,12 @@ function submit_pm($mode, $subject, &$data, $put_in_outbox = true)
 		{
 			if (isset($data['address_list'][$ug_type]) && sizeof($data['address_list'][$ug_type]))
 			{
-				foreach ($data['address_list'][$ug_type] as $Id$field)
+				foreach ($data['address_list'][$ug_type] as $id => $field)
 				{
-					$Id$id;
+					$id = (int) $id;
 
 					// Do not rely on the address list being "valid"
-					if (!$Id$id == ANONYMOUS))
+					if (!$id || ($ug_type == 'u' && $id == ANONYMOUS))
 					{
 						continue;
 					}
@@ -1315,7 +1315,7 @@ function submit_pm($mode, $subject, &$data, $put_in_outbox = true)
 					$field = ($field == 'to') ? 'to' : 'bcc';
 					if ($ug_type == 'u')
 					{
-						$recipients[$Id$field;
+						$recipients[$id] = $field;
 					}
 					${$field}[] = $ug_type . '_' . $id;
 				}
@@ -1741,7 +1741,7 @@ function message_history($msg_id, $user_id, $message_row, $folder, $in_post_mode
 	$url = append_sid("{$phpbb_root_path}ucp.$phpEx", 'i=pm');
 	$next_history_pm = $previous_history_pm = $prev_id = 0;
 
-	foreach ($rowset as $Id$row)
+	foreach ($rowset as $id => $row)
 	{
 		$author_id	= $row['author_id'];
 		$folder_id	= (int) $row['folder_id'];
@@ -1761,7 +1761,7 @@ function message_history($msg_id, $user_id, $message_row, $folder, $in_post_mode
 
 		$subject = censor_text($subject);
 
-		if ($Id$msg_id)
+		if ($id == $msg_id)
 		{
 			$next_history_pm = next($rowset);
 			$next_history_pm = (sizeof($next_history_pm)) ? (int) $next_history_pm['msg_id'] : 0;

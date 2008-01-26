@@ -2,7 +2,7 @@
 /**
 *
 * @package mcp
-* @version $Id$
+* @version $Id: mcp_front.php,v 1.34 2007/11/03 11:09:11 acydburn Exp $
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -19,7 +19,7 @@ if (!defined('IN_PHPBB'))
 /**
 * MCP Front Panel
 */
-function mcp_front_view($Id$action)
+function mcp_front_view($id, $mode, $action)
 {
 	global $phpEx, $phpbb_root_path, $config;
 	global $template, $db, $user, $auth, $module;

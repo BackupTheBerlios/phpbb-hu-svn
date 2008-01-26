@@ -1,0 +1,95 @@
+<!-- INCLUDE site_header.html -->
+
+<div id="main">
+	<h2 class="bugs"><a href="{U_BUG_TRACKER}">{L_BUG_TRACKER}</a></h2>
+
+	<!-- IF S_PREVIEW -->
+	<div id="ticket-box" class="post bg2">
+		<div class="inner"><span class="corners-top"><span></span></span>
+			<div class="ticket-body">{PREVIEW_TEXT}</div>
+		<span class="corners-bottom"><span></span></span></div>
+	</div>
+	<!-- ENDIF -->
+
+	<h3>{L_ADD_COMMENT}</h3>
+	<form action="{U_ACTION}" method="post">
+		{S_FORM_TOKEN}
+		<!-- IF ERROR -->
+		<div class="panel bg2">
+			<div class="inner"><span class="corners-top"><span></span></span>
+				<p class="error">{ERROR}</p>
+			<span class="corners-bottom"><span></span></span></div>
+		</div>
+		<!-- ENDIF -->
+		<div class="panel bg2">
+			<div class="inner"><span class="corners-top"><span></span></span>
+			<fieldset>
+				<dl>
+					<dt><label for="form_comment_subject">{L_COMMENT_SUBJECT}:</label></dt>
+					<dd><input type="text" id="form_comment_subject" name="comment_subject" size="45" maxlength="62" value="{COMMENT_SUBJECT}" class="inputbox medium" /></dd>
+				</dl>
+				<dl>
+					<dt><label for="form_comment_message">{L_MESSAGE}:</label></dt>
+					<dd>
+						<textarea id="form_comment_message" name="comment_message" rows="10" cols="20" class="inputbox">{COMMENT_MESSAGE}</textarea>
+						<!-- IF S_BBCODE_ALLOWED -->
+						<div><label for="disable_bbcode"><input type="checkbox" name="disable_bbcode" id="disable_bbcode"{S_BBCODE_CHECKED} /> {L_DISABLE_BBCODE}</label></div>
+						<!-- ENDIF -->
+						<!-- IF S_SMILIES_ALLOWED -->
+						<div><label for="disable_smilies"><input type="checkbox" name="disable_smilies" id="disable_smilies"{S_SMILIES_CHECKED} /> {L_DISABLE_SMILIES}</label></div>
+						<!-- ENDIF -->
+						<!-- IF S_LINKS_ALLOWED -->
+						<div><label for="disable_magic_url"><input type="checkbox" name="disable_magic_url" id="disable_magic_url"{S_MAGIC_URL_CHECKED} /> {L_DISABLE_MAGIC_URL}</label></div>
+						<!-- ENDIF -->
+					</dd>
+				</dl>
+			</fieldset>
+			<span class="corners-bottom"><span></span></span></div>
+		</div>
+		<div class="panel bg2">
+			<div class="inner"><span class="corners-top"><span></span></span>
+			<fieldset>
+				<h3>{L_SUBMIT_COMMENT}</h3>
+				<p>{L_SUBMIT_COMMENT_CONFIRM}</p>
+				<input type="submit" name="preview" value="{L_PREVIEW_COMMENT}" class="<!-- IF S_PREVIEW_BOLD -->button1<!-- ELSE -->button2<!-- ENDIF -->" /> <input type="submit" name="submit" value="{L_SUBMIT_COMMENT}" class="<!-- IF S_PREVIEW_BOLD -->button2<!-- ELSE -->button1<!-- ENDIF -->" />
+			</fieldset>
+			<span class="corners-bottom"><span></span></span></div>
+		</div>
+	</form>
+	
+	<h3>{L_REPORT}: {REPORT_TITLE}</h3>
+	<div id="ticket-box" class="post bg2">
+		<div class="inner"><span class="corners-top"><span></span></span>
+			<div class="ticket-body">{REPORT_TEXT}</div>
+		<span class="corners-bottom"><span></span></span></div>
+	</div>
+</div>
+
+<div id="extras">
+	<div class="mini-panel">
+		<div class="inner"><span class="corners-top"><span></span></span>
+			<h3>{L_REPORT_DETAILS}</h3>
+			<ul class="menu">
+				<li><strong>{L_REPORT_ID}:</strong> {REPORT_ID}</li>
+				<li><strong>{L_PROJECT}:</strong> {PROJECT_TITLE}</li>
+				<li><strong>{L_STATUS}:</strong> {REPORT_STATUS}</li>
+				<li><strong>{L_COMPONENT}:</strong> {REPORT_COMPONENT}</li>
+				<li><strong>{L_ASSIGNED_TO}:</strong> {ASSIGNED_FULL}</li>
+				<li><strong>{L_REPORTED_BY}:</strong> {REPORTED_FULL}</li>
+				<li class="last"><strong>{L_REPORTED_ON}:</strong> {REPORT_TIME}</li>
+			</ul>
+		<span class="corners-bottom"><span></span></span></div>
+	</div>
+
+	<div class="mini-panel">
+		<div class="inner"><span class="corners-top"><span></span></span>
+			<h3>{L_OPTIONS}</h3>
+			<ul class="menu">
+				<li <!-- IF !S_DISPLAY_SUBSCRIBE_INFO -->class="last"<!-- ENDIF -->><a href="{U_RETURN}">{L_RETURN_REPORT}</a></li>
+				<!-- IF S_DISPLAY_SUBSCRIBE_INFO --><li class="last"><!-- IF S_IS_SUBSCRIBED --><a href="{U_UNSUBSCRIBE}">{L_UNSUBSCRIBE_REPORT}</a><!-- ELSE --><a href="{U_SUBSCRIBE}">{L_SUBSCRIBE_REPORT}</a><!-- ENDIF --></li><!-- ENDIF -->
+			</ul>
+		<span class="corners-bottom"><span></span></span></div>
+	</div>
+</div>
+
+<!-- INCLUDE site_footer.html -->

@@ -4,7 +4,7 @@
 * help_faq [English]
 *
 * @package language
-* @version $Id$
+* @version $Id: help_faq.php,v 1.42 2007/10/04 15:07:24 acydburn Exp $
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *

@@ -1,0 +1,11 @@
+/* phpbb.hu website style
+---------------------------------------- */
+#wrap {
+	width: 960px;
+	margin: 0 auto 0 auto;
+}
+
+/* Additional images */
+.newreport-icon span 	{ background: none 0 0 no-repeat; }
+.buttons div.newreport-icon	{ width: {IMG_BUTTON_REPORT_NEW_WIDTH}px; height: {IMG_BUTTON_REPORT_NEW_HEIGHT}px; }
+.newreport-icon span 	{ background-image: url("{IMG_BUTTON_REPORT_NEW_SRC}") ;}

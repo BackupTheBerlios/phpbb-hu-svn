@@ -1,5 +1,5 @@
 #
-# $Id$
+# $Id: sqlite_schema.sql 2 2008-01-26 21:50:36Z fberci $
 #
 
 BEGIN TRANSACTION;
@@ -902,6 +902,7 @@ CREATE TABLE phpbb_users (
 	user_notify INTEGER UNSIGNED NOT NULL DEFAULT '0',
 	user_notify_pm INTEGER UNSIGNED NOT NULL DEFAULT '1',
 	user_notify_type tinyint(4) NOT NULL DEFAULT '0',
+	user_site_notify_type tinyint(4) NOT NULL DEFAULT '0',
 	user_allow_pm INTEGER UNSIGNED NOT NULL DEFAULT '1',
 	user_allow_viewonline INTEGER UNSIGNED NOT NULL DEFAULT '1',
 	user_allow_viewemail INTEGER UNSIGNED NOT NULL DEFAULT '1',
@@ -960,6 +961,115 @@ CREATE TABLE phpbb_zebra (
 	PRIMARY KEY (user_id, zebra_id)
 );
 
+
+# Table: 'phpbb_bugs_projects'
+CREATE TABLE phpbb_bugs_projects (
+	project_id INTEGER PRIMARY KEY NOT NULL ,
+	forum_id INTEGER UNSIGNED NOT NULL DEFAULT '0',
+	project_name varchar(255) NOT NULL DEFAULT '',
+	project_title text(65535) NOT NULL DEFAULT ''
+);
+
+CREATE INDEX phpbb_bugs_projects_forum_id ON phpbb_bugs_projects (forum_id);
+CREATE UNIQUE INDEX phpbb_bugs_projects_project_name ON phpbb_bugs_projects (project_name);
+
+# Table: 'phpbb_bugs_reports'
+CREATE TABLE phpbb_bugs_reports (
+	report_id INTEGER PRIMARY KEY NOT NULL ,
+	topic_id INTEGER UNSIGNED NOT NULL DEFAULT '0',
+	project_id INTEGER UNSIGNED NOT NULL DEFAULT '0',
+	report_title text(65535) NOT NULL DEFAULT '',
+	report_desc mediumtext(16777215) NOT NULL DEFAULT '',
+	report_component INTEGER UNSIGNED NOT NULL DEFAULT '0',
+	report_version INTEGER UNSIGNED NOT NULL DEFAULT '0',
+	report_status INTEGER UNSIGNED NOT NULL DEFAULT '1',
+	report_closed INTEGER UNSIGNED NOT NULL DEFAULT '0',
+	report_assigned INTEGER UNSIGNED NOT NULL DEFAULT '0'
+);
+
+CREATE INDEX phpbb_bugs_reports_project_id ON phpbb_bugs_reports (project_id);
+CREATE INDEX phpbb_bugs_reports_topic_id ON phpbb_bugs_reports (topic_id);
+
+# Table: 'phpbb_bugs_components'
+CREATE TABLE phpbb_bugs_components (
+	component_id INTEGER PRIMARY KEY NOT NULL ,
+	project_id INTEGER UNSIGNED NOT NULL DEFAULT '0',
+	component_title text(65535) NOT NULL DEFAULT ''
+);
+
+CREATE INDEX phpbb_bugs_components_project_id ON phpbb_bugs_components (project_id);
+
+# Table: 'phpbb_bugs_statuses'
+CREATE TABLE phpbb_bugs_statuses (
+	status_id INTEGER PRIMARY KEY NOT NULL ,
+	status_title text(65535) NOT NULL DEFAULT '',
+	status_closed INTEGER UNSIGNED NOT NULL DEFAULT '0'
+);
+
+
+# Table: 'phpbb_bugs_versions'
+CREATE TABLE phpbb_bugs_versions (
+	version_id INTEGER PRIMARY KEY NOT NULL ,
+	project_id INTEGER UNSIGNED NOT NULL DEFAULT '0',
+	version_title text(65535) NOT NULL DEFAULT '',
+	accept_new INTEGER UNSIGNED NOT NULL DEFAULT '0'
+);
+
+CREATE INDEX phpbb_bugs_versions_project_id ON phpbb_bugs_versions (project_id);
+CREATE INDEX phpbb_bugs_versions_accept_new ON phpbb_bugs_versions (accept_new);
+
+# Table: 'phpbb_kb_articles'
+CREATE TABLE phpbb_kb_articles (
+	article_id INTEGER PRIMARY KEY NOT NULL ,
+	topic_id INTEGER UNSIGNED NOT NULL DEFAULT '0',
+	article_name varchar(255) NOT NULL DEFAULT '',
+	article_desc text(65535) NOT NULL DEFAULT '',
+	article_content mediumtext(16777215) NOT NULL DEFAULT ''
+);
+
+CREATE INDEX phpbb_kb_articles_topic_id ON phpbb_kb_articles (topic_id);
+CREATE UNIQUE INDEX phpbb_kb_articles_article_name ON phpbb_kb_articles (article_name);
+
+# Table: 'phpbb_tagcats'
+CREATE TABLE phpbb_tagcats (
+	tagcat_id INTEGER PRIMARY KEY NOT NULL ,
+	tagcat_name varchar(255) NOT NULL DEFAULT '',
+	tagcat_title text(65535) NOT NULL DEFAULT '',
+	tagcat_module tinyint(1) NOT NULL DEFAULT '0'
+);
+
+CREATE INDEX phpbb_tagcats_tagcat_module ON phpbb_tagcats (tagcat_module);
+
+# Table: 'phpbb_tags'
+CREATE TABLE phpbb_tags (
+	tag_id INTEGER PRIMARY KEY NOT NULL ,
+	tagcat_id INTEGER UNSIGNED NOT NULL DEFAULT '0',
+	tag_name varchar(255) NOT NULL DEFAULT '',
+	tag_title text(65535) NOT NULL DEFAULT ''
+);
+
+CREATE INDEX phpbb_tags_tagcat_id ON phpbb_tags (tagcat_id);
+
+# Table: 'phpbb_tagmatch'
+CREATE TABLE phpbb_tagmatch (
+	tag_id INTEGER UNSIGNED NOT NULL DEFAULT '0',
+	topic_id INTEGER UNSIGNED NOT NULL DEFAULT '0'
+);
+
+CREATE UNIQUE INDEX phpbb_tagmatch_tagmatch ON phpbb_tagmatch (tag_id, topic_id);
+
+# Table: 'phpbb_pages'
+CREATE TABLE phpbb_pages (
+	page_id INTEGER PRIMARY KEY NOT NULL ,
+	page_url varchar(255) NOT NULL DEFAULT '',
+	page_section varchar(255) NOT NULL DEFAULT '',
+	page_file varchar(255) NOT NULL DEFAULT '',
+	page_title text(65535) NOT NULL DEFAULT '',
+	page_content mediumtext(16777215) NOT NULL DEFAULT '',
+	page_comments text(65535) NOT NULL DEFAULT ''
+);
+
+CREATE UNIQUE INDEX phpbb_pages_page_url ON phpbb_pages (page_url);
 
 
 COMMIT;

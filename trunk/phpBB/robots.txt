@@ -1,0 +1,29 @@
+User-agent: *
+Disallow: /adm
+Disallow: /cache
+Disallow: /develop
+Disallow: /includes
+Disallow: /install
+Disallow: /language
+Disallow: /store
+Disallow: /styles
+
+Disallow: /files/private
+Disallow: /files/uploads
+
+Disallow: /fvp
+Disallow: /kuldes
+
+Disallow: /common.php
+Disallow: /config.php
+Disallow: /faq.php
+Disallow: /forum.php
+Disallow: /index.php
+Disallow: /memberlist.php
+Disallow: /posting.php
+Disallow: /search.php
+Disallow: /style.php
+Disallow: /ucp.php
+Disallow: /viewforum.php
+Disallow: /viewonline.php
+Disallow: /viewtopic.php

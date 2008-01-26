@@ -2,7 +2,7 @@
 /**
 *
 * @package acp
-* @version $Id$
+* @version $Id: index.php,v 1.74 2007/12/12 16:45:58 acydburn Exp $
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -236,7 +236,7 @@ function build_select($option_ary, $option_default = false)
 /**
 * Build radio fields in acp pages
 */
-function h_radio($name, &$input_ary, $input_default = false, $Id$key = false)
+function h_radio($name, &$input_ary, $input_default = false, $id = false, $key = false)
 {
 	global $user;
 
@@ -245,7 +245,7 @@ function h_radio($name, &$input_ary, $input_default = false, $Id$key = false)
 	foreach ($input_ary as $value => $title)
 	{
 		$selected = ($input_default !== false && $value == $input_default) ? ' checked="checked"' : '';
-		$html .= '<label><input type="radio" name="' . $name . '"' . (($Id$title] . '</label>';
+		$html .= '<label><input type="radio" name="' . $name . '"' . (($id && !$id_assigned) ? ' id="' . $id . '"' : '') . ' value="' . $value . '"' . $selected . (($key) ? ' accesskey="' . $key . '"' : '') . ' class="radio" /> ' . $user->lang[$title] . '</label>';
 		$id_assigned = true;
 	}
 

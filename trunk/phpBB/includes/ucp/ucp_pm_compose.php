@@ -2,7 +2,7 @@
 /**
 *
 * @package ucp
-* @version $Id$
+* @version $Id: ucp_pm_compose.php,v 1.106 2007/11/17 20:04:25 acydburn Exp $
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -20,7 +20,7 @@ if (!defined('IN_PHPBB'))
 * Compose private message
 * Called from ucp_pm with mode == 'compose'
 */
-function compose_pm($Id$action)
+function compose_pm($id, $mode, $action)
 {
 	global $template, $db, $auth, $user;
 	global $phpbb_root_path, $phpEx, $config;
@@ -343,7 +343,7 @@ function compose_pm($Id$action)
 	$message_parser->message = ($action == 'reply') ? '' : $message_text;
 	unset($message_text);
 
-	$s_action = append_sid("{$phpbb_root_path}ucp.$phpEx", "i=$Id$user->session_id);
+	$s_action = append_sid("{$phpbb_root_path}ucp.$phpEx", "i=$id&amp;mode=$mode&amp;action=$action", true, $user->session_id);
 	$s_action .= ($msg_id) ? "&amp;p=$msg_id" : '';
 
 	// Delete triggered ?
@@ -847,7 +847,7 @@ function compose_pm($Id$action)
 		$plain_address_field = '';
 		foreach ($address_list as $type => $adr_ary)
 		{
-			foreach ($adr_ary as $Id$field)
+			foreach ($adr_ary as $id => $field)
 			{
 				if (!isset(${$type}[$id]))
 				{
@@ -857,22 +857,22 @@ function compose_pm($Id$action)
 
 				$field = ($field == 'to') ? 'to' : 'bcc';
 				$type = ($type == 'u') ? 'u' : 'g';
-				$Id$id;
+				$id = (int) $id;
 
 				$tpl_ary = array(
 					'IS_GROUP'	=> ($type == 'g') ? true : false,
 					'IS_USER'	=> ($type == 'u') ? true : false,
 					'UG_ID'		=> $id,
 					'NAME'		=> ${$type}[$id]['name'],
-					'COLOUR'	=> (${$type}[$Id$id]['colour'] : '',
+					'COLOUR'	=> (${$type}[$id]['colour']) ? '#' . ${$type}[$id]['colour'] : '',
 					'TYPE'		=> $type,
 				);
 
 				if ($type == 'u')
 				{
 					$tpl_ary = array_merge($tpl_ary, array(
-						'U_VIEW'		=> get_username_string('profile', $Id$id]['colour']),
-						'NAME_FULL'		=> get_username_string('full', $Id$id]['colour']),
+						'U_VIEW'		=> get_username_string('profile', $id, ${$type}[$id]['name'], ${$type}[$id]['colour']),
+						'NAME_FULL'		=> get_username_string('full', $id, ${$type}[$id]['name'], ${$type}[$id]['colour']),
 					));
 				}
 				else
@@ -891,9 +891,9 @@ function compose_pm($Id$action)
 	$s_hidden_address_field = '';
 	foreach ($address_list as $type => $adr_ary)
 	{
-		foreach ($adr_ary as $Id$field)
+		foreach ($adr_ary as $id => $field)
 		{
-			$s_hidden_address_field .= '<input type="hidden" name="address_list[' . (($type == 'u') ? 'u' : 'g') . '][' . (int) $Id$field == 'to') ? 'to' : 'bcc') . '" />';
+			$s_hidden_address_field .= '<input type="hidden" name="address_list[' . (($type == 'u') ? 'u' : 'g') . '][' . (int) $id . ']" value="' . (($field == 'to') ? 'to' : 'bcc') . '" />';
 		}
 	}
 
@@ -1142,11 +1142,11 @@ function get_recipient_pos($address_list, $position = 1)
 	$count = 1;
 	foreach ($address_list as $field => $adr_ary)
 	{
-		foreach ($adr_ary as $Id$type)
+		foreach ($adr_ary as $id => $type)
 		{
 			if ($count == $position)
 			{
-				$recipient[$field][$Id$type;
+				$recipient[$field][$id] = $type;
 				break 2;
 			}
 			$count++;

@@ -2,7 +2,7 @@
 /**
 *
 * @package phpBB3
-* @version $Id$
+* @version $Id: viewtopic.php 2 2008-01-26 21:50:36Z fberci $
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -45,6 +45,7 @@ $hilit_words	= request_var('hilit', '', true);
 // Do we have a topic or post id?
 if (!$topic_id && !$post_id)
 {
+	http_status(404);
 	trigger_error('NO_TOPIC');
 }
 
@@ -62,6 +63,7 @@ if ($view && !$post_id)
 
 		if (!$forum_id)
 		{
+			http_status(404);
 			trigger_error('NO_TOPIC');
 		}
 	}
@@ -98,6 +100,7 @@ if ($view && !$post_id)
 			// Setup user environment so we can process lang string
 			$user->setup('viewtopic');
 
+			http_status(404);
 			trigger_error('NO_TOPIC');
 		}
 
@@ -160,6 +163,7 @@ if ($view && !$post_id)
 	// Check for global announcement correctness?
 	if ((!isset($row) || !$row['forum_id']) && !$forum_id)
 	{
+		http_status(404);
 		trigger_error('NO_TOPIC');
 	}
 	else if (isset($row) && $row['forum_id'])
@@ -258,6 +262,7 @@ if (!$topic_data)
 		redirect(append_sid("{$phpbb_root_path}viewtopic.$phpEx", "f=$forum_id&amp;t=$topic_id"));
 	}
 
+	http_status(404);
 	trigger_error('NO_TOPIC');
 }
 
@@ -317,6 +322,7 @@ $user->setup('viewtopic', $topic_data['forum_style']);
 
 if (!$topic_data['topic_approved'] && !$auth->acl_get('m_approve', $forum_id))
 {
+	http_status(404);
 	trigger_error('NO_TOPIC');
 }
 
@@ -325,9 +331,11 @@ if (!$auth->acl_get('f_read', $forum_id))
 {
 	if ($user->data['user_id'] != ANONYMOUS)
 	{
+		http_status(403);
 		trigger_error('SORRY_AUTH_READ');
 	}
 
+	http_status(401);
 	login_box('', $user->lang['LOGIN_VIEWFORUM']);
 }
 
@@ -343,17 +351,17 @@ if (isset($_GET['e']))
 {
 	$jump_to = request_var('e', 0);
 
-	$redirect_url = append_sid("{$phpbb_root_path}viewtopic.$phpEx", "f=$forum_id&amp;t=$topic_id");
+	$redirect_url = "{$phpbb_root_path}viewtopic.$phpEx" . "f=$forum_id&amp;t=$topic_id";
 
 	if ($user->data['user_id'] == ANONYMOUS)
 	{
-		login_box($redirect_url . "&amp;p=$post_id&amp;e=$jump_to", $user->lang['LOGIN_NOTIFY_TOPIC']);
+		login_box(append_sid($redirect_url . "&amp;p=$post_id&amp;e=$jump_to", $user->lang['LOGIN_NOTIFY_TOPIC']));
 	}
 
 	if ($jump_to > 0)
 	{
 		// We direct the already logged in user to the correct post...
-		redirect($redirect_url . ((!$post_id) ? "&amp;p=$jump_to" : "&amp;p=$post_id") . "#p$jump_to");
+		redirect(append_sid($redirect_url . ((!$post_id) ? "&amp;p=$jump_to" : "&amp;p=$post_id") . "#p$jump_to"));
 	}
 }
 
@@ -855,7 +863,7 @@ else
 }
 
 // Container for user details, only process once
-$post_list = $user_cache = $Id$post_edit_list = array();
+$post_list = $user_cache = $id_cache = $attachments = $attach_list = $rowset = $update_count = $post_edit_list = array();
 $has_attachments = $display_notice = false;
 $bbcode_bitfield = '';
 $i = $i_total = 0;
@@ -886,6 +894,7 @@ if (!sizeof($post_list))
 	}
 	else
 	{
+		http_status(404);
 		trigger_error('NO_TOPIC');
 	}
 }
@@ -1032,7 +1041,7 @@ while ($row = $db->sql_fetchrow($result))
 				$user_sig = $row['user_sig'];
 			}
 
-			$Id$poster_id;
+			$id_cache[] = $poster_id;
 
 			$user_cache[$poster_id] = array(
 				'joined'		=> $user->format_date($row['user_regdate']),
@@ -1555,8 +1564,12 @@ else if (!$all_marked_read)
 // We overwrite $_REQUEST['f'] if there is no forum specified
 // to be able to display the correct online list.
 // One downside is that the user currently viewing this topic/post is not taken into account.
-if (empty($_REQUEST['f']))
+// - Instead redirect the user to an url with the forum id
+if (empty($_REQUEST['f']) && empty($_REQUEST['p']))
 {
+	http_redirect(append_sid("{$phpbb_root_path}viewtopic.$phpEx", "f=$forum_id&t=$topic_id" . (strlen($_SERVER['QUERY_STRING']) != 2 + strlen((string) $topic_id) ? '&' . substr($_SERVER['QUERY_STRING'], 3 + strlen((string) $topic_id)) : ''), false));
+	exit;
+
 	$_REQUEST['f'] = $forum_id;
 }
 

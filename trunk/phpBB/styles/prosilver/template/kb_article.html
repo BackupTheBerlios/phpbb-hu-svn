@@ -1,0 +1,29 @@
+<!-- INCLUDE site_header.html -->
+
+<div id="main">
+	<a href="{U_KB}"><h2 class="kb">{L_KB}</h2></a>
+	<h3>{ARTICLE_TITLE}</h3>
+	<p>{ARTICLE_DESC}</p>
+	
+	<div class="postbody" style="width: 100%;">
+		<span class="error" style="font-size: 150%">{ARTICLE_TITLE}</span>
+		<strong>{L_ARTICLE_ID}:</strong> {ARTICLE_ID}<br />
+		<strong>{L_AUTHOR}:</strong> {ARTICLE_AUTHOR_FULL}<br />
+		<strong>{L_POSTED}:</strong> {ARTICLE_POSTED}<br />
+		<strong>{L_TAGS}:</strong> 
+			<!-- BEGIN tagcat -->
+				<!-- <a href="{tagcat.U_TAGCAT}"> -->{tagcat.TAGCAT_TITLE}<!-- </a> -->:
+				<!-- BEGIN tag -->
+					<a href="{tagcat.tag.U_TAG}">{tagcat.tag.TAG_TITLE}</a>
+				<!-- END tag -->
+			<!-- END tagcat -->
+			<br />
+		<hr />
+		<div class="content">{ARTICLE_TEXT}</div>
+	</div>
+
+</div>
+
+<!-- INCLUDE sidemenu.html -->
+
+<!-- INCLUDE site_footer.html -->

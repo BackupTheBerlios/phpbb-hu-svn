@@ -2,7 +2,7 @@
 /**
 *
 * @package phpBB3
-* @version $Id$
+* @version $Id: auth.php,v 1.54 2007/10/05 14:36:32 acydburn Exp $
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -202,7 +202,7 @@ class auth_admin extends auth
 		{
 			foreach ($hold_ary as $ug_id => $row)
 			{
-				foreach ($row as $Id$options)
+				foreach ($row as $id => $options)
 				{
 					// Do not include the global auth_option
 					unset($options[$auth_option]);
@@ -210,7 +210,7 @@ class auth_admin extends auth
 					// Not a "fine" solution, but at all it's a 1-dimensional
 					// array_diff_key function filling the resulting array values with zeros
 					// The differences get merged into $hold_ary (all permissions having $acl_fill set)
-					$hold_ary[$ug_id][$Id$options,
+					$hold_ary[$ug_id][$id] = array_merge($options,
 
 						array_map($return_acl_fill,
 							array_flip(
@@ -805,7 +805,7 @@ class auth_admin extends auth
 
 		// Instead of updating, inserting, removing we just remove all current settings and re-set everything...
 		$table = ($ug_type == 'user') ? ACL_USERS_TABLE : ACL_GROUPS_TABLE;
-		$Id$ug_type . '_id';
+		$id_field = $ug_type . '_id';
 
 		// Get any flags as required
 		reset($auth);
@@ -876,7 +876,7 @@ class auth_admin extends auth
 				foreach ($ug_id as $id)
 				{
 					$sql_ary[] = array(
-						$Id$id,
+						$id_field			=> (int) $id,
 						'forum_id'			=> (int) $forum,
 						'auth_option_id'	=> 0,
 						'auth_setting'		=> 0,
@@ -895,7 +895,7 @@ class auth_admin extends auth
 						foreach ($ug_id as $id)
 						{
 							$sql_ary[] = array(
-								$Id$id,
+								$id_field			=> (int) $id,
 								'forum_id'			=> (int) $forum,
 								'auth_option_id'	=> (int) $auth_option_id,
 								'auth_setting'		=> (int) $setting
@@ -991,7 +991,7 @@ class auth_admin extends auth
 
 		$option_id_ary = array();
 		$table = ($mode == 'user') ? ACL_USERS_TABLE : ACL_GROUPS_TABLE;
-		$Id$mode . '_id';
+		$id_field = $mode . '_id';
 
 		$where_sql = array();
 
@@ -1002,7 +1002,7 @@ class auth_admin extends auth
 
 		if ($ug_id !== false)
 		{
-			$where_sql[] = (!is_array($ug_id)) ? $Id$ug_id));
+			$where_sql[] = (!is_array($ug_id)) ? $id_field . ' = ' . (int) $ug_id : $db->sql_in_set($id_field, array_map('intval', $ug_id));
 		}
 
 		// There seem to be auth options involved, therefore we need to go through the list and make sure we capture roles correctly

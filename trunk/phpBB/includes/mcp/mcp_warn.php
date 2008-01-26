@@ -2,7 +2,7 @@
 /**
 *
 * @package mcp
-* @version $Id$
+* @version $Id: mcp_warn.php,v 1.54 2007/10/19 13:10:01 acydburn Exp $
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -31,7 +31,7 @@ class mcp_warn
 		$this->p_master = &$p_master;
 	}
 
-	function main($Id$mode)
+	function main($id, $mode)
 	{
 		global $auth, $db, $user, $template;
 		global $config, $phpbb_root_path, $phpEx;

@@ -1,0 +1,192 @@
+<!-- INCLUDE overall_header.html -->
+
+<a name="maincontent"></a>
+
+<!-- IF S_TAGS -->
+
+	<h1>{L_TAGS}</h1>
+
+	<p>{L_TAGS_EXPLAIN}</p>
+
+	<!-- IF .tagcats -->
+		<table cellspacing="1">
+			<col class="row1" /><col class="row2" />
+		<thead>
+		<tr>
+			<th>{L_TAG_TITLE}</th>
+			<th>{L_TAG_USED}</th>
+			<th>{L_ACTION}</th>
+		</tr>
+		</thead>
+		<tbody>
+		<!-- BEGIN tagcats -->
+			<tr>
+				<td class="row3" colspan="3">{tagcats.TAGCAT_TITLE}</td>
+			</tr>
+			<!-- BEGIN tags -->
+			<tr>
+				<td>{tagcats.tags.TAG_TITLE}</td>
+				<td>{tagcats.tags.TAG_USED_NUM}</td>
+				<td style="vertical-align: top; width: 60px; text-align: right; white-space: nowrap;">
+					<a href="{tagcats.tags.U_EDIT}">{ICON_EDIT}</a>
+					<a href="{tagcats.tags.U_DELETE}">{ICON_DELETE}</a>
+				</td>
+			</tr>
+			<!-- END tags -->
+		<!-- END tagcats -->
+		</tbody>
+		</table>
+	<!-- ELSE -->
+	<p>{L_NO_TAGS}</p>
+	<!-- ENDIF -->
+
+	<form id="tags" method="post" action="{U_ACTION}">
+
+	<fieldset class="quick">
+		<input type="hidden" name="action" value="add" />
+
+		<input type="text" name="tag_title" value="" maxlength="100" />
+		<input class="button2" name="addtag" type="submit" value="{L_ADD_TAG}" />
+	</fieldset>
+
+	</form>
+<!-- ELSEIF S_EDIT_TAG -->
+
+	<a href="{U_BACK}" style="float: {S_CONTENT_FLOW_END};">&laquo; {L_BACK}</a>
+
+	<h1>{L_TITLE} :: {TAG_TITLE}</h1>
+
+	<p>{L_TAG_EDIT_EXPLAIN}</p>
+
+	<!-- IF S_ERROR -->
+		<div class="errorbox">
+			<h3>{L_WARNING}</h3>
+			<p>{ERROR_MSG}</p>
+		</div>
+	<!-- ENDIF -->
+
+	<form id="tagcatedit" method="post" action="{U_EDIT_ACTION}">
+
+	<fieldset>
+		<legend>{L_TAG_SETTINGS}</legend>
+		<dl>
+			<dt><label for="tag_title">{L_TAG_TITLE}:</label></dt>
+			<dd><input class="text medium" type="text" id="tag_title" name="tag_title" value="{TAG_TITLE}" maxlength="100" /></dd>
+		</dl>
+		<dl>
+			<dt><label for="tag_name">{L_TAG_IDNAME}:</label><br />{L_TAG_IDNAME_EXPLAIN}</dt>
+			<dd><input class="text medium" type="text" id="tag_name" name="tag_name" value="{TAG_NAME}" maxlength="100" /></dd>
+		</dl>
+		<dl>
+			<dt><label for="tagcat_module">{L_TAGCAT}:</label></dt>
+			<dd><!-- IF S_TAG_ADD --><select id="tagcat_id" name="tagcat_id">{S_TAGCATS_OPTIONS}</select><!-- ELSEIF S_TAG_EDIT -->{TAGCAT_TITLE}<!-- ENDIF --></dd>
+		</dl>
+
+	</fieldset>
+
+	<fieldset class="submit-buttons">
+		<legend>{L_SUBMIT}</legend>
+		<input class="button1" type="submit" id="submit" name="update" value="{L_SUBMIT}" />&nbsp;
+		<input class="button2" type="reset" id="reset" name="reset" value="{L_RESET}" />
+	</fieldset>
+
+	</form>
+
+<!-- ELSEIF S_EDIT_TAGCAT -->
+
+	<a href="{U_BACK}" style="float: {S_CONTENT_FLOW_END};">&laquo; {L_BACK}</a>
+
+	<h1>{L_TITLE} :: {TAGCAT_TITLE}</h1>
+
+	<p>{L_TAGCAT_EDIT_EXPLAIN}</p>
+
+	<!-- IF S_ERROR -->
+		<div class="errorbox">
+			<h3>{L_WARNING}</h3>
+			<p>{ERROR_MSG}</p>
+		</div>
+	<!-- ENDIF -->
+
+	<form id="tagcatedit" method="post" action="{U_EDIT_ACTION}">
+
+	<fieldset>
+		<legend>{L_TAGCAT_SETTINGS}</legend>
+		<dl>
+			<dt><label for="tagcat_title">{L_TAGCAT_TITLE}:</label></dt>
+			<dd><input class="text medium" type="text" id="tagcat_title" name="tagcat_title" value="{TAGCAT_TITLE}" maxlength="100" /></dd>
+		</dl>
+		<dl>
+			<dt><label for="tagcat_name">{L_TAGCAT_IDNAME}:</label><br />{L_TAGCAT_IDNAME_EXPLAIN}</dt>
+			<dd><input class="text medium" type="text" id="tagcat_name" name="tagcat_name" value="{TAGCAT_NAME}" maxlength="100" /></dd>
+		</dl>
+		<dl>
+			<dt><label for="tagcat_module">{L_TAGCAT_MODULE}:</label><br /><span>{L_TAGCAT_MODULE_EXPLAIN}</span></dt>
+			<dd><!-- IF S_TAGCAT_ADD --><select id="tagcat_module" name="tagcat_module">{S_MODULES_OPTIONS}</select><!-- ELSEIF S_TAGCAT_EDIT -->{TAGCAT_MODULE_TITLE}<!-- ENDIF --></dd>
+		</dl>
+
+	</fieldset>
+
+	<fieldset class="submit-buttons">
+		<legend>{L_SUBMIT}</legend>
+		<input class="button1" type="submit" id="submit" name="update" value="{L_SUBMIT}" />&nbsp;
+		<input class="button2" type="reset" id="reset" name="reset" value="{L_RESET}" />
+	</fieldset>
+
+	</form>
+
+<!-- ELSE -->
+
+	<h1>{L_TAGS_CATS}</h1>
+
+	<p>{L_TAGS_CATS_EXPLAIN}</p>
+
+	<!-- IF ERROR_MSG -->
+		<div class="errorbox">
+			<h3>{L_WARNING}</h3>
+			<p>{ERROR_MSG}</p>
+		</div>
+	<!-- ENDIF -->
+
+	<p><strong>{NAVIGATION}</strong></p>
+
+	<!-- IF .tagcats -->
+		<table cellspacing="1">
+			<col class="row1" /><col class="row1" /><col class="row2" />
+		<thead>
+		<tr>
+			<th>{L_TAGCAT_TITLE}</th>
+			<th>{L_TAGCAT_MODULE}</th>
+			<th>{L_ACTION}</th>
+		</tr>
+		</thead>
+		<tbody>
+		<!-- BEGIN tagcats -->
+			<!-- IF tagcats.S_ROW_COUNT is even --><tr class="row1"><!-- ELSE --><tr class="row2"><!-- ENDIF -->
+				<td>{tagcats.TAGCAT_TITLE}</td>
+				<td>{tagcats.TAGCAT_MODULE}</td>
+				<td style="vertical-align: top; width: 100px; text-align: right; white-space: nowrap;">
+					<a href="{tagcats.U_EDIT}">{ICON_EDIT}</a>
+					<a href="{tagcats.U_DELETE}">{ICON_DELETE}</a>
+				</td>
+			</tr>
+		<!-- END tagcats -->
+		</tbody>
+		</table>
+	<!-- ELSE -->
+	<p>{L_NO_TAGCATS}</p>
+	<!-- ENDIF -->
+
+	<form id="tagcats" method="post" action="{U_ACTION}">
+
+	<fieldset class="quick">
+		<input type="hidden" name="action" value="add" />
+
+		<input type="text" name="tagcat_title" value="" maxlength="100" />
+		<input class="button2" name="addtagcat" type="submit" value="{L_ADD_TAGCAT}" />
+	</fieldset>
+
+	</form>
+
+<!-- ENDIF -->
+
+<!-- INCLUDE overall_footer.html -->

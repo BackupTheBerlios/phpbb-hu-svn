@@ -2,7 +2,7 @@
 /**
 *
 * @package ucp
-* @version $Id$
+* @version $Id: ucp_pm_viewmessage.php,v 1.66 2007/10/05 14:36:34 acydburn Exp $
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -19,7 +19,7 @@ if (!defined('IN_PHPBB'))
 /**
 * View private message
 */
-function view_message($Id$message_row)
+function view_message($id, $mode, $folder_id, $msg_id, $folder, $message_row)
 {
 	global $user, $template, $auth, $db, $cache;
 	global $phpbb_root_path, $phpEx, $config;

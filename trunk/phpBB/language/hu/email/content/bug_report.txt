@@ -1,0 +1,9 @@
+[b]Hiba megnevezése:[/b] [url={U_REPORT}]{REPORT_TITLE}[/url]
+[b]Projekt:[/b] {PROJECT_TITLE}
+[b]Komponens:[/b] {COMPONENT_TITLE}
+[b]Verzió:[/b] {VERSION_TITLE}
+
+[b]Hiba leírása:[/b]
+{REPORT_DESCRIPTION}
+
+[url={U_REPORT}][b]« Vissza a jelentéshez[/b][/url]

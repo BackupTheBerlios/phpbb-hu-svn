@@ -7,3 +7,111 @@ Deny from All
 Order Allow,Deny
 Deny from All
 </Files>
+
+# 500 Error page
+# 404 is handled in an other way
+ErrorDocument 500 /500.shtml
+
+#
+# URL rewrite - Rövid urlek
+#
+RewriteEngine on
+
+#RewriteBase /phpbb3-oldal/
+
+# download.php
+RewriteRule ^csatolmany/([0-9]+)$ download.php?id=$1 [L,QSA]
+RewriteRule ^csatolmany/([0-9]+)/megtekintes$ download.php?mode=view&id=$1 [L,QSA]
+
+
+# faq.php
+RewriteRule ^forum/gyik$ faq.php [L,QSA]
+RewriteRule ^forum/gyik/bbcode$ faq.php?mode=bbcode [L]
+
+
+# index.php
+RewriteRule ^forum$ index.php [L,QSA]
+
+
+# memberlist.php
+RewriteRule ^tagok/([0-9]+)$ memberlist.php?mode=viewprofile&u=$1 [L,QSA]
+RewriteRule ^tagok$ memberlist.php [L,QSA]
+RewriteRule ^tagok/acsapat$ memberlist.php?mode=leaders [L,QSA]
+RewriteRule ^tagok/kereses$ memberlist.php?mode=searchuser [L,QSA]
+RewriteRule ^tagok/csoport$ memberlist.php?mode=group [L,QSA]
+RewriteRule ^tagok/csoport/([0-9]+)$ memberlist.php?mode=group&g=$1 [L,QSA]
+RewriteRule ^tagok/([0-9]+)/email$ memberlist.php?mode=email&u=$1 [L,QSA]
+RewriteRule ^tagok/ertesites/([0-9]+)$ memberlist.php?mode=email&t=$1 [L,QSA]
+RewriteRule ^tagok/([0-9]+)/kapcsolat/([a-z]+)$ memberlist.php?mode=contact&action=$2&u=$1 [L,QSA]
+
+
+# posting.php
+RewriteRule ^kuldes$ posting.php [L,QSA]
+RewriteRule ^kuldes/ujtema/([0-9]+)$ posting.php?mode=post&f=$1 [L,QSA]
+RewriteRule ^kuldes/valasz/([0-9]+)/([0-9]+)$ posting.php?mode=reply&f=$1&t=$2 [L,QSA]
+RewriteRule ^kuldes/idezet/([0-9]+)/([0-9]+)$ posting.php?mode=quote&f=$1&p=$2 [L,QSA]
+RewriteRule ^kuldes/szerk/([0-9]+)/([0-9]+)$ posting.php?mode=edit&f=$1&p=$2 [L,QSA]
+RewriteRule ^kuldes/torol/([0-9]+)/([0-9]+)$ posting.php?mode=delete&f=$1&p=$2 [L,QSA]
+
+
+# report.php
+RewriteRule ^forum/jelentes$ report.php [L,QSA]
+RewriteRule ^forum/jelentes/([0-9]+)/([0-9]+)$ report.php?f=$&p=$2 [L,QSA]
+
+
+# search.php
+RewriteRule ^kereses$ search.php [L,QSA]
+RewriteRule ^kereses/szerzo/([0-9]+)$ search.php?author_id=$1 [L,QSA]
+RewriteRule ^kereses/szerzo/([0-9]+)/hsz$ search.php?author_id=$1&sr=posts [L,QSA]
+RewriteRule ^kereses/szerzo/([0-9]+)/tema$ search.php?author_id=$1&sr=topics [L,QSA]
+RewriteRule ^kereses/megvalaszolatlan$ search.php?search_id=unanswered [L,QSA]
+RewriteRule ^kereses/uj$ search.php?search_id=newposts [L,QSA]
+RewriteRule ^kereses/sajat$ search.php?search_id=egosearch [L,QSA]
+RewriteRule ^kereses/aktiv$ search.php?search_id=active_topics [L,QSA]
+
+
+# ucp.php
+RewriteRule ^regisztracio$ ucp.php?mode=register [L,QSA]
+RewriteRule ^belepes$ ucp.php?mode=login [L,QSA]
+RewriteRule ^forum/felhfelt$ ucp.php?mode=terms [L,QSA]
+RewriteRule ^forum/adatvedelem$ ucp.php?mode=privacy [L,QSA]
+RewriteRule ^fvp$ ucp.php [L,QSA]
+
+
+# viewforum.php
+RewriteRule ^forum/([0-9]+)$ viewforum.php?f=$1 [L,QSA]
+
+
+# viewonline.php
+RewriteRule ^kivanitt$ viewonline.php [L,QSA]
+
+
+# viewtopic.php
+RewriteRule ^forum/([0-9]+)/([0-9]+)$ viewtopic.php?f=$1&t=$2 [L,QSA]
+RewriteRule ^forum/hsz/([0-9]+)$ viewtopic.php?p=$1 [L,QSA]
+RewriteRule ^forum/([0-9]+)/hsz/([0-9]+)$ viewtopic.php?f=$1&p=$2 [L,QSA]
+RewriteRule ^forum/tema/([0-9]+)$ viewtopic.php?t=$1 [L,QSA]
+
+# SITE #
+# bugs.php
+RewriteRule ^bugs/([a-z0-9_-]+)$ bugs.php?mode=project&project=$1 [L,QSA]
+RewriteRule ^bugs/([a-z0-9_-]+)/([0-9]+)$ bugs.php?mode=report&project=$1&report_id=$2 [L,QSA]
+RewriteRule ^bugs/([a-z0-9_-]+)/uj$ bugs.php?mode=add&project=$1 [L,QSA]
+RewriteRule ^bugs/([a-z0-9_-]+)/([0-9]+)/szerk$ bugs.php?mode=edit&project=$1&report_id=$2 [L,QSA]
+RewriteRule ^bugs/([a-z0-9_-]+)/([0-9]+)/hozzaszol$ bugs.php?mode=reply&project=$1&report_id=$2 [L,QSA]
+RewriteRule ^bugs$ bugs.php [L,QSA]
+
+# kb.php
+RewriteRule ^utmutatok/cimkek$ kb.php?mode=listtags [L,QSA]
+#RewriteRule ^utmutatok/cimkek/([a-z0-9+_-]+)$ kb.php?mode=listtagcats&cat=$1 [L,QSA]
+RewriteRule ^utmutatok/cimkek/([a-z0-9+_-]+)/([a-z0-9+_-]+)$ kb.php?mode=tag&cat=$1&tag=$2 [L,QSA]
+RewriteRule ^utmutatok/cikk/([a-z0-9_-]+)$ kb.php?mode=article&name=$1 [L,QSA]
+RewriteRule ^utmutatok/uj$ kb.php?mode=add [L,QSA]
+RewriteRule ^utmutatok/szerk/([0-9]+)$ kb.php?mode=edit&id=$1 [L,QSA]
+RewriteRule ^utmutatok/torol/([0-9]+)$ kb.php?mode=delete&id=$1 [L,QSA]
+RewriteRule ^utmutatok/([0-9]+)$ kb.php?mode=article_id&id=$1 [L,QSA]
+RewriteRule ^utmutatok$ kb.php [L,QSA]
+
+# 404
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule . ./pages.php

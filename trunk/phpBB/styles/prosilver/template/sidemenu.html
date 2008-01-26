@@ -1,0 +1,19 @@
+
+<!-- IF .sidemenublock -->
+<div id="extras">
+	<!-- BEGIN sidemenublock -->
+	<!-- IF .sidemenublock.element -->
+	<div class="mini-panel">
+	<div class="inner"><span class="corners-top"><span></span></span>
+	<h3><!-- IF sidemenublock.BLOCK_URL --><a href="{sidemenublock.BLOCK_URL}"><!-- ENDIF -->{sidemenublock.BLOCK_TITLE}<!-- IF sidemenublock.BLOCK_URL --></a><!-- ENDIF --></h3>	
+	<ul class="menu">
+		<!-- BEGIN element -->
+		<li<!-- IF sidemenublock.element.S_LAST_ROW --> class="last"<!-- ENDIF -->><!-- IF sidemenublock.element.U_ITEM --><a href="{sidemenublock.element.U_ITEM}">{sidemenublock.element.ITEM_TITLE}</a><!-- ELSE --><strong>{sidemenublock.element.ITEM_TITLE}:</strong> {sidemenublock.element.ITEM_VALUE}<!-- ENDIF --></li>
+		<!-- END element -->
+	</ul>
+	<span class="corners-bottom"><span></span></span></div>
+	</div>
+	<!-- ENDIF -->
+	<!-- END sidemenublock -->
+</div>
+<!-- ENDIF -->

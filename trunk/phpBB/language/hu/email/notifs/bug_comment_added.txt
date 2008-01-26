@@ -1,0 +1,19 @@
+Subject: Hiba #{REPORT_ID} - új hozzászólás
+
+Kedves {USERNAME}!
+
+Ezt az értesítés azért kapod, mivel feliratkoztál a "{REPORT_TITLE}" hibajelentésre, amihez {PERFORMER} új hozzászólást küldött. A hozzászólást az alábbi linkre kattintva tudod megtekinteni:
+
+{U_COMMENT}
+
+Amennyiben nem kívánsz további értesítést kapni, látogass el a hibajelentés oldalára, és iratkozz le a jelentésről.
+
+Hibajelentés adatok
+-------------------------
+Azonosító:	{REPORT_ID}
+Megnevezés:	{REPORT_TITLE}
+Projekt:	{PROJECT_TITLE}
+URL:		{U_REPORT}
+-------------------------
+
+{EMAIL_SIG}

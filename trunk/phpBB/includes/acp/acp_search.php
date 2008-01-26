@@ -2,7 +2,7 @@
 /**
 *
 * @package acp
-* @version $Id$
+* @version $Id: acp_search.php,v 1.38 2007/10/05 14:36:32 acydburn Exp $
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -27,7 +27,7 @@ class acp_search
 	var $max_post_id;
 	var $batch_size = 100;
 
-	function main($Id$mode)
+	function main($id, $mode)
 	{
 		global $user;
 
@@ -39,16 +39,16 @@ class acp_search
 		switch ($mode)
 		{
 			case 'settings':
-				$this->settings($Id$mode);
+				$this->settings($id, $mode);
 			break;
 
 			case 'index':
-				$this->index($Id$mode);
+				$this->index($id, $mode);
 			break;
 		}
 	}
 
-	function settings($Id$mode)
+	function settings($id, $mode)
 	{
 		global $db, $user, $auth, $template, $cache;
 		global $config, $phpbb_root_path, $phpbb_admin_path, $phpEx;
@@ -205,7 +205,7 @@ class acp_search
 		);
 	}
 
-	function index($Id$mode)
+	function index($id, $mode)
 	{
 		global $db, $user, $auth, $template, $cache;
 		global $config, $phpbb_root_path, $phpbb_admin_path, $phpEx;
@@ -277,7 +277,7 @@ class acp_search
 					if (method_exists($this->search, 'delete_index'))
 					{
 						// pass a reference to myself so the $search object can make use of save_state() and attributes
-						if ($error = $this->search->delete_index($this, append_sid("{$phpbb_admin_path}index.$phpEx", "i=$Id$mode&action=delete", false)))
+						if ($error = $this->search->delete_index($this, append_sid("{$phpbb_admin_path}index.$phpEx", "i=$id&mode=$mode&action=delete", false)))
 						{
 							$this->state = array('');
 							$this->save_state();
@@ -297,10 +297,10 @@ class acp_search
 									AND post_id <= ' . (int) ($post_counter + $this->batch_size);
 							$result = $db->sql_query($sql);
 
-							$Id$forum_ids = array();
+							$ids = $posters = $forum_ids = array();
 							while ($row = $db->sql_fetchrow($result))
 							{
-								$Id$row['post_id'];
+								$ids[] = $row['post_id'];
 								$posters[] = $row['poster_id'];
 								$forum_ids[] = $row['forum_id'];
 							}
@@ -309,7 +309,7 @@ class acp_search
 
 							if (sizeof($ids))
 							{
-								$this->search->index_remove($Id$forum_ids);
+								$this->search->index_remove($ids, $posters, $forum_ids);
 							}
 
 							$post_counter += $this->batch_size;
@@ -340,7 +340,7 @@ class acp_search
 					if (method_exists($this->search, 'create_index'))
 					{
 						// pass a reference to acp_search so the $search object can make use of save_state() and attributes
-						if ($error = $this->search->create_index($this, append_sid("{$phpbb_admin_path}index.$phpEx", "i=$Id$mode&action=create", false)))
+						if ($error = $this->search->create_index($this, append_sid("{$phpbb_admin_path}index.$phpEx", "i=$id&mode=$mode&action=create", false)))
 						{
 							$this->state = array('');
 							$this->save_state();
@@ -480,8 +480,8 @@ class acp_search
 		$template->assign_vars(array(
 			'S_INDEX'				=> true,
 			'U_ACTION'				=> $this->u_action,
-			'U_PROGRESS_BAR'		=> append_sid("{$phpbb_admin_path}index.$phpEx", "i=$Id$mode&amp;action=progress_bar"),
-			'UA_PROGRESS_BAR'		=> addslashes(append_sid("{$phpbb_admin_path}index.$phpEx", "i=$Id$mode&amp;action=progress_bar")),
+			'U_PROGRESS_BAR'		=> append_sid("{$phpbb_admin_path}index.$phpEx", "i=$id&amp;mode=$mode&amp;action=progress_bar"),
+			'UA_PROGRESS_BAR'		=> addslashes(append_sid("{$phpbb_admin_path}index.$phpEx", "i=$id&amp;mode=$mode&amp;action=progress_bar")),
 		));
 
 		if (isset($this->state[1]))

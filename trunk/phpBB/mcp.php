@@ -189,7 +189,7 @@ if ($quickmod)
 else
 {
 	// Select the active module
-	$module->set_active($Id$mode);
+	$module->set_active($id, $mode);
 }
 
 // Hide some of the options if we don't have the relevant information to use them
@@ -415,7 +415,7 @@ function get_topic_data($topic_ids, $acl_list = false, $read_tracking = false)
 	{
 		if (!$acl_list || $auth->acl_gets($acl_list, $rowset[$id]['forum_id']))
 		{
-			$topics[$Id$id];
+			$topics[$id] = $rowset[$id];
 		}
 	}
 
@@ -762,11 +762,11 @@ function mcp_sorting($mode, &$sort_days, &$sort_key, &$sort_dir, &$sort_by_sql, 
 *					Additionally, this value can be the forum_id assigned if $single_forum was set.
 *					Therefore checking the result for with !== false is the best method.
 */
-function check_ids(&$Id$single_forum = false)
+function check_ids(&$ids, $table, $sql_id, $acl_list = false, $single_forum = false)
 {
 	global $db, $auth;
 
-	if (!is_array($Id$ids))
+	if (!is_array($ids) || empty($ids))
 	{
 		return false;
 	}
@@ -793,7 +793,7 @@ function check_ids(&$Id$single_forum = false)
 		// Limit forum? If not, just assign the id.
 		if ($single_forum === false)
 		{
-			$Id$sql_id];
+			$ids[] = $row[$sql_id];
 			continue;
 		}
 
@@ -810,15 +810,15 @@ function check_ids(&$Id$single_forum = false)
 				$forum_id = $row['forum_id'];
 			}
 
-			if ($row['forum_id'] == $forum_id)
+		if ($row['forum_id'] == $forum_id)
 			{
-				$Id$sql_id];
+				$ids[] = $row[$sql_id];
 			}
 		}
-		else
+	else
 		{
 			// Always add a global topic
-			$Id$sql_id];
+			$ids[] = $row[$sql_id];
 		}
 	}
 	$db->sql_freeresult($result);

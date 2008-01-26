@@ -2,7 +2,7 @@
 /**
 *
 * @package phpBB3
-* @version $Id$
+* @version $Id: file.php,v 1.7 2007/12/20 10:56:03 kellanved Exp $
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -67,7 +67,14 @@ if (isset($_GET['avatar']))
 	{
 		if ($last_load !== false && $last_load <= $stamp)
 		{
-			header('Not Modified', true, 304);
+			if (@php_sapi_name() === 'CGI') 
+			{
+				header('Status: 304 Not Modified', true, 304);
+			} 
+			else 
+			{
+				header('HTTP/1.0 304 Not Modified', true, 304);
+			}
 			// seems that we need those too ... browsers
 			header('Pragma: public');
 			header('Expires: ' . gmdate('D, d M Y H:i:s \G\M\T', time() + 31536000));

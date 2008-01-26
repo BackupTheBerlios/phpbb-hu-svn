@@ -2,7 +2,7 @@
 /**
 *
 * @package mcp
-* @version $Id$
+* @version $Id: mcp_queue.php,v 1.88 2007/10/05 14:36:33 acydburn Exp $
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -31,7 +31,7 @@ class mcp_queue
 		$this->p_master = &$p_master;
 	}
 
-	function main($Id$mode)
+	function main($id, $mode)
 	{
 		global $auth, $db, $user, $template, $cache;
 		global $config, $phpbb_root_path, $phpEx, $action;
@@ -449,7 +449,7 @@ class mcp_queue
 /**
 * Approve Post/Topic
 */
-function approve_post($post_id_list, $Id$mode)
+function approve_post($post_id_list, $id, $mode)
 {
 	global $db, $template, $user, $config;
 	global $phpEx, $phpbb_root_path;
@@ -748,7 +748,7 @@ function approve_post($post_id_list, $Id$mode)
 /**
 * Disapprove Post/Topic
 */
-function disapprove_post($post_id_list, $Id$mode)
+function disapprove_post($post_id_list, $id, $mode)
 {
 	global $db, $template, $user, $config;
 	global $phpEx, $phpbb_root_path;

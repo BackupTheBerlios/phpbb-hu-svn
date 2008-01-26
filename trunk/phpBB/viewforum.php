@@ -2,7 +2,7 @@
 /**
 *
 * @package phpBB3
-* @version $Id$
+* @version $Id: viewforum.php 2 2008-01-26 21:50:36Z fberci $
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -63,6 +63,7 @@ $db->sql_freeresult($result);
 
 if (!$forum_data)
 {
+	http_status(404);
 	trigger_error('NO_FORUM');
 }
 
@@ -81,9 +82,11 @@ if (!$auth->acl_gets('f_list', 'f_read', $forum_id) || ($forum_data['forum_type'
 {
 	if ($user->data['user_id'] != ANONYMOUS)
 	{
+		http_status(403);
 		trigger_error('SORRY_AUTH_READ');
 	}
 
+	http_status(401);
 	login_box('', $user->lang['LOGIN_VIEWFORUM']);
 }
 
@@ -408,38 +411,53 @@ else
 	$sql_where = (sizeof($get_forum_ids)) ? $db->sql_in_set('t.forum_id', $get_forum_ids) : 't.forum_id = ' . $forum_id;
 }
 
-// SQL array for obtaining topics/stickies
-$sql_array = array(
-	'SELECT'		=> $sql_array['SELECT'],
-	'FROM'			=> $sql_array['FROM'],
-	'LEFT_JOIN'		=> $sql_array['LEFT_JOIN'],
-
-	'WHERE'			=> $sql_where . '
-		AND t.topic_type IN (' . POST_NORMAL . ', ' . POST_STICKY . ")
+// Grab just the sorted topic ids
+$sql = 'SELECT t.topic_id
+	FROM ' . TOPICS_TABLE . " t
+	WHERE $sql_where
+		AND t.topic_type IN (" . POST_NORMAL . ', ' . POST_STICKY . ")
 		$sql_approved
-		$sql_limit_time",
-
-	'ORDER_BY'		=> 't.topic_type ' . ((!$store_reverse) ? 'DESC' : 'ASC') . ', ' . $sql_sort_order,
-);
-
-// If store_reverse, then first obtain topics, then stickies, else the other way around...
-// Funnily enough you typically save one query if going from the last page to the middle (store_reverse) because
-// the number of stickies are not known
-$sql = $db->sql_build_query('SELECT', $sql_array);
+		$sql_limit_time
+	ORDER BY t.topic_type " . ((!$store_reverse) ? 'DESC' : 'ASC') . ', ' . $sql_sort_order;
 $result = $db->sql_query_limit($sql, $sql_limit, $sql_start);
 
-$shadow_topic_list = array();
 while ($row = $db->sql_fetchrow($result))
 {
-	if ($row['topic_status'] == ITEM_MOVED)
-	{
-		$shadow_topic_list[$row['topic_moved_id']] = $row['topic_id'];
-	}
-
-	$rowset[$row['topic_id']] = $row;
-	$topic_list[] = $row['topic_id'];
+	$topic_list[] = (int) $row['topic_id'];
 }
 $db->sql_freeresult($result);
+
+// For storing shadow topics
+$shadow_topic_list = array();
+
+if (sizeof($topic_list))
+{
+	// SQL array for obtaining topics/stickies
+	$sql_array = array(
+		'SELECT'		=> $sql_array['SELECT'],
+		'FROM'			=> $sql_array['FROM'],
+		'LEFT_JOIN'		=> $sql_array['LEFT_JOIN'],
+
+		'WHERE'			=> $db->sql_in_set('t.topic_id', $topic_list),
+	);
+
+	// If store_reverse, then first obtain topics, then stickies, else the other way around...
+	// Funnily enough you typically save one query if going from the last page to the middle (store_reverse) because
+	// the number of stickies are not known
+	$sql = $db->sql_build_query('SELECT', $sql_array);
+	$result = $db->sql_query($sql);
+
+	while ($row = $db->sql_fetchrow($result))
+	{
+		if ($row['topic_status'] == ITEM_MOVED)
+		{
+			$shadow_topic_list[$row['topic_moved_id']] = $row['topic_id'];
+		}
+
+		$rowset[$row['topic_id']] = $row;
+	}
+	$db->sql_freeresult($result);
+}
 
 // If we have some shadow topics, update the rowset to reflect their topic information
 if (sizeof($shadow_topic_list))
@@ -582,7 +600,7 @@ if (sizeof($topic_list))
 		topic_status($row, $replies, $unread_topic, $folder_img, $folder_alt, $topic_type);
 
 		// Generate all the URIs ...
-		$view_topic_url = append_sid("{$phpbb_root_path}viewtopic.$phpEx", 'f=' . (($row['forum_id']) ? $row['forum_id'] : $forum_id) . '&amp;t=' . $topic_id);
+		$view_topic_url = "{$phpbb_root_path}viewtopic.{$phpEx}?" . ('f=' . (($row['forum_id']) ? $row['forum_id'] : $forum_id) . '&amp;t=' . $topic_id); // Do not append sid yet
 
 		$topic_unapproved = (!$row['topic_approved'] && $auth->acl_get('m_approve', $forum_id)) ? true : false;
 		$posts_unapproved = ($row['topic_approved'] && $row['topic_replies'] < $row['topic_replies_real'] && $auth->acl_get('m_approve', $forum_id)) ? true : false;
@@ -631,11 +649,11 @@ if (sizeof($topic_list))
 			'S_TOPIC_LOCKED'		=> ($row['topic_status'] == ITEM_LOCKED) ? true : false,
 			'S_TOPIC_MOVED'			=> ($row['topic_status'] == ITEM_MOVED) ? true : false,
 
-			'U_NEWEST_POST'			=> $view_topic_url . '&amp;view=unread#unread',
-			'U_LAST_POST'			=> $view_topic_url . '&amp;p=' . $row['topic_last_post_id'] . '#p' . $row['topic_last_post_id'],
+			'U_NEWEST_POST'			=> append_sid($view_topic_url . '&amp;view=unread#unread'),
+			'U_LAST_POST'			=> append_sid($view_topic_url . '&amp;p=' . $row['topic_last_post_id'] . '#p' . $row['topic_last_post_id']),
 			'U_LAST_POST_AUTHOR'	=> get_username_string('profile', $row['topic_last_poster_id'], $row['topic_last_poster_name'], $row['topic_last_poster_colour']),
 			'U_TOPIC_AUTHOR'		=> get_username_string('profile', $row['topic_poster'], $row['topic_first_poster_name'], $row['topic_first_poster_colour']),
-			'U_VIEW_TOPIC'			=> $view_topic_url,
+			'U_VIEW_TOPIC'			=> append_sid($view_topic_url),
 			'U_MCP_REPORT'			=> append_sid("{$phpbb_root_path}mcp.$phpEx", 'i=reports&amp;mode=reports&amp;f=' . $forum_id . '&amp;t=' . $topic_id, true, $user->session_id),
 			'U_MCP_QUEUE'			=> $u_mcp_queue,
 

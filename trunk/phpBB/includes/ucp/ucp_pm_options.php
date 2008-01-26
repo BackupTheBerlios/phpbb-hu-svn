@@ -2,7 +2,7 @@
 /**
 *
 * @package ucp
-* @version $Id$
+* @version $Id: ucp_pm_options.php,v 1.35 2007/10/05 14:36:34 acydburn Exp $
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -19,7 +19,7 @@ if (!defined('IN_PHPBB'))
 /**
 * Execute message options
 */
-function message_options($Id$global_rule_conditions)
+function message_options($id, $mode, $global_privmsgs_rules, $global_rule_conditions)
 {
 	global $phpbb_root_path, $phpEx, $user, $template, $auth, $config, $db;
 

@@ -2,7 +2,7 @@
 /**
 *
 * @package search
-* @version $Id$
+* @version $Id: search.php,v 1.16 2007/10/05 14:36:33 acydburn Exp $
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -95,7 +95,7 @@ class search_backend
 	*
 	* @return int SEARCH_RESULT_NOT_IN_CACHE or SEARCH_RESULT_IN_CACHE or SEARCH_RESULT_INCOMPLETE
 	*/
-	function obtain_ids($search_key, &$result_count, &$Id$sort_dir)
+	function obtain_ids($search_key, &$result_count, &$id_ary, $start, $per_page, $sort_dir)
 	{
 		global $cache;
 
@@ -131,14 +131,14 @@ class search_backend
 				}
 				else
 				{
-					$Id$i];
+					$id_ary[] = $stored_ids[$i];
 				}
 			}
 			unset($stored_ids);
 
 			if ($reverse_ids)
 			{
-				$Id$id_ary);
+				$id_ary = array_reverse($id_ary);
 			}
 
 			if (!$complete)
@@ -155,11 +155,11 @@ class search_backend
 	* @param array &$id_ary contains a list of post or topic ids that shall be cached, the first element
 	* 	must have the absolute index $start in the result set.
 	*/
-	function save_ids($search_key, $keywords, $author_ary, $result_count, &$Id$sort_dir)
+	function save_ids($search_key, $keywords, $author_ary, $result_count, &$id_ary, $start, $sort_dir)
 	{
 		global $cache, $config, $db, $user;
 
-		$length = min(sizeof($Id$config['search_block_size']);
+		$length = min(sizeof($id_ary), $config['search_block_size']);
 
 		// nothing to cache so exit
 		if (!$length)
@@ -167,7 +167,7 @@ class search_backend
 			return;
 		}
 
-		$store_ids = array_slice($Id$length);
+		$store_ids = array_slice($id_ary, 0, $length);
 
 		// create a new resultset if there is none for this search_key yet
 		// or add the ids to the existing resultset
@@ -202,7 +202,7 @@ class search_backend
 			$db->sql_query($sql);
 
 			$store = array(-1 => $result_count, -2 => $sort_dir);
-			$Id$length - 1);
+			$id_range = range($start, $start + $length - 1);
 		}
 		else
 		{
@@ -211,15 +211,15 @@ class search_backend
 			if ($store[-2] != $sort_dir)
 			{
 				$store_ids = array_reverse($store_ids);
-				$Id$start - 1);
+				$id_range = range($store[-1] - $start - $length, $store[-1] - $start - 1);
 			}
 			else
 			{
-				$Id$length - 1);
+				$id_range = range($start, $start + $length - 1);
 			}
 		}
 
-		$store_ids = array_combine($Id$store_ids);
+		$store_ids = array_combine($id_range, $store_ids);
 
 		// append the ids
 		if (is_array($store_ids))
@@ -230,7 +230,7 @@ class search_backend
 			if (sizeof($store) - 2 > 20 * $config['search_block_size'])
 			{
 				// remove everything in front of two blocks in front of the current start index
-				for ($i = 0, $n = $Id$i++)
+				for ($i = 0, $n = $id_range[0] - 2 * $config['search_block_size']; $i < $n; $i++)
 				{
 					if (isset($store[$i]))
 					{
@@ -240,7 +240,7 @@ class search_backend
 
 				// remove everything after two blocks after the current stop index
 				end($id_range);
-				for ($i = $store[-1] - 1, $n = current($Id$i--)
+				for ($i = $store[-1] - 1, $n = current($id_range) + 2 * $config['search_block_size']; $i > $n; $i--)
 				{
 					if (isset($store[$i]))
 					{

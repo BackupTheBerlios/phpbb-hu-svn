@@ -2,7 +2,7 @@
 /**
 *
 * @package dbal
-* @version $Id$
+* @version $Id: dbal.php,v 1.70 2007/12/06 12:27:53 acydburn Exp $
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -325,7 +325,7 @@ class dbal
 		else if ($query == 'MULTI_INSERT')
 		{
 			$ary = array();
-			foreach ($assoc_ary as $Id$sql_ary)
+			foreach ($assoc_ary as $id => $sql_ary)
 			{
 				// If by accident the sql array is only one-dimensional we build a normal insert statement
 				if (!is_array($sql_ary))

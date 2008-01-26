@@ -64,6 +64,15 @@
 		</dd>
 	</dl>
 	<dl>
+		<dt><label for="sitenotifymethod0">{L_SITE_NOTIFY_METHOD}:</label><br /><span>{L_SITE_NOTIFY_METHOD_EXPLAIN}</span></dt>
+		<dd>
+			<label for="sitenotifymethod0"><input type="radio" name="sitenotifymethod" id="sitenotifymethod0" value="0"<!-- IF S_SNOTIFY_EMAIL --> checked="checked"<!-- ENDIF --> /> {L_NOTIFY_METHOD_EMAIL}</label> 
+			<label for="sitenotifymethod3"><input type="radio" name="sitenotifymethod" id="sitenotifymethod3" value="3"<!-- IF S_SNOTIFY_PM --> checked="checked"<!-- ENDIF --> /> {L_NOTIFY_METHOD_PM}</label> 
+			<label for="sitenotifymethod2"><input type="radio" name="sitenotifymethod" id="sitenotifymethod2" value="5"<!-- IF S_SNOTIFY_SBOTH --> checked="checked"<!-- ENDIF --> /> {L_NOTIFY_METHOD_BOTH}</label>
+			<label for="sitenotifymethod4"><input type="radio" name="sitenotifymethod" id="sitenotifymethod4" value="4"<!-- IF S_SNOTIFY_NO --> checked="checked"<!-- ENDIF --> /> {L_NOTIFY_METHOD_NO}</label>
+		</dd>
+	</dl>
+	<dl>
 		<dt><label for="lang">{L_BOARD_LANGUAGE}:</label></dt>
 		<dd><select name="lang" id="lang">{S_LANG_OPTIONS}</select></dd>
 	</dl>

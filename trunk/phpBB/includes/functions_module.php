@@ -2,7 +2,7 @@
 /**
 *
 * @package phpBB3
-* @version $Id$
+* @version $Id: functions_module.php,v 1.59 2007/10/05 14:30:10 acydburn Exp $
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -309,7 +309,7 @@ class p_master
 				break;
 
 				default:
-					if (!preg_match('#(?:acl_([a-z_]+)(,\$Id$token))
+					if (!preg_match('#(?:acl_([a-z_]+)(,\$id)?)|(?:\$id)|(?:aclf_([a-z_]+))|(?:cfg_([a-z_]+))|(?:request_([a-z_]+))#', $token))
 					{
 						$token = '';
 					}
@@ -325,7 +325,7 @@ class p_master
 		$forum_id = ($forum_id === false) ? $this->acl_forum_id : $forum_id;
 
 		$is_auth = false;
-		eval('$is_auth = (int) (' . preg_replace(array('#acl_([a-z_]+)(,\$Id$module_auth) . ');');
+		eval('$is_auth = (int) (' . preg_replace(array('#acl_([a-z_]+)(,\$id)?#', '#\$id#', '#aclf_([a-z_]+)#', '#cfg_([a-z_]+)#', '#request_([a-z_]+)#'), array('(int) $auth->acl_get(\'\\1\'\\2)', '(int) $forum_id', '(int) $auth->acl_getf_global(\'\\1\')', '(int) $config[\'\\1\']', '!empty($_REQUEST[\'\\1\'])'), $module_auth) . ');');
 
 		return $is_auth;
 	}
@@ -333,7 +333,7 @@ class p_master
 	/**
 	* Set active module
 	*/
-	function set_active($Id$mode = false)
+	function set_active($id = false, $mode = false)
 	{
 		$icat = false;
 		$this->active_module = false;
@@ -352,15 +352,15 @@ class p_master
 			// If this is a module and no mode selected, select first mode
 			// If no category or module selected, go active for first module in first category
 			if (
-				(($item_ary['name'] === $Id$item_ary['cat']))) ||
+				(($item_ary['name'] === $id || $item_ary['id'] === (int) $id) && (($item_ary['mode'] == $mode && !$item_ary['cat']) || ($icat && $item_ary['cat']))) ||
 				($item_ary['parent'] === $category && !$item_ary['cat'] && !$icat && $item_ary['display']) ||
-				(($item_ary['name'] === $Id$item_ary['cat']) ||
-				(!$Id$item_ary['display'])
+				(($item_ary['name'] === $id || $item_ary['id'] === (int) $id) && !$mode && !$item_ary['cat']) ||
+				(!$id && !$mode && !$item_ary['cat'] && $item_ary['display'])
 				)
 			{
 				if ($item_ary['cat'])
 				{
-					$Id$icat;
+					$id = $icat;
 					$icat = false;
 
 					continue;
@@ -379,7 +379,7 @@ class p_master
 
 				break;
 			}
-			else if (($item_ary['cat'] && $item_ary['id'] === (int) $Id$item_ary['cat']))
+			else if (($item_ary['cat'] && $item_ary['id'] === (int) $id) || ($item_ary['parent'] === $category && $item_ary['cat']))
 			{
 				$category = $item_ary['id'];
 			}
@@ -505,12 +505,12 @@ class p_master
 	/**
 	* Check if a module is active
 	*/
-	function is_active($Id$mode = false)
+	function is_active($id, $mode = false)
 	{
 		// If we find a name by this id and being enabled we have our active one...
 		foreach ($this->module_ary as $row_id => $item_ary)
 		{
-			if (($item_ary['name'] === $Id$item_ary['display'])
+			if (($item_ary['name'] === $id || $item_ary['id'] === (int) $id) && $item_ary['display'])
 			{
 				if ($mode === false || $mode === $item_ary['mode'])
 				{
@@ -587,9 +587,9 @@ class p_master
 				// Go through the tree to find our branch
 				$parent_tree = $parents[$row['module_id']];
 
-				foreach ($parent_tree as $Id$value)
+				foreach ($parent_tree as $id => $value)
 				{
-					if (!isset($branch[$Id$branch['child']))
+					if (!isset($branch[$id]) && isset($branch['child']))
 					{
 						$branch = &$branch['child'];
 					}
@@ -800,11 +800,11 @@ class p_master
 	/**
 	* Toggle whether this module will be displayed or not
 	*/
-	function set_display($Id$display = true)
+	function set_display($id, $mode = false, $display = true)
 	{
 		foreach ($this->module_ary as $row_id => $item_ary)
 		{
-			if (($item_ary['name'] === $Id$mode))
+			if (($item_ary['name'] === $id || $item_ary['id'] === (int) $id) && (!$mode || $item_ary['mode'] === $mode))
 			{
 				$this->module_ary[$row_id]['display'] = (int) $display;
 			}

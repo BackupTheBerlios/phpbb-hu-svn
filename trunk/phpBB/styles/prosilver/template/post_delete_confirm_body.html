@@ -1,0 +1,34 @@
+<!-- INCLUDE overall_header.html -->
+
+<form id="confirm" action="{S_CONFIRM_ACTION}" method="post">
+{S_FORM_TOKEN}
+<div class="panel">
+	<div class="inner"><span class="corners-top"><span></span></span>
+
+	<h2>{MESSAGE_TITLE}</h2>
+	<p>{MESSAGE_TEXT}</p>
+	
+	<!-- IF S_IS_MODERATOR -->
+	<fieldset class="fields1">
+		<dl>
+			<dt><label for="form_send_notif">{L_SEND_NOTIFICATION}:</label></dt>
+			<dd><label for="form_send_notif"><input type="checkbox" name="send_notif" id="form_send_notif" /> {L_YES}</label></dd>
+		</dl>
+		<dl>
+			<dt><label for="form_notif_msg">{L_NOTIFICATION_MESSAGE}:</label></dt>
+			<dd><textarea name="notif_msg" id="form_notif_msg" class="inputbox" rows="5" cols="30"></textarea></dd>
+		</dl>
+	</fieldset>
+	<!-- ENDIF -->
+	
+	<fieldset class="submit-buttons">
+		{S_HIDDEN_FIELDS}
+		<input type="submit" name="confirm" value="{L_YES}" class="button2" />&nbsp; 
+		<input type="submit" name="cancel" value="{L_NO}" class="button2" />
+	</fieldset>
+
+	<span class="corners-bottom"><span></span></span></div>
+</div>
+</form>
+
+<!-- INCLUDE overall_footer.html -->

@@ -2,7 +2,7 @@
 /**
 *
 * @package phpBB3
-* @version $Id$
+* @version $Id: generate_utf_casefold.php,v 1.6 2007/10/04 11:33:32 acydburn Exp $
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -69,10 +69,10 @@ foreach ($array as $value)
     $uniarray[$value[2]][utf8_chr(hexdec((string)$value[1]))] = implode(array_map('utf8_chr', array_map('hexdec', explode(' ', $value[3]))));
 }
 
-foreach ($uniarray as $Id$contents)
+foreach ($uniarray as $idx => $contents)
 {
-	echo "Writing to case_fold_$Id$phpEx\n";
-	$fp = fopen($phpbb_root_path . 'includes/utf/data/case_fold_' . strtolower($Id$phpEx, 'wb');
+	echo "Writing to case_fold_$idx.$phpEx\n";
+	$fp = fopen($phpbb_root_path . 'includes/utf/data/case_fold_' . strtolower($idx) . '.' . $phpEx, 'wb');
 	fwrite($fp, '<?php return ' . my_var_export($contents) . ';');
 	fclose($fp);
 }

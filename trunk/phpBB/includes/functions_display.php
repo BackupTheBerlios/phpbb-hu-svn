@@ -2,7 +2,7 @@
 /**
 *
 * @package phpBB3
-* @version $Id$
+* @version $Id: functions_display.php,v 1.168 2007/10/20 10:12:54 acydburn Exp $
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -599,7 +599,7 @@ function topic_generate_pagination($replies, $url)
 		$times = 1;
 		for ($j = 0; $j < $replies + 1; $j += $per_page)
 		{
-			$pagination .= '<a href="' . $url . '&amp;start=' . $j . '">' . $times . '</a>';
+			$pagination .= '<a href="' . append_sid($url . '&amp;start=' . $j) . '">' . $times . '</a>';
 			if ($times == 1 && $total_pages > 5)
 			{
 				$pagination .= ' ... ';

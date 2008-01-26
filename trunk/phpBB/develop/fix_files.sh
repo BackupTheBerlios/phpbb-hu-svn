@@ -21,8 +21,7 @@ rm FILELIST.$$
 
 for i in $(cat FILELIST); do
 	if [ -f $i ]; then  	 
-		sed -e s/
-//g $i > $i.tmp
+		sed -e s///g $i > $i.tmp
   		mv $i.tmp $i
 	fi	
 done

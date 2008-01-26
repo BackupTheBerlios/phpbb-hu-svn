@@ -2,7 +2,7 @@
 /**
 *
 * @package ucp
-* @version $Id$
+* @version $Id: ucp_main.php,v 1.91 2007/10/05 14:36:33 acydburn Exp $
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -31,7 +31,7 @@ class ucp_main
 		$this->p_master = &$p_master;
 	}
 
-	function main($Id$mode)
+	function main($id, $mode)
 	{
 		global $config, $db, $user, $auth, $template, $phpbb_root_path, $phpEx;
 
@@ -572,7 +572,7 @@ class ucp_main
 					else if ($pm_drafts)
 					{
 						$link_pm = true;
-						$insert_url = append_sid("{$phpbb_root_path}ucp.$phpEx", "i=$Id$draft['draft_id']);
+						$insert_url = append_sid("{$phpbb_root_path}ucp.$phpEx", "i=$id&amp;mode=compose&amp;d=" . $draft['draft_id']);
 					}
 
 					$template_row = array(

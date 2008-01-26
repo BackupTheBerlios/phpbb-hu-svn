@@ -2,7 +2,7 @@
 /**
 *
 * @package install
-* @version $Id$
+* @version $Id: functions_convert.php,v 1.68 2007/10/14 12:31:32 kellanved Exp $
 * @copyright (c) 2006 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -1476,7 +1476,7 @@ function mass_auth($ug_type, $forum_id, $ug_id, $acl_list, $setting = ACL_NO)
 				FROM ' . GROUPS_TABLE . "
 				WHERE group_name = '" . $db->sql_escape(strtoupper($ug_id)) . "'";
 			$result = $db->sql_query_limit($sql, 1);
-			$Id$db->sql_fetchfield('group_id');
+			$id = (int) $db->sql_fetchfield('group_id');
 			$db->sql_freeresult($result);
 
 			if (!$id)
@@ -1491,7 +1491,7 @@ function mass_auth($ug_type, $forum_id, $ug_id, $acl_list, $setting = ACL_NO)
 	}
 
 	$table = ($ug_type == 'user' || $ug_type == 'user_role') ? ACL_USERS_TABLE : ACL_GROUPS_TABLE;
-	$Id$ug_type == 'user_role') ? 'user_id' : 'group_id';
+	$id_field = ($ug_type == 'user' || $ug_type == 'user_role') ? 'user_id' : 'group_id';
 
 	// Role based permissions are the simplest to handle so check for them first
 	if ($ug_type == 'user_role' || $ug_type == 'group_role')
@@ -1508,7 +1508,7 @@ function mass_auth($ug_type, $forum_id, $ug_id, $acl_list, $setting = ACL_NO)
 			// If we have no role id there is something wrong here
 			if ($row)
 			{
-				$sql = "INSERT INTO $table ($Id$row['role_id'] . ')';
+				$sql = "INSERT INTO $table ($id_field, forum_id, auth_role_id) VALUES ($ug_id, $forum_id, " . $row['role_id'] . ')';
 				$db->sql_query($sql);
 			}
 		}
@@ -1592,7 +1592,7 @@ function mass_auth($ug_type, $forum_id, $ug_id, $acl_list, $setting = ACL_NO)
 						$sql_ary['delete'][] = "DELETE FROM $table
 							WHERE forum_id = $forum
 								AND auth_option_id = $auth_option_id
-								AND $Id$ug_id";
+								AND $id_field = $ug_id";
 					}
 				break;
 
@@ -1605,7 +1605,7 @@ function mass_auth($ug_type, $forum_id, $ug_id, $acl_list, $setting = ACL_NO)
 					{
 						$sql_ary['update'][] = "UPDATE " . $table . "
 							SET auth_setting = $setting
-							WHERE $Id$ug_id
+							WHERE $id_field = $ug_id
 								AND forum_id = $forum
 								AND auth_option_id = $auth_option_id";
 					}
@@ -1635,7 +1635,7 @@ function mass_auth($ug_type, $forum_id, $ug_id, $acl_list, $setting = ACL_NO)
 					default:
 						foreach ($sql_subary as $sql)
 						{
-							$sql = "INSERT INTO $table ($Id$sql)";
+							$sql = "INSERT INTO $table ($id_field, forum_id, auth_option_id, auth_setting) VALUES ($sql)";
 							$db->sql_query($sql);
 							$sql = '';
 						}
@@ -1643,7 +1643,7 @@ function mass_auth($ug_type, $forum_id, $ug_id, $acl_list, $setting = ACL_NO)
 
 				if ($sql != '')
 				{
-					$sql = "INSERT INTO $table ($Id$sql";
+					$sql = "INSERT INTO $table ($id_field, forum_id, auth_option_id, auth_setting) $sql";
 					$db->sql_query($sql);
 				}
 			break;

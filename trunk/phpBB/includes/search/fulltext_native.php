@@ -2,7 +2,7 @@
 /**
 *
 * @package search
-* @version $Id$
+* @version $Id: fulltext_native.php,v 1.60 2007/10/05 14:36:33 acydburn Exp $
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -281,12 +281,12 @@ class fulltext_native extends search_backend
 				{
 					if (strpos($word_part, '*') !== false)
 					{
-						$Id$word_part)) . '\'';
+						$id_words[] = '\'' . $db->sql_escape(str_replace('*', '%', $word_part)) . '\'';
 						$non_common_words[] = $word_part;
 					}
 					else if (isset($words[$word_part]))
 					{
-						$Id$word_part];
+						$id_words[] = $words[$word_part];
 						$non_common_words[] = $word_part;
 					}
 					else
@@ -395,14 +395,14 @@ class fulltext_native extends search_backend
 	* @param	array		&$m_approve_fid_ary	specifies an array of forum ids in which the searcher is allowed to view unapproved posts
 	* @param	int			&$topic_id			is set to 0 or a topic id, if it is not 0 then only posts in this topic should be searched
 	* @param	array		&$author_ary		an array of author ids if the author should be ignored during the search the array is empty
-	* @param	array		&$Id$per_page, should be ordered
+	* @param	array		&$id_ary			passed by reference, to be filled with ids for the page specified by $start and $per_page, should be ordered
 	* @param	int			$start				indicates the first index of the page
 	* @param	int			$per_page			number of ids each page is supposed to contain
 	* @return	boolean|int						total number of results
 	*
 	* @access	public
 	*/
-	function keyword_search($type, &$fields, &$terms, &$sort_by_sql, &$sort_key, &$sort_dir, &$sort_days, &$ex_fid_ary, &$m_approve_fid_ary, &$topic_id, &$author_ary, &$Id$per_page)
+	function keyword_search($type, &$fields, &$terms, &$sort_by_sql, &$sort_key, &$sort_dir, &$sort_days, &$ex_fid_ary, &$m_approve_fid_ary, &$topic_id, &$author_ary, &$id_ary, $start, $per_page)
 	{
 		global $config, $db;
 
@@ -430,7 +430,7 @@ class fulltext_native extends search_backend
 
 		// try reading the results from cache
 		$total_results = 0;
-		if ($this->obtain_ids($search_key, $total_results, $Id$sort_dir) == SEARCH_RESULT_IN_CACHE)
+		if ($this->obtain_ids($search_key, $total_results, $id_ary, $start, $per_page, $sort_dir) == SEARCH_RESULT_IN_CACHE)
 		{
 			return $total_results;
 		}
@@ -577,7 +577,7 @@ class fulltext_native extends search_backend
 		foreach ($this->must_exclude_one_ids as $ids)
 		{
 			$is_null_joins = array();
-			foreach ($Id$id)
+			foreach ($ids as $id)
 			{
 				if (is_string($id))
 				{
@@ -585,7 +585,7 @@ class fulltext_native extends search_backend
 						'FROM'	=> array(SEARCH_WORDLIST_TABLE => 'w' . $w_num),
 						'ON'	=> "w$w_num.word_text LIKE $id"
 					);
-					$Id$w_num.word_id";
+					$id = "w$w_num.word_id";
 
 					$group_by = true;
 					$w_num++;
@@ -593,7 +593,7 @@ class fulltext_native extends search_backend
 
 				$sql_array['LEFT_JOIN'][] = array(
 					'FROM'	=> array(SEARCH_WORDMATCH_TABLE => 'm' . $m_num),
-					'ON'	=> "m$m_num.word_id = $Id$title_match" : '')
+					'ON'	=> "m$m_num.word_id = $id AND m$m_num.post_id = m0.post_id" . (($title_match) ? " AND m$m_num.$title_match" : '')
 				);
 				$is_null_joins[] = "m$m_num.word_id IS NULL";
 
@@ -711,7 +711,7 @@ class fulltext_native extends search_backend
 
 		while ($row = $db->sql_fetchrow($result))
 		{
-			$Id$type == 'posts') ? 'post_id' : 'topic_id')];
+			$id_ary[] = $row[(($type == 'posts') ? 'post_id' : 'topic_id')];
 		}
 		$db->sql_freeresult($result);
 
@@ -735,8 +735,8 @@ class fulltext_native extends search_backend
 		}
 
 		// store the ids, from start on then delete anything that isn't on the current page because we only need ids for one page
-		$this->save_ids($search_key, $this->search_query, $author_ary, $total_results, $Id$sort_dir);
-		$Id$per_page);
+		$this->save_ids($search_key, $this->search_query, $author_ary, $total_results, $id_ary, $start, $sort_dir);
+		$id_ary = array_slice($id_ary, 0, (int) $per_page);
 
 		return $total_results;
 	}
@@ -754,14 +754,14 @@ class fulltext_native extends search_backend
 	* @param	array		&$m_approve_fid_ary	specifies an array of forum ids in which the searcher is allowed to view unapproved posts
 	* @param	int			&$topic_id			is set to 0 or a topic id, if it is not 0 then only posts in this topic should be searched
 	* @param	array		&$author_ary		an array of author ids
-	* @param	array		&$Id$per_page, should be ordered
+	* @param	array		&$id_ary			passed by reference, to be filled with ids for the page specified by $start and $per_page, should be ordered
 	* @param	int			$start				indicates the first index of the page
 	* @param	int			$per_page			number of ids each page is supposed to contain
 	* @return	boolean|int						total number of results
 	*
 	* @access	public
 	*/
-	function author_search($type, $firstpost_only, &$sort_by_sql, &$sort_key, &$sort_dir, &$sort_days, &$ex_fid_ary, &$m_approve_fid_ary, &$topic_id, &$author_ary, &$Id$per_page)
+	function author_search($type, $firstpost_only, &$sort_by_sql, &$sort_key, &$sort_dir, &$sort_days, &$ex_fid_ary, &$m_approve_fid_ary, &$topic_id, &$author_ary, &$id_ary, $start, $per_page)
 	{
 		global $config, $db;
 
@@ -788,7 +788,7 @@ class fulltext_native extends search_backend
 
 		// try reading the results from cache
 		$total_results = 0;
-		if ($this->obtain_ids($search_key, $total_results, $Id$sort_dir) == SEARCH_RESULT_IN_CACHE)
+		if ($this->obtain_ids($search_key, $total_results, $id_ary, $start, $per_page, $sort_dir) == SEARCH_RESULT_IN_CACHE)
 		{
 			return $total_results;
 		}
@@ -933,7 +933,7 @@ class fulltext_native extends search_backend
 
 		while ($row = $db->sql_fetchrow($result))
 		{
-			$Id$field];
+			$id_ary[] = $row[$field];
 		}
 		$db->sql_freeresult($result);
 
@@ -952,8 +952,8 @@ class fulltext_native extends search_backend
 
 		if (sizeof($id_ary))
 		{
-			$this->save_ids($search_key, '', $author_ary, $total_results, $Id$sort_dir);
-			$Id$per_page);
+			$this->save_ids($search_key, '', $author_ary, $total_results, $id_ary, $start, $sort_dir);
+			$id_ary = array_slice($id_ary, 0, $per_page);
 
 			return $total_results;
 		}
@@ -1592,7 +1592,7 @@ class fulltext_native extends search_backend
 					* 1111 0nnn 10nn nnnn 10nx xxxx 10xx xxxx
 					* 0000 0111 0011 1111 0010 0000
 					*/
-					$Id$utf_char[2]) & 0x20) >> 5);
+					$idx = ((ord($utf_char[0]) & 0x07) << 7) | ((ord($utf_char[1]) & 0x3F) << 1) | ((ord($utf_char[2]) & 0x20) >> 5);
 				}
 				else
 				{
@@ -1600,7 +1600,7 @@ class fulltext_native extends search_backend
 					* 1110 nnnn 10nx xxxx 10xx xxxx
 					* 0000 0111 0010 0000
 					*/
-					$Id$utf_char[1]) & 0x20) >> 5);
+					$idx = ((ord($utf_char[0]) & 0x07) << 1) | ((ord($utf_char[1]) & 0x20) >> 5);
 				}
 			}
 			else
@@ -1618,7 +1618,7 @@ class fulltext_native extends search_backend
 			if (!isset($conv_loaded[$idx]))
 			{
 				$conv_loaded[$idx] = 1;
-				$file = $phpbb_root_path . 'includes/utf/data/search_indexer_' . $Id$phpEx;
+				$file = $phpbb_root_path . 'includes/utf/data/search_indexer_' . $idx . '.' . $phpEx;
 
 				if (file_exists($file))
 				{

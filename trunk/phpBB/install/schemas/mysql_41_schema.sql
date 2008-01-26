@@ -1,5 +1,5 @@
 #
-# $Id$
+# $Id: mysql_41_schema.sql 2 2008-01-26 21:50:36Z fberci $
 #
 
 # Table: 'phpbb_attachments'
@@ -932,6 +932,7 @@ CREATE TABLE phpbb_users (
 	user_notify tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
 	user_notify_pm tinyint(1) UNSIGNED DEFAULT '1' NOT NULL,
 	user_notify_type tinyint(4) DEFAULT '0' NOT NULL,
+	user_site_notify_type tinyint(4) DEFAULT '0' NOT NULL,
 	user_allow_pm tinyint(1) UNSIGNED DEFAULT '1' NOT NULL,
 	user_allow_viewonline tinyint(1) UNSIGNED DEFAULT '1' NOT NULL,
 	user_allow_viewemail tinyint(1) UNSIGNED DEFAULT '1' NOT NULL,
@@ -991,6 +992,124 @@ CREATE TABLE phpbb_zebra (
 	friend tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
 	foe tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
 	PRIMARY KEY (user_id, zebra_id)
+) CHARACTER SET `utf8` COLLATE `utf8_bin`;
+
+
+# Table: 'phpbb_bugs_projects'
+CREATE TABLE phpbb_bugs_projects (
+	project_id mediumint(8) UNSIGNED NOT NULL auto_increment,
+	forum_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
+	project_name varchar(255) DEFAULT '' NOT NULL,
+	project_title varchar(100) DEFAULT '' NOT NULL COLLATE utf8_unicode_ci,
+	PRIMARY KEY (project_id),
+	KEY forum_id (forum_id),
+	UNIQUE project_name (project_name)
+) CHARACTER SET `utf8` COLLATE `utf8_bin`;
+
+
+# Table: 'phpbb_bugs_reports'
+CREATE TABLE phpbb_bugs_reports (
+	report_id mediumint(8) UNSIGNED NOT NULL auto_increment,
+	topic_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
+	project_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
+	report_title varchar(100) DEFAULT '' NOT NULL COLLATE utf8_unicode_ci,
+	report_desc mediumtext NOT NULL,
+	report_component mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
+	report_version mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
+	report_status mediumint(8) UNSIGNED DEFAULT '1' NOT NULL,
+	report_closed int(11) UNSIGNED DEFAULT '0' NOT NULL,
+	report_assigned mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
+	PRIMARY KEY (report_id),
+	KEY project_id (project_id),
+	KEY topic_id (topic_id)
+) CHARACTER SET `utf8` COLLATE `utf8_bin`;
+
+
+# Table: 'phpbb_bugs_components'
+CREATE TABLE phpbb_bugs_components (
+	component_id mediumint(8) UNSIGNED NOT NULL auto_increment,
+	project_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
+	component_title varchar(100) DEFAULT '' NOT NULL COLLATE utf8_unicode_ci,
+	PRIMARY KEY (component_id),
+	KEY project_id (project_id)
+) CHARACTER SET `utf8` COLLATE `utf8_bin`;
+
+
+# Table: 'phpbb_bugs_statuses'
+CREATE TABLE phpbb_bugs_statuses (
+	status_id mediumint(8) UNSIGNED NOT NULL auto_increment,
+	status_title varchar(100) DEFAULT '' NOT NULL COLLATE utf8_unicode_ci,
+	status_closed tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
+	PRIMARY KEY (status_id)
+) CHARACTER SET `utf8` COLLATE `utf8_bin`;
+
+
+# Table: 'phpbb_bugs_versions'
+CREATE TABLE phpbb_bugs_versions (
+	version_id mediumint(8) UNSIGNED NOT NULL auto_increment,
+	project_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
+	version_title varchar(100) DEFAULT '' NOT NULL COLLATE utf8_unicode_ci,
+	accept_new tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
+	PRIMARY KEY (version_id),
+	KEY project_id (project_id),
+	KEY accept_new (accept_new)
+) CHARACTER SET `utf8` COLLATE `utf8_bin`;
+
+
+# Table: 'phpbb_kb_articles'
+CREATE TABLE phpbb_kb_articles (
+	article_id mediumint(8) UNSIGNED NOT NULL auto_increment,
+	topic_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
+	article_name varchar(255) DEFAULT '' NOT NULL,
+	article_desc varchar(255) DEFAULT '' NOT NULL,
+	article_content mediumtext NOT NULL,
+	PRIMARY KEY (article_id),
+	KEY topic_id (topic_id),
+	UNIQUE article_name (article_name)
+) CHARACTER SET `utf8` COLLATE `utf8_bin`;
+
+
+# Table: 'phpbb_tagcats'
+CREATE TABLE phpbb_tagcats (
+	tagcat_id mediumint(8) UNSIGNED NOT NULL auto_increment,
+	tagcat_name varchar(255) DEFAULT '' NOT NULL,
+	tagcat_title varchar(100) DEFAULT '' NOT NULL COLLATE utf8_unicode_ci,
+	tagcat_module tinyint(1) DEFAULT '0' NOT NULL,
+	PRIMARY KEY (tagcat_id),
+	KEY tagcat_module (tagcat_module)
+) CHARACTER SET `utf8` COLLATE `utf8_bin`;
+
+
+# Table: 'phpbb_tags'
+CREATE TABLE phpbb_tags (
+	tag_id mediumint(8) UNSIGNED NOT NULL auto_increment,
+	tagcat_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
+	tag_name varchar(255) DEFAULT '' NOT NULL,
+	tag_title varchar(100) DEFAULT '' NOT NULL COLLATE utf8_unicode_ci,
+	PRIMARY KEY (tag_id),
+	KEY tagcat_id (tagcat_id)
+) CHARACTER SET `utf8` COLLATE `utf8_bin`;
+
+
+# Table: 'phpbb_tagmatch'
+CREATE TABLE phpbb_tagmatch (
+	tag_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
+	topic_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
+	UNIQUE tagmatch (tag_id, topic_id)
+) CHARACTER SET `utf8` COLLATE `utf8_bin`;
+
+
+# Table: 'phpbb_pages'
+CREATE TABLE phpbb_pages (
+	page_id mediumint(8) UNSIGNED NOT NULL auto_increment,
+	page_url varchar(255) DEFAULT '' NOT NULL,
+	page_section varchar(255) DEFAULT '' NOT NULL,
+	page_file varchar(255) DEFAULT '' NOT NULL,
+	page_title varchar(100) DEFAULT '' NOT NULL,
+	page_content mediumtext NOT NULL,
+	page_comments text NOT NULL,
+	PRIMARY KEY (page_id),
+	UNIQUE page_url (page_url)
 ) CHARACTER SET `utf8` COLLATE `utf8_bin`;
 
 

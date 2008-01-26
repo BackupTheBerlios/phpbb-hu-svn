@@ -1,85 +1,85 @@
 /*
 
- $Id$
+ $Id: postgres_schema.sql 2 2008-01-26 21:50:36Z fberci $
 
 */
 
 BEGIN;
 
-/*
-	Domain definition
-*/
-CREATE DOMAIN varchar_ci AS varchar(255) NOT NULL DEFAULT ''::character varying;
-
-/*
-	Operation Functions
-*/
-CREATE FUNCTION _varchar_ci_equal(varchar_ci, varchar_ci) RETURNS boolean AS 'SELECT LOWER($1) = LOWER($2)' LANGUAGE SQL STRICT;
-CREATE FUNCTION _varchar_ci_not_equal(varchar_ci, varchar_ci) RETURNS boolean AS 'SELECT LOWER($1) != LOWER($2)' LANGUAGE SQL STRICT;
-CREATE FUNCTION _varchar_ci_less_than(varchar_ci, varchar_ci) RETURNS boolean AS 'SELECT LOWER($1) < LOWER($2)' LANGUAGE SQL STRICT;
-CREATE FUNCTION _varchar_ci_less_equal(varchar_ci, varchar_ci) RETURNS boolean AS 'SELECT LOWER($1) <= LOWER($2)' LANGUAGE SQL STRICT;
-CREATE FUNCTION _varchar_ci_greater_than(varchar_ci, varchar_ci) RETURNS boolean AS 'SELECT LOWER($1) > LOWER($2)' LANGUAGE SQL STRICT;
-CREATE FUNCTION _varchar_ci_greater_equals(varchar_ci, varchar_ci) RETURNS boolean AS 'SELECT LOWER($1) >= LOWER($2)' LANGUAGE SQL STRICT;
-
-/*
-	Operators
-*/
-CREATE OPERATOR <(
-  PROCEDURE = _varchar_ci_less_than,
-  LEFTARG = varchar_ci,
-  RIGHTARG = varchar_ci,
-  COMMUTATOR = >,
-  NEGATOR = >=,
-  RESTRICT = scalarltsel,
-  JOIN = scalarltjoinsel);
-
-CREATE OPERATOR <=(
-  PROCEDURE = _varchar_ci_less_equal,
-  LEFTARG = varchar_ci,
-  RIGHTARG = varchar_ci,
-  COMMUTATOR = >=,
-  NEGATOR = >,
-  RESTRICT = scalarltsel,
-  JOIN = scalarltjoinsel);
-
-CREATE OPERATOR >(
-  PROCEDURE = _varchar_ci_greater_than,
-  LEFTARG = varchar_ci,
-  RIGHTARG = varchar_ci,
-  COMMUTATOR = <,
-  NEGATOR = <=,
-  RESTRICT = scalargtsel,
-  JOIN = scalargtjoinsel);
-
-CREATE OPERATOR >=(
-  PROCEDURE = _varchar_ci_greater_equals,
-  LEFTARG = varchar_ci,
-  RIGHTARG = varchar_ci,
-  COMMUTATOR = <=,
-  NEGATOR = <,
-  RESTRICT = scalargtsel,
-  JOIN = scalargtjoinsel);
-
-CREATE OPERATOR <>(
-  PROCEDURE = _varchar_ci_not_equal,
-  LEFTARG = varchar_ci,
-  RIGHTARG = varchar_ci,
-  COMMUTATOR = <>,
-  NEGATOR = =,
-  RESTRICT = neqsel,
-  JOIN = neqjoinsel);
-
-CREATE OPERATOR =(
-  PROCEDURE = _varchar_ci_equal,
-  LEFTARG = varchar_ci,
-  RIGHTARG = varchar_ci,
-  COMMUTATOR = =,
-  NEGATOR = <>,
-  RESTRICT = eqsel,
-  JOIN = eqjoinsel,
-  HASHES,
-  MERGES,
-  SORT1= <);
+/*
+	Domain definition
+*/
+CREATE DOMAIN varchar_ci AS varchar(255) NOT NULL DEFAULT ''::character varying;
+
+/*
+	Operation Functions
+*/
+CREATE FUNCTION _varchar_ci_equal(varchar_ci, varchar_ci) RETURNS boolean AS 'SELECT LOWER($1) = LOWER($2)' LANGUAGE SQL STRICT;
+CREATE FUNCTION _varchar_ci_not_equal(varchar_ci, varchar_ci) RETURNS boolean AS 'SELECT LOWER($1) != LOWER($2)' LANGUAGE SQL STRICT;
+CREATE FUNCTION _varchar_ci_less_than(varchar_ci, varchar_ci) RETURNS boolean AS 'SELECT LOWER($1) < LOWER($2)' LANGUAGE SQL STRICT;
+CREATE FUNCTION _varchar_ci_less_equal(varchar_ci, varchar_ci) RETURNS boolean AS 'SELECT LOWER($1) <= LOWER($2)' LANGUAGE SQL STRICT;
+CREATE FUNCTION _varchar_ci_greater_than(varchar_ci, varchar_ci) RETURNS boolean AS 'SELECT LOWER($1) > LOWER($2)' LANGUAGE SQL STRICT;
+CREATE FUNCTION _varchar_ci_greater_equals(varchar_ci, varchar_ci) RETURNS boolean AS 'SELECT LOWER($1) >= LOWER($2)' LANGUAGE SQL STRICT;
+
+/*
+	Operators
+*/
+CREATE OPERATOR <(
+  PROCEDURE = _varchar_ci_less_than,
+  LEFTARG = varchar_ci,
+  RIGHTARG = varchar_ci,
+  COMMUTATOR = >,
+  NEGATOR = >=,
+  RESTRICT = scalarltsel,
+  JOIN = scalarltjoinsel);
+
+CREATE OPERATOR <=(
+  PROCEDURE = _varchar_ci_less_equal,
+  LEFTARG = varchar_ci,
+  RIGHTARG = varchar_ci,
+  COMMUTATOR = >=,
+  NEGATOR = >,
+  RESTRICT = scalarltsel,
+  JOIN = scalarltjoinsel);
+
+CREATE OPERATOR >(
+  PROCEDURE = _varchar_ci_greater_than,
+  LEFTARG = varchar_ci,
+  RIGHTARG = varchar_ci,
+  COMMUTATOR = <,
+  NEGATOR = <=,
+  RESTRICT = scalargtsel,
+  JOIN = scalargtjoinsel);
+
+CREATE OPERATOR >=(
+  PROCEDURE = _varchar_ci_greater_equals,
+  LEFTARG = varchar_ci,
+  RIGHTARG = varchar_ci,
+  COMMUTATOR = <=,
+  NEGATOR = <,
+  RESTRICT = scalargtsel,
+  JOIN = scalargtjoinsel);
+
+CREATE OPERATOR <>(
+  PROCEDURE = _varchar_ci_not_equal,
+  LEFTARG = varchar_ci,
+  RIGHTARG = varchar_ci,
+  COMMUTATOR = <>,
+  NEGATOR = =,
+  RESTRICT = neqsel,
+  JOIN = neqjoinsel);
+
+CREATE OPERATOR =(
+  PROCEDURE = _varchar_ci_equal,
+  LEFTARG = varchar_ci,
+  RIGHTARG = varchar_ci,
+  COMMUTATOR = =,
+  NEGATOR = <>,
+  RESTRICT = eqsel,
+  JOIN = eqjoinsel,
+  HASHES,
+  MERGES,
+  SORT1= <);
 
 /*
 	Table: 'phpbb_attachments'
@@ -1195,6 +1195,7 @@ CREATE TABLE phpbb_users (
 	user_notify INT2 DEFAULT '0' NOT NULL CHECK (user_notify >= 0),
 	user_notify_pm INT2 DEFAULT '1' NOT NULL CHECK (user_notify_pm >= 0),
 	user_notify_type INT2 DEFAULT '0' NOT NULL,
+	user_site_notify_type INT2 DEFAULT '0' NOT NULL,
 	user_allow_pm INT2 DEFAULT '1' NOT NULL CHECK (user_allow_pm >= 0),
 	user_allow_viewonline INT2 DEFAULT '1' NOT NULL CHECK (user_allow_viewonline >= 0),
 	user_allow_viewemail INT2 DEFAULT '1' NOT NULL CHECK (user_allow_viewemail >= 0),
@@ -1266,6 +1267,162 @@ CREATE TABLE phpbb_zebra (
 	PRIMARY KEY (user_id, zebra_id)
 );
 
+
+/*
+	Table: 'phpbb_bugs_projects'
+*/
+CREATE SEQUENCE phpbb_bugs_projects_seq;
+
+CREATE TABLE phpbb_bugs_projects (
+	project_id INT4 DEFAULT nextval('phpbb_bugs_projects_seq'),
+	forum_id INT4 DEFAULT '0' NOT NULL CHECK (forum_id >= 0),
+	project_name varchar(255) DEFAULT '' NOT NULL,
+	project_title varchar(100) DEFAULT '' NOT NULL,
+	PRIMARY KEY (project_id)
+);
+
+CREATE INDEX phpbb_bugs_projects_forum_id ON phpbb_bugs_projects (forum_id);
+CREATE UNIQUE INDEX phpbb_bugs_projects_project_name ON phpbb_bugs_projects (project_name);
+
+/*
+	Table: 'phpbb_bugs_reports'
+*/
+CREATE SEQUENCE phpbb_bugs_reports_seq;
+
+CREATE TABLE phpbb_bugs_reports (
+	report_id INT4 DEFAULT nextval('phpbb_bugs_reports_seq'),
+	topic_id INT4 DEFAULT '0' NOT NULL CHECK (topic_id >= 0),
+	project_id INT4 DEFAULT '0' NOT NULL CHECK (project_id >= 0),
+	report_title varchar(100) DEFAULT '' NOT NULL,
+	report_desc TEXT DEFAULT '' NOT NULL,
+	report_component INT4 DEFAULT '0' NOT NULL CHECK (report_component >= 0),
+	report_version INT4 DEFAULT '0' NOT NULL CHECK (report_version >= 0),
+	report_status INT4 DEFAULT '1' NOT NULL CHECK (report_status >= 0),
+	report_closed INT4 DEFAULT '0' NOT NULL CHECK (report_closed >= 0),
+	report_assigned INT4 DEFAULT '0' NOT NULL CHECK (report_assigned >= 0),
+	PRIMARY KEY (report_id)
+);
+
+CREATE INDEX phpbb_bugs_reports_project_id ON phpbb_bugs_reports (project_id);
+CREATE INDEX phpbb_bugs_reports_topic_id ON phpbb_bugs_reports (topic_id);
+
+/*
+	Table: 'phpbb_bugs_components'
+*/
+CREATE SEQUENCE phpbb_bugs_components_seq;
+
+CREATE TABLE phpbb_bugs_components (
+	component_id INT4 DEFAULT nextval('phpbb_bugs_components_seq'),
+	project_id INT4 DEFAULT '0' NOT NULL CHECK (project_id >= 0),
+	component_title varchar(100) DEFAULT '' NOT NULL,
+	PRIMARY KEY (component_id)
+);
+
+CREATE INDEX phpbb_bugs_components_project_id ON phpbb_bugs_components (project_id);
+
+/*
+	Table: 'phpbb_bugs_statuses'
+*/
+CREATE SEQUENCE phpbb_bugs_statuses_seq;
+
+CREATE TABLE phpbb_bugs_statuses (
+	status_id INT4 DEFAULT nextval('phpbb_bugs_statuses_seq'),
+	status_title varchar(100) DEFAULT '' NOT NULL,
+	status_closed INT2 DEFAULT '0' NOT NULL CHECK (status_closed >= 0),
+	PRIMARY KEY (status_id)
+);
+
+
+/*
+	Table: 'phpbb_bugs_versions'
+*/
+CREATE SEQUENCE phpbb_bugs_versions_seq;
+
+CREATE TABLE phpbb_bugs_versions (
+	version_id INT4 DEFAULT nextval('phpbb_bugs_versions_seq'),
+	project_id INT4 DEFAULT '0' NOT NULL CHECK (project_id >= 0),
+	version_title varchar(100) DEFAULT '' NOT NULL,
+	accept_new INT2 DEFAULT '0' NOT NULL CHECK (accept_new >= 0),
+	PRIMARY KEY (version_id)
+);
+
+CREATE INDEX phpbb_bugs_versions_project_id ON phpbb_bugs_versions (project_id);
+CREATE INDEX phpbb_bugs_versions_accept_new ON phpbb_bugs_versions (accept_new);
+
+/*
+	Table: 'phpbb_kb_articles'
+*/
+CREATE SEQUENCE phpbb_kb_articles_seq;
+
+CREATE TABLE phpbb_kb_articles (
+	article_id INT4 DEFAULT nextval('phpbb_kb_articles_seq'),
+	topic_id INT4 DEFAULT '0' NOT NULL CHECK (topic_id >= 0),
+	article_name varchar(255) DEFAULT '' NOT NULL,
+	article_desc varchar(255) DEFAULT '' NOT NULL,
+	article_content TEXT DEFAULT '' NOT NULL,
+	PRIMARY KEY (article_id)
+);
+
+CREATE INDEX phpbb_kb_articles_topic_id ON phpbb_kb_articles (topic_id);
+CREATE UNIQUE INDEX phpbb_kb_articles_article_name ON phpbb_kb_articles (article_name);
+
+/*
+	Table: 'phpbb_tagcats'
+*/
+CREATE SEQUENCE phpbb_tagcats_seq;
+
+CREATE TABLE phpbb_tagcats (
+	tagcat_id INT4 DEFAULT nextval('phpbb_tagcats_seq'),
+	tagcat_name varchar(255) DEFAULT '' NOT NULL,
+	tagcat_title varchar(100) DEFAULT '' NOT NULL,
+	tagcat_module INT2 DEFAULT '0' NOT NULL,
+	PRIMARY KEY (tagcat_id)
+);
+
+CREATE INDEX phpbb_tagcats_tagcat_module ON phpbb_tagcats (tagcat_module);
+
+/*
+	Table: 'phpbb_tags'
+*/
+CREATE SEQUENCE phpbb_tags_seq;
+
+CREATE TABLE phpbb_tags (
+	tag_id INT4 DEFAULT nextval('phpbb_tags_seq'),
+	tagcat_id INT4 DEFAULT '0' NOT NULL CHECK (tagcat_id >= 0),
+	tag_name varchar(255) DEFAULT '' NOT NULL,
+	tag_title varchar(100) DEFAULT '' NOT NULL,
+	PRIMARY KEY (tag_id)
+);
+
+CREATE INDEX phpbb_tags_tagcat_id ON phpbb_tags (tagcat_id);
+
+/*
+	Table: 'phpbb_tagmatch'
+*/
+CREATE TABLE phpbb_tagmatch (
+	tag_id INT4 DEFAULT '0' NOT NULL CHECK (tag_id >= 0),
+	topic_id INT4 DEFAULT '0' NOT NULL CHECK (topic_id >= 0)
+);
+
+CREATE UNIQUE INDEX phpbb_tagmatch_tagmatch ON phpbb_tagmatch (tag_id, topic_id);
+
+/*
+	Table: 'phpbb_pages'
+*/
+CREATE SEQUENCE phpbb_pages_seq;
+
+CREATE TABLE phpbb_pages (
+	page_id INT4 DEFAULT nextval('phpbb_pages_seq'),
+	page_url varchar(255) DEFAULT '' NOT NULL,
+	page_section varchar(255) DEFAULT '' NOT NULL,
+	page_file varchar(255) DEFAULT '' NOT NULL,
+	page_title varchar(100) DEFAULT '' NOT NULL,
+	page_content TEXT DEFAULT '' NOT NULL,
+	page_comments varchar(4000) DEFAULT '' NOT NULL,
+	PRIMARY KEY (page_id)
+);
+
+CREATE UNIQUE INDEX phpbb_pages_page_url ON phpbb_pages (page_url);
 
 
 COMMIT;

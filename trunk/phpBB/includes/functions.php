@@ -2,7 +2,7 @@
 /**
 *
 * @package phpBB3
-* @version $Id$
+* @version $Id: functions.php,v 1.647 2007/12/10 18:35:28 kellanved Exp $
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -235,7 +235,7 @@ function still_on_time($extra_time = 15)
 
 /**
 *
-* @version Version 0.1 / $Id$
+* @version Version 0.1 / $Id: functions.php,v 1.647 2007/12/10 18:35:28 kellanved Exp $
 *
 * Portable PHP password hashing framework.
 *
@@ -836,7 +836,7 @@ function markread($mode, $forum_id = false, $topic_id = false, $post_time = 0, $
 				unset($tracking_topics['t']);
 				unset($tracking_topics['f']);
 				$tracking_topics['l'] = base_convert(time() - $config['board_startdate'], 10, 36);
-	
+
 				$user->set_cookie('track', tracking_serialize($tracking_topics), time() + 31536000);
 				$_COOKIE[$config['cookie_name'] . '_track'] = (STRIP) ? addslashes(tracking_serialize($tracking_topics)) : tracking_serialize($tracking_topics);
 
@@ -1177,7 +1177,7 @@ function get_complete_topic_tracking($forum_id, $topic_ids, $global_announce_lis
 			$last_read[$row['topic_id']] = $row['mark_time'];
 		}
 		$db->sql_freeresult($result);
-	
+
 		$topic_ids = array_diff($topic_ids, array_keys($last_read));
 
 		if (sizeof($topic_ids))
@@ -1501,7 +1501,7 @@ function tracking_unserialize($string, $max_depth = 3)
 	{
 		die('Invalid data supplied');
 	}
-	
+
 	return $level;
 }
 
@@ -1824,38 +1824,47 @@ function redirect($url, $return = false)
 		}
 		else
 		{
-			// Used ./ before, but $phpbb_root_path is working better with urls within another root path
-			$root_dirs = explode('/', str_replace('\\', '/', phpbb_realpath($phpbb_root_path)));
-			$page_dirs = explode('/', str_replace('\\', '/', phpbb_realpath($pathinfo['dirname'])));
-			$intersection = array_intersect_assoc($root_dirs, $page_dirs);
-
-			$root_dirs = array_diff_assoc($root_dirs, $intersection);
-			$page_dirs = array_diff_assoc($page_dirs, $intersection);
-
-			$dir = str_repeat('../', sizeof($root_dirs)) . implode('/', $page_dirs);
-
-			// Strip / from the end
-			if ($dir && substr($dir, -1, 1) == '/')
+			// Nonexistent (pretty) URL, leave it unchanged and make it absolute
+			if (!phpbb_realpath($pathinfo['dirname']))
 			{
-				$dir = substr($dir, 0, -1);
+				$url = generate_board_url() . '/' . $url;
 			}
-
-			// Strip / from the beginning
-			if ($dir && substr($dir, 0, 1) == '/')
+			// Else proceed normally 
+			else
 			{
-				$dir = substr($dir, 1);
-			}
+				// Used ./ before, but $phpbb_root_path is working better with urls within another root path
+				$root_dirs = explode('/', str_replace('\\', '/', phpbb_realpath($phpbb_root_path)));
+				$page_dirs = explode('/', str_replace('\\', '/', phpbb_realpath($pathinfo['dirname'])));
+				$intersection = array_intersect_assoc($root_dirs, $page_dirs);
 
-			$url = str_replace($pathinfo['dirname'] . '/', '', $url);
+				$root_dirs = array_diff_assoc($root_dirs, $intersection);
+				$page_dirs = array_diff_assoc($page_dirs, $intersection);
 
-			// Strip / from the beginning
-			if (substr($url, 0, 1) == '/')
-			{
-				$url = substr($url, 1);
-			}
+				$dir = str_repeat('../', sizeof($root_dirs)) . implode('/', $page_dirs);
 
-			$url = $dir . '/' . $url;
-			$url = generate_board_url() . '/' . $url;
+				// Strip / from the end
+				if ($dir && substr($dir, -1, 1) == '/')
+				{
+					$dir = substr($dir, 0, -1);
+				}
+
+				// Strip / from the beginning
+				if ($dir && substr($dir, 0, 1) == '/')
+				{
+					$dir = substr($dir, 1);
+				}
+
+				$url = str_replace($pathinfo['dirname'] . '/', '', $url);
+
+				// Strip / from the beginning
+				if (substr($url, 0, 1) == '/')
+				{
+					$url = substr($url, 1);
+				}
+
+				$url = $dir . '/' . $url;
+				$url = generate_board_url() . '/' . $url;
+			}		
 		}
 	}
 
@@ -1984,7 +1993,7 @@ function build_url($strip_vars = false)
 				unset($query[$strip]);
 			}
 		}
-	
+
 		// Glue the remaining parts together... already urlencoded
 		foreach ($query as $key => $value)
 		{
@@ -2056,7 +2065,7 @@ function check_form_key($form_name, $timespan = false, $return_page = '', $trigg
 	{
 		$minimum_time = (int) $config['form_token_mintime'];
 	}
-	
+
 	if (isset($_POST['creation_time']) && isset($_POST['form_token']))
 	{
 		$creation_time	= abs(request_var('creation_time', 0));
@@ -2502,7 +2511,7 @@ function login_forum_box($forum_data)
 	$template->set_filenames(array(
 		'body' => 'login_forum.html')
 	);
-	
+
 	page_footer();
 }
 
@@ -2601,10 +2610,10 @@ function parse_cfg_file($filename, $lines = false)
 		{
 			$value = substr($value, 1, sizeof($value)-2);
 		}
-	
+
 		$parsed_items[$key] = $value;
 	}
-	
+
 	return $parsed_items;
 }
 
@@ -2631,7 +2640,7 @@ function add_log()
 		'log_operation'	=> $action,
 		'log_data'		=> $data,
 	);
-	
+
 	switch ($mode)
 	{
 		case 'admin':
@@ -3037,6 +3046,7 @@ function msg_handler($errno, $msg_text, $errfile, $errline)
 			);
 
 			$template->assign_vars(array(
+				'SITE_SECTION'		=> defined('SITE_SECTION') ? SITE_SECTION : false,
 				'MESSAGE_TITLE'		=> $msg_title,
 				'MESSAGE_TEXT'		=> $msg_text,
 				'S_USER_WARNING'	=> ($errno == E_USER_WARNING) ? true : false,
@@ -3075,7 +3085,7 @@ function page_header($page_title = '', $display_online_list = true)
 	{
 		return;
 	}
-	
+
 	define('HEADER_INC', true);
 
 	// gzip_compression
@@ -3300,7 +3310,7 @@ function page_header($page_title = '', $display_online_list = true)
 
 	// Which timezone?
 	$tz = ($user->data['user_id'] != ANONYMOUS) ? strval(doubleval($user->data['user_timezone'])) : strval(doubleval($config['board_timezone']));
-	
+
 	// The following assigns all _common_ variables that may be used at any point in a template.
 	$template->assign_vars(array(
 		'SITENAME'						=> $config['sitename'],
@@ -3315,6 +3325,9 @@ function page_header($page_title = '', $display_online_list = true)
 		'RECORD_USERS'					=> $l_online_record,
 		'PRIVATE_MESSAGE_INFO'			=> $l_privmsgs_text,
 		'PRIVATE_MESSAGE_INFO_UNREAD'	=> $l_privmsgs_text_unread,
+
+		// Assign base href (for the url rewrite)
+		'BASE_HREF'	=> ($GLOBALS['url_rewriter']->enabled) ? generate_board_url() . '/' . (substr(dirname($_SERVER['SCRIPT_NAME']), -3) == 'adm' ? 'adm/' : '') : false, 
 
 		'S_USER_NEW_PRIVMSG'			=> $user->data['user_new_privmsg'],
 		'S_USER_UNREAD_PRIVMSG'			=> $user->data['user_unread_privmsg'],
@@ -3446,7 +3459,7 @@ function page_footer($run_cron = true)
 	if (!defined('IN_CRON') && $run_cron && !$config['board_disable'])
 	{
 		$cron_type = '';
-	
+
 		if (time() - $config['queue_interval'] > $config['last_queue_run'] && !defined('IN_ADMIN') && file_exists($phpbb_root_path . 'cache/queue.' . $phpEx))
 		{
 			// Process email queue

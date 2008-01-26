@@ -1,0 +1,89 @@
+<!-- INCLUDE site_header.html -->
+
+<div id="main">
+	<h2 class="bugs"><a href="{U_BUG_TRACKER}">{L_BUG_TRACKER}</a></h2>
+	<h3<!-- IF S_IS_CLOSED --> class="closed"<!-- ENDIF -->>{REPORT_TITLE} <span>({REPORT_VERSION})</span></h3>
+
+	<div id="ticket-box" class="post bg2">
+		<div class="inner"><span class="corners-top"><span></span></span>
+			<div class="ticket-body">{REPORT_TEXT}</div>
+		<span class="corners-bottom"><span></span></span></div>
+	</div>
+
+	<h3>{L_COMMENTS}</h3>
+
+	<!-- BEGIN commentrow -->
+	<div id="comment-{commentrow.COMMENT_ID}" class="post <!-- IF commentrow.S_ROW_COUNT is odd -->bg1<!-- ELSE -->bg2<!-- ENDIF --><!-- IF postrow.S_UNREAD_POST --> unreadpost<!-- ENDIF --><!-- IF postrow.S_POST_REPORTED --> reported<!-- ENDIF -->">
+		<div class="inner"><span class="corners-top"><span></span></span>
+			<div class="postbody">
+				<h3><a href="{commentrow.U_MINI_POST}">{commentrow.POST_SUBJECT}</a></h3>
+				<p class="commentauthor"><!-- IF S_IS_BOT -->{commentrow.MINI_POST_IMG}<!-- ELSE --><a href="{commentrow.U_MINI_POST}">{commentrow.MINI_POST_IMG}</a><!-- ENDIF --> {commentrow.POSTED_INFO}</p>
+				<!-- IF commentrow.S_POST_UNAPPROVED or commentrow.S_POST_REPORTED -->
+					<p class="rules">
+						<!-- IF commentrow.S_POST_UNAPPROVED -->{UNAPPROVED_IMG} <a href="{commentrow.U_MCP_APPROVE}"><strong>{L_POST_UNAPPROVED}</strong></a><!-- ENDIF -->
+						<!-- IF commentrow.S_POST_REPORTED -->{REPORTED_IMG} <a href="{commentrow.U_MCP_REPORT}"><strong>{L_POST_REPORTED}</strong></a><!-- ENDIF -->
+					</p>
+				<!-- ENDIF -->
+				<div class="ticket-body">
+					{commentrow.MESSAGE}
+				</div>
+			</div>
+		<span class="corners-bottom"><span></span></span></div>
+	</div>
+	<!-- BEGINELSE -->
+	<div class="post bg1">
+		<div class="inner"><span class="corners-top"><span></span></span>
+			{L_NO_COMMENTS}
+		<span class="corners-bottom"><span></span></span></div>
+	</div>
+	<!-- END commentrow -->
+	
+	<!-- IF S_DISPLAY_REPLY_INFO -->
+	<div class="buttons">
+		<div class="<!-- IF S_IS_LOCKED -->locked-icon<!-- ELSE -->reply-icon<!-- ENDIF -->"><a href="{U_ADD_REPLY}" title="<!-- IF S_IS_LOCKED -->{L_TOPIC_LOCKED}<!-- ELSE -->{L_POST_REPLY}<!-- ENDIF -->"><span></span><!-- IF S_IS_LOCKED -->{L_TOPIC_LOCKED}<!-- ELSE -->{L_POST_REPLY}<!-- ENDIF --></a></div>
+	</div>
+	<!-- ENDIF -->
+	
+	<div class="clear"></div>
+	
+	<!-- IF S_DISPLAY_ASSIGN -->
+	<form id="bug_assign" action="{U_ASSIGN_ACTION}" method="post">
+		{S_FORM_TOKEN}
+		<div class="panel bg2">
+			<span class="corners-top"><span></span></span>
+			<fieldset class="fields1">
+				<dl>
+					<dt><label for="form_assigned">{L_ASSIGN_TO}:</label></dt>
+					<dd><input type="text" id="form_assigned" name="assigned" size="50" class="inputbox autowidth" /><span><a href="{U_FIND_USERNAME}" onclick="find_username(this.href); return false;">{L_FIND_USERNAME}</a></span></dd>
+				</dl>
+				<dl>
+					<dt></dt>
+					<dd><input type="submit" name="assign" value="{L_ASSIGN}" class="button2" /></dd>
+				</dl>
+			</fieldset>
+			<span class="corners-bottom"><span></span></span>
+	</form>
+	<!-- ENDIF -->
+	<!-- IF S_DISPLAY_STATUS -->
+	<form id="bug_status" action="{U_STATUS_ACTION}" method="post">
+		{S_FORM_TOKEN}
+		<div class="panel bg2">
+			<span class="corners-top"><span></span></span>
+			<fieldset class="fields1">
+				<dl>
+					<dt><label for="form_status">{L_STATUS}:</label></dt>
+					<dd><select id="form_status" name="status">{S_STATUS_OPTIONS}</select></dd>
+				</dl>
+				<dl>
+					<dt></dt>
+					<dd><input type="submit" name="status_change" value="{L_CHANGE_STATUS}" class="button2" /></dd>
+				</dl>
+			</fieldset>
+			<span class="corners-bottom"><span></span></span>
+	</form>
+	<!-- ENDIF -->
+</div>
+
+<!-- INCLUDE sidemenu.html -->
+
+<!-- INCLUDE site_footer.html -->

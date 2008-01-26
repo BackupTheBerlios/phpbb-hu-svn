@@ -2,7 +2,7 @@
 /**
 *
 * @package acp
-* @version $Id$
+* @version $Id: acp_forums.php,v 1.81 2007/11/27 15:13:50 kellanved Exp $
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -24,7 +24,7 @@ class acp_forums
 	var $u_action;
 	var $parent_id = 0;
 
-	function main($Id$mode)
+	function main($id, $mode)
 	{
 		global $db, $user, $auth, $template, $cache;
 		global $config, $phpbb_admin_path, $phpbb_root_path, $phpEx;
@@ -1712,7 +1712,7 @@ class acp_forums
 						$ids = array();
 						while ($row = $db->sql_fetchrow($result))
 						{
-							$Id$field];
+							$ids[] = $row[$field];
 						}
 						$db->sql_freeresult($result);
 

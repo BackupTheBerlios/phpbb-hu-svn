@@ -4,7 +4,7 @@
 * common [English]
 *
 * @package language
-* @version $Id$
+* @version $Id: common.php,v 1.195 2007/11/06 14:55:07 acydburn Exp $
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *

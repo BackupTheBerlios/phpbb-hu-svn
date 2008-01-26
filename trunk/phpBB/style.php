@@ -2,7 +2,7 @@
 /**
 *
 * @package phpBB3
-* @version $Id$
+* @version $Id: style.php 2 2008-01-26 21:50:36Z fberci $
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -34,7 +34,7 @@ if (!empty($load_extensions))
 
 
 $sid = (isset($_GET['sid']) && !is_array($_GET['sid'])) ? htmlspecialchars($_GET['sid']) : '';
-$Id$_GET['id']) : 0;
+$id = (isset($_GET['id'])) ? intval($_GET['id']) : 0;
 
 if (strspn($sid, 'abcdefABCDEF0123456789') !== strlen($sid))
 {
@@ -86,7 +86,7 @@ if ($id)
 	$recompile = $config['load_tplcompile'];
 	if (!$user)
 	{
-		$Id$config['default_style'];
+		$id			= $config['default_style'];
 		$recompile	= false;
 		$user		= array('user_id' => ANONYMOUS);
 	}
@@ -116,6 +116,7 @@ if ($id)
 	$sql = 'SELECT *
 		FROM ' . STYLES_IMAGESET_DATA_TABLE . '
 		WHERE imageset_id = ' . $theme['imageset_id'] . "
+		AND image_filename <> '' 
 		AND image_lang IN ('" . $db->sql_escape($user_image_lang) . "', '')";
 	$result = $db->sql_query($sql, 3600);
 
