@@ -455,11 +455,11 @@ class sidemenu
 }
 
 /**
- * Generate a list formatted in BBCode of the assigned tags for an item 
+ * Generate a list formatted with BBCode of the assigned tags for an item 
  *
  * @param array $assigned_tags IDs of the assigned tags
  * @param array $all_tagcats Multidimensional array, the first level key is the id of a tagcat and its value is an array of the tags the tagcat contains
- * @param string $tag_url_scheme URL for the tag page with the tag category name replaced with %1$s and the tag named replaced with %2$s
+ * @param array $tag_url_scheme URL for the tag page with the tag category name replaced with %1$s and the tag named replaced with %2$s, the first entry is the file, the second are the params
  */
 function generate_tags_bbcode_list($assigned_tags, $all_tagcats, $tag_url_scheme)
 {
@@ -485,7 +485,7 @@ function generate_tags_bbcode_list($assigned_tags, $all_tagcats, $tag_url_scheme
 		$tags_list .= '[*]' . $tagcat[0]['tagcat_title'] . '[list]';
 		foreach ($tagcat as $tag)
 		{
-			$tags_list .= '[*][url=' . generate_board_url() . '/' . $url_rewriter->rewrite(sprintf($tag_url_scheme, $tag['tagcat_name'], $tag['tag_name'])) . ']' . $tag['tag_title'] . '[/url][/*]';
+			$tags_list .= '[*][url=' . generate_board_url() . '/' . $url_rewriter->rewrite($tag_url_scheme[0], sprintf($tag_url_scheme[1], $tag['tagcat_name'], $tag['tag_name'])) . ']' . $tag['tag_title'] . '[/url][/*]';
 		}
 		$tags_list .= '[/list][/*]';
 	}
@@ -528,6 +528,173 @@ function increase_mem_limit($new_mem_limit)
 	}
 	
 	@ini_set('memory_limit', $mem_limit);
+}
+
+/**
+ * Truncate text and add three dots to the end if necessary
+ *
+ * @param string $text Text to be truncated
+ * @param int $max_length Text length limit
+ */
+function trim_text($text, $max_length)
+{
+	if (utf8_strlen($text) > $max_length)
+	{
+		$text = utf8_substr($text, 0, $max_length);
+
+		// Do not cut the text in the middle of a word
+		$text = substr($text, 0, strrpos ($text, ' '));
+
+		// Append three dots indicating that this is not the real end of the text
+		return $text . ' …';
+	}
+	else
+	{
+		return $text;
+	}
+}
+
+/**
+* BBCode-safe truncating of text
+*
+* @param string $text Text containing BBCode tags to be truncated
+* @param string $uid BBCode uid
+* @param int $max_length Text length limit
+* @param string $bitfield BBCode bitfield (optional)
+* @param bool $enable_bbcode Whether BBCode is enabled (true by default)
+* @return string
+*/
+function trim_post ($text, $uid, $max_length, $bitfield = '', $enable_bbcode = true)
+{
+	// If there is any custom BBCode that can have space in its argument, turn this on, 
+	// but else I suggest turning this off as it adds one additional (cached) SQL query
+	$check_custom_bbcodes = true;
+
+	if ($enable_bbcode && $check_custom_bbcodes)
+	{
+		global $db;
+		static $custom_bbcodes = array();
+
+		// Get all custom bbcodes
+		if (empty($custom_bbcodes))
+		{
+			$sql = 'SELECT bbcode_id, bbcode_tag
+				FROM ' . BBCODES_TABLE;
+			$result = $db->sql_query($sql, 108000);
+
+			while ($row = $db->sql_fetchrow($result))
+			{
+				// There can be problems only with tags having an argument
+				if (substr($row['bbcode_tag'], -1, 1) == '=')
+				{
+					$custom_bbcodes[$row['bbcode_id']] = array('[' . $row['bbcode_tag'], ':' . $uid . ']');
+				}
+			}
+			$db->sql_freeresult($result);
+		}
+	}
+
+	// First truncate the text
+	if (utf8_strlen($text) > $max_length)
+	{
+		$text = utf8_substr($text, 0, $max_length);
+
+		// Do not cut the text in the middle of a word
+		$text = substr($text, 0, strrpos ($text, ' '));
+
+		// Append three dots indicating that this is not the real end of the text
+		$text .= ' …';
+		
+		if (!$enable_bbcode)
+		{
+			return $text;
+		}
+	}
+	else
+	{
+		return $text;
+	}
+
+	// Some tags may contain spaces inside the tags themselves.
+	// If there is any tag that had been started but not ended
+	// cut the string off before it begins and add three dots
+	// to the end of the text again as this has been just cut off too.
+	$unsafe_tags = array(
+		array('<', '>'),
+		array('[quote=&quot;', "&quot;:$uid]"),
+	);
+
+	// If bitfield is given only check for tags that are surely existing in the text
+	if (!empty($bitfield))
+	{
+		// Get all used tags
+		$bitfield = new bitfield($bitfield);
+		$bbcodes_set = $bitfield->get_all_set();
+
+		// Add custom BBCodes having a parameter and being used
+		// to the array of potential tags that can be cut apart.
+		foreach ($custom_bbcodes as $bbcode_id => $bbcode_name)
+		{
+			if (in_array($bbcode_id, $bbcodes_set))
+			{
+				$unsafe_tags[] = $bbcode_name;
+			}
+		}
+	}
+	// Do the check for all possible tags
+	else
+	{
+		$unsafe_tags += $custom_bbcodes;
+	}
+
+	foreach($unsafe_tags as $tag)
+	{
+		if (($start_pos = strrpos($text, $tag[0])) > strrpos($text, $tag[1]))
+		{
+			$text = substr($text, 0, $start_pos) . ' …';
+		}
+	}
+
+	// Get all of the BBCodes the text contains.
+	// If it does not contain any than just skip this step.
+	// Preg expression is borrowed from strip_bbcode()
+	if (preg_match_all("#\[(\/?)([a-z0-9\*\+\-]+)(?:=(&quot;.*&quot;|[^\]]*))?(?::[a-z])?(?:\:$uid)\]#", $text, $matches, PREG_PATTERN_ORDER) != 0)
+	{
+		$open_tags = array();
+
+		for ($i = 0, $size = sizeof($matches[0]); $i < $size; ++$i)
+		{
+			$bbcode_name = &$matches[2][$i];
+			$opening = ($matches[1][$i] == '/') ? false : true;
+
+			// If a new BBCode is opened add it to the array of open BBCodes
+			if ($opening)
+			{
+				$open_tags[] = array(
+					'name' => $bbcode_name,
+					'plus' => ($opening && $bbcode_name == 'list' && !empty($matches[3][$i])) ? ':o' : '',
+				);
+			}
+			// If a BBCode is closed remove it from the array of open BBCodes.
+			// As always only the last opened open tag can be closed
+			// we only need to remove the last element of the array.
+			else
+			{
+				array_pop($open_tags);
+			}
+		}
+
+		// Sort open BBCode tags so the most recently opened will be the first (because it has to be closed first)
+		krsort ($open_tags);
+
+		// Close remaining open BBCode tags
+		foreach ($open_tags as $tag)
+		{
+			$text .= '[/' . $tag['name'] . $tag['plus'] . ':' . $uid . ']';	
+		}
+	}
+
+	return $text;
 }
 
 ?>

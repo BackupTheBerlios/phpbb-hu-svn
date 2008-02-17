@@ -2,7 +2,7 @@
 /**
 *
 * @package phpBB3
-* @version $Id: generate_utf_tables.php,v 1.7 2007/10/04 11:33:32 acydburn Exp $
+* @version $Id$
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *

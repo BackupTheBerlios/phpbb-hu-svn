@@ -1,0 +1,55 @@
+<!-- INCLUDE site_header.html -->
+
+<div id="main">
+	<h2 class="kb"><a href="{U_MODS_DB}">{L_MODS_DB}</a></h2>
+	<p>{L_ADD_MOD_EXPLAIN}</p>
+	
+	<h3>{L_ADD_MOD}</h3>
+	<form action="{U_ACTION}" method="post" id="postform" enctype="multipart/form-data">
+		{S_FORM_TOKEN}
+		<!-- IF ERROR -->
+		<div class="panel bg2">
+			<div class="inner"><span class="corners-top"><span></span></span>
+				<p class="error">{ERROR}</p>
+			<span class="corners-bottom"><span></span></span></div>
+		</div>
+		<!-- ENDIF -->
+		<div class="panel bg2">
+			<div class="inner"><span class="corners-top"><span></span></span>
+			<fieldset>
+				<dl>
+					<dt><label for="form_mod_title">{L_MOD_TITLE}:</label><br /><span>{L_MOD_TITLE_EXPLAIN}</span></dt>
+					<dd><input type="text" id="form_mod_title" name="mod_title" size="45" maxlength="60" value="{MOD_TITLE}" class="inputbox medium" /></dd>
+				</dl>
+				<!-- IF S_MODE eq 'add' -->
+				<dl>
+					<dt><label for="form_mod_com_url">{L_MOD_COM_URL}:</label><br /><span>{L_MOD_COM_URL_EXPLAIN}</span></dt>
+					<dd><input type="text" id="form_mod_com_url" name="mod_com_url" size="45" maxlength="80" value="{MOD_COM_URL}" class="inputbox medium" /></dd>
+				</dl>
+				<!-- ENDIF -->
+				<dl>
+					<dt><label for="form_mod_desc">{L_MOD_DESCRIPTION}:</label><br /><span>{L_MOD_DESCRIPTION_EXPLAIN}</span></dt>
+					<dd>
+						<textarea id="form_mod_desc" name="mod_desc" rows="3" cols="20" class="inputbox">{MOD_DESC}</textarea>
+					</dd>
+				</dl>
+				<dl>
+					<dt><label for="form_mod_loc_pack">{L_MOD_LOCALISATION_PACK}:</label><br /><span>{L_MOD_LOCALISATION_PACK_EXPLAIN}</span></dt>
+					<dd><input type="file" name="mod_loc_pack" id="form_mod_loc_pack" maxlength="{MAX_FILESIZE}" value="" class="inputbox autowidth" /></dd>
+				</dl>
+			</fieldset>
+			<span class="corners-bottom"><span></span></span></div>
+		</div>
+		<div class="panel bg2">
+			<div class="inner"><span class="corners-top"><span></span></span>
+			<fieldset>
+				<h3>{L_SUBMIT_MOD}</h3>
+				<p>{L_SUBMIT_MOD_CONFIRM}</p>
+				<input type="submit" name="submit" value="{L_SUBMIT_MOD}" class="button1" />
+			</fieldset>
+			<span class="corners-bottom"><span></span></span></div>
+		</div>
+	</form>
+</div>
+
+<!-- INCLUDE site_footer.html -->

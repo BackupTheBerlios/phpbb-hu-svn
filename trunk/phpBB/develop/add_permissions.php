@@ -1,7 +1,7 @@
 <?php
 // -------------------------------------------------------------
 //
-// $Id: add_permissions.php,v 1.9 2007/04/22 18:08:37 acydburn Exp $
+// $Id$
 //
 // FILENAME  : add_permissions.php
 // STARTED   : Sat Nov 06, 2004

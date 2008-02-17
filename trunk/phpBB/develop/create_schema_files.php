@@ -2,7 +2,7 @@
 /**
 *
 * @package phpBB3
-* @version $Id: create_schema_files.php 2 2008-01-26 21:50:36Z fberci $
+* @version $Id$
 * @copyright (c) 2006 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -2036,6 +2036,32 @@ function get_schema_struct()
 		),
 	);
 
+	// phpbb_mods
+	$schema_data['phpbb_mods'] = array(
+		'COLUMNS'		=> array(
+			'mod_id'				=> array('UINT', NULL, 'auto_increment'),
+			'topic_id'				=> array('UINT', 0),
+			'mod_db_id'				=> array('UINT', 0),
+			'mod_filename'			=> array('VCHAR', ''),
+			'mod_hu_title'			=> array('XSTEXT_UNI', ''),
+			'mod_en_title'			=> array('XSTEXT_UNI', ''),
+			'mod_version'			=> array('VCHAR:10', ''),
+			'mod_md5'				=> array('VCHAR:32', ''),
+			'mod_size'				=> array('UINT', 0),
+			'mod_author_id'			=> array('UINT', 0),
+			'mod_author_name'		=> array('XSTEXT_UNI', ''),
+			'mod_desc'				=> array('TEXT_UNI', ''),
+			'mod_last_checked'		=> array('UINT', 0),
+			//'mod_dls_loc'			=> array('UINT', 0),
+			//'mod_dls_com'			=> array('UINT', 0),
+	),
+		'PRIMARY_KEY'	=> 'mod_id',
+		'KEYS'			=> array(
+			'topic_id'				=> array('INDEX', 'topic_id'),
+			'mod_db_id'				=> array('UNIQUE', 'mod_db_id'),
+		),
+	);
+	
 	return $schema_data;
 }
 

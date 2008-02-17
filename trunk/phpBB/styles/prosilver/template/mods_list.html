@@ -1,0 +1,57 @@
+
+<!-- IF TOTAL_MODS -->
+<div class="topic-actions">
+	<div class="pagination">
+		{TOTAL_MODS}<!-- IF PAGINATION --> &bull; {PAGE_NUMBER} &bull; <span>{PAGINATION}</span><!-- ENDIF -->
+	</div>
+</div>
+<!-- ENDIF -->
+<!-- IF .modrow -->
+<div class="forabg">
+	<div class="inner"><span class="corners-top"><span></span></span>
+		<ul class="topiclist">
+			<li class="header">
+				<dl class="icon">
+					<dt>{L_MODS}</dt>
+					<dd class="information">{L_INFORMATION}</dd>
+				</dl>
+			</li>
+		</ul>
+		<ul class="topiclist">
+			<!-- BEGIN modrow -->
+			<li class="row bg1">
+				<dl>
+					<dt>
+						<!-- IF modrow.MOD_APPROVED eq false --><!-- IF modrow.U_MCP_QUEUE --><a href="{modrow.U_MCP_QUEUE}"><!-- ENDIF -->{modrow.UNAPPROVED_IMG}<!-- IF modrow.U_MCP_QUEUE --></a><!-- ENDIF --> <!-- ENDIF -->
+						<a class="forumtitle" href="{modrow.U_MOD}">{modrow.MOD_TITLE}</a>
+						{modrow.MOD_VERSION}					
+						<br />
+						{modrow.MOD_DESC}
+					</dt>
+					<dd style="padding: 5px; line-height: 1.4em;">
+						<!-- <span>By: <a href="./../../community/memberlist.php?mode=viewprofile&amp;u=222905" style="color: #660099;" class="username-coloured">eviL&lt;3</a></span><br />
+						<span>Downloads: 203</span><br />
+						<span>Rating: 5.00 / 5</span><br />
+						<span>phpBB Version: 3.0.0</span> -->
+					</dd>
+				</dl>
+			</li>
+			<!-- END modrow -->
+		</ul>
+	<span class="corners-bottom"><span></span></span></div>
+</div>
+<!-- IF TOTAL_MODS -->
+<div class="topic-actions">
+	<div class="pagination">
+		{TOTAL_MODS}<!-- IF PAGINATION --> &bull; {PAGE_NUMBER} &bull; <span>{PAGINATION}</span><!-- ENDIF -->
+	</div>
+</div>
+<!-- ENDIF -->
+
+<!-- ELSE -->
+<div class="panel">
+	<div class="inner"><span class="corners-top"><span></span></span>
+	<strong>{L_NO_MODS}</strong>
+	<span class="corners-bottom"><span></span></span></div>
+</div>
+<!-- ENDIF -->

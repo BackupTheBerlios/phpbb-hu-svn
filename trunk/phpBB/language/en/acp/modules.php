@@ -4,7 +4,7 @@
 * acp_modules [English]
 *
 * @package language
-* @version $Id: modules.php,v 1.13 2007/10/04 15:07:24 acydburn Exp $
+* @version $Id$
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *

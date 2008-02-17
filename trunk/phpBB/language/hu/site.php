@@ -196,4 +196,69 @@ $lang = array_merge($lang, array(
 $lang = array_merge($lang, array(
 	'NOT_FOUND'			=> '404-es hiba lépett fel, a keresett oldal nem található. Próbálj meg választani egy oldalt a menüből.',
 ));
+
+// MODs
+$lang = array_merge($lang, array(
+	'ACTIONS'			=> 'Műveletek',
+	'ADD_MOD'			=> 'Új MOD beküldése',
+	'ADD_MOD_EXPLAIN'	=> 'Itt egy új modifikációt (MOD-ot) tudsz beküldeni a MOD adatbázisunkba vagy egy már meglévőt frissíthetsz. A MOD adatbázisunkba csak olyan MOD-ok kerülhetnek be, melyek megtalálhatóak a phpbb.com MOD adatbázisában és tartalmaznak magyar fordítást. Ez utóbbi feltétel két módon teljesülhet, vagy a MOD alapból tartalmaz magyar fordítást (pl. kapcsolatba léptél a készítővel, és közvetlenül neki küldted el a fordításod), vagy ezen az oldalon feltölthetsz egy fordítást. Ennek a fordításnak hasonló formátumban kell lennie az eredeti MODX csomaghoz, viszont csak a nyelvi dolgokkal kapcsolatos részeket kell tartalmaznia. További információ később, esetleg másik oldalon.',
+	'APPROVE_MOD'		=> 'MOD jóváhagyása',
+
+	'COM_MOD_DB_PAGE'	=> 'PhpBB.com MOD adatbázisának megfelelő oldala',
+
+	'DELETE_MOD'		=> 'MOD törlése',
+	'DOWNLOAD_MOD'		=> '%1$s %2$s MOD letöltése',
+
+	'EDIT_MOD'			=> 'MOD szerkesztése',
+
+	'LAST_TEN_MODS'		=> 'Utolsó tíz MOD',
+
+	'MD5'							=> 'MD5',
+	'MODS'							=> 'MOD-ok',
+	'MODS_DB'						=> 'MOD adatbázis',
+	'MODS_DB_EXPLAIN'				=> 'Ez itt a MOD adatbázis csupa magyra lefordított MOD-dal, mely automatikusan frissül és melynek tartalmához te is hozzájárulhatsz stb. stb.!',
+	'MODS_DB_INDEX'					=> 'MOD-ok kezdőlap',
+	'MOD_ADDED'						=> 'A MOD sikeresen felvételre került.<br /><br />%sKattints ide, hogy megtekintsd a modifikációt.%s',
+	'MOD_ADDED_MOD'					=> 'A MOD sikeresen felvételre került, azonban mielőtt mindenki által letölhető lenne, egy moderátornak még át kell tekintenie.<br /><br />%sKattints ide, hogy visszatérj a MOD-okhoz.%s',
+	'MOD_COM_URL'					=> 'PhpBB.com MOD adatbázis link',
+	'MOD_COM_URL_EXPLAIN'			=> 'Link a MOD oldalához a phpBB.com MOD adatbázisában.',
+	'MOD_DESCRIPTION'				=> 'MOD leírása',
+	'MOD_DESCRIPTION_EXPLAIN'		=> 'Rövid leírás a MOD-ról, milyen funkciókat tartalmaz, mire kell ügyelni stb. (vedd alapul az angol leírást).',
+	'MOD_EN_TITLE'					=> 'MOD eredeti angol neve',
+	'MOD_LOCALISATION_PACK'			=> 'Fordítás csomag',
+	'MOD_LOCALISATION_PACK_EXPLAIN'	=> 'Ha a MOD nem tartalmaz alapból magyar fordítást, itt tölthetsz fel hozzá. A fordítás csomagnak ugyanolyan formátumban kell lennie, mint az eredeti MODX csomagnak (azonos könyvtárszerkezet, állománynevek stb.), de csak a nyelvi dolgokkal kapcsolatos állományokat kell tartalmaznia. A fordítás és az eredeti MOD összevonásra kerül, és egyben lesz letölthető.',
+	'MOD_TITLE'						=> 'MOD neve',
+	'MOD_TITLE_EXPLAIN'				=> 'A modifikáció magyar neve.',
+	'MOD_UPDATED'					=> 'A MOD sikeresen frissítésre került.<br /><br />%sKattints ide, hogy megtekintsd a modifikációt.%s',
+	'MOD_UPDATED_MOD'				=> 'A MOD sikeresen frissítésre került, azonban mielőtt mindenki által letölthető lenne, egy moderátornak még jóvá kell hagynia.<br /><br />%sKattints ide, hogy visszatérj a modofikációhoz.%s',
+	//'MOD_X'						=> '%s MOD',
+
+	'NO_COM_URL_FORMAT'				=> 'A MOD adatbázis link nem megfelelő formátumú.',
+	'NO_MOD'						=> 'Nincs ilyen MOD.',
+	'NO_MODS'						=> 'Nincsenek ilyen MOD-ok.',
+	'NO_MOD_DESC'					=> 'Nem adtál meg leírást a MOD-hoz.',
+	'NO_MOD_LOC_PACK_FILETYPE'		=> 'Nem megfelelő típusú (nem .zip) állományt töltöttél fel.',
+	'NO_MOD_MISSING_LANGUAGE_FILE'	=> 'Hiányzó nyelvi állomány: %s',
+	'NO_MOD_MISSING_STYLE_IMAGE'	=> 'Hiányzó lokalizálandó gomb/ikon: %s',
+	'NO_MOD_MOD_EXISTS'				=> 'Ez a MOD már benne van a MOD adatbázisunkban.',
+	'NO_MOD_MOD_NOT_EXISTS'			=> 'A phpbb.com MOD adatbázisában nem létezik ilyen azonosítójú MOD.',
+	'NO_MOD_SYNTAX_ERROR'			=> 'A nyelvi állomány PHP szintatikailag nem megfelelő: %s',
+	'NO_MOD_TITLE'					=> 'Nem adatad meg a MOD magyar nevét.',
+	'NO_MOD_UNAPPROVED'				=> 'A MOD ellenőrzés alatt van, egyelőre nem elérhető.',
+	'NO_TAGCAT'						=> 'Nincs ilyen címke kategória.',
+
+	'SIZE'				=> 'Méret',
+	'SUBMIT_MOD'		=> 'MOD beküldése',
+	'SUBMIT_MOD_CONFIRM'=> 'Biztosan be akarod küldeni a MOD-ot? Ellenőrizted, hogy tartalmazza az összes fordítással kapcsolatos dolgot? Átnézted a fordítást, megnézted, hogy van-e újabb verziója a MOD-nak?<br />Az elküldés után a MOD nem lesz azonnal elérhető, előbb az adminisztrátoroknak jóvá kell hagyniuk.<br />A MOD feldolgozása eltarthat egy ideig, kérünk, várj türelmesen.',
+
+	'TAG_X'				=> '%s címke',
+	'TAGCAT_X'			=> '%s címke kategória',
+
+	'UPLOADER'			=> 'Feltöltő',
+
+	'VIEW'				=> 'Megtekintés',
+	'VIEW_MOD'			=> '1 modifikáció',
+	'VIEW_MODS'			=> '%1$d modifikáció',
+));
+
 ?>

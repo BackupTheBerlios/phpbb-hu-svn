@@ -441,8 +441,7 @@ elseif ($mode == 'add' || $mode == 'edit')
 		{
 			$error[] = 'NO_ARTICLE_DESC';
 		}
-		// Strlen (AFAIK) is not utf-8 compatible, but this is what we need when entering data to the database
-		elseif (strlen($article_data['article_desc']) > 255)
+		elseif (utf8_strlen($article_data['article_desc']) > 255)
 		{
 			$error[] = 'NO_ARTICLE_DESC_LONG';
 		}
@@ -498,7 +497,7 @@ elseif ($mode == 'add' || $mode == 'edit')
 			'ARTICLE_TITLE'		=> $article_data['article_title'],
 			'ARTICLE_DESC'		=> $article_data['article_desc'],
 			'ARTICLE_CONTENT'	=> $article_data['article_content'],
-			'ARTICLE_TAGS'		=> generate_tags_bbcode_list($tags, $tagcats, "{$phpbb_root_path}kb.{$phpEx}?mode=tag&cat=%1\$s&name=%2\$s"),
+			'ARTICLE_TAGS'		=> generate_tags_bbcode_list($tags, $tagcats, array("{$phpbb_root_path}kb.{$phpEx}", "mode=tag&cat=%1\$s&name=%2\$s")),
 			'U_ARTICLE'			=> generate_board_url() . '/' . $url_rewriter->rewrite("{$phpbb_root_path}kb.{$phpEx}", "mode=article&name={$article_data['article_name']}"),
 		);
 		$message = generate_content_post('kb_article', $vars);
@@ -896,7 +895,7 @@ else
 		
 		// Assign tags
 		$article_tags = array();
-		$tags_list = explode(',', $row['tags']);
+		$tags_list = (!empty($row['tags'])) ? explode(',', $row['tags']) : array();
 		
 		// Group assigned tags into categories
 		foreach ($tags_list as $tag)

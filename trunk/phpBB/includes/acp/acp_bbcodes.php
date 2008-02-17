@@ -2,7 +2,7 @@
 /**
 *
 * @package acp
-* @version $Id: acp_bbcodes.php,v 1.48 2007/10/07 10:34:45 naderman Exp $
+* @version $Id$
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *

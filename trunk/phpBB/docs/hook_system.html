@@ -1,6 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en"
-	xml:lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en" xml:lang="en">
 <head>
 
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -15,20 +14,16 @@
 <title>phpBB3 &bull; Hook System</title>
 
 <style type="text/css">
-<!-- /*
+<!--
+
+/*
 	The original "prosilver" theme for phpBB3
 	Created by subBlue design :: http://www.subBlue.com
 */
-* {
-	margin: 0;
-	padding: 0;
-}
 
-html {
-	font-size: 100%;
-	height: 100%;
-	margin-bottom: 1px;
-}
+* { margin: 0; padding: 0; }
+
+html { font-size: 100%; height: 100%; margin-bottom: 1px; }
 
 body {
 	font-family: Verdana, Helvetica, Arial, sans-serif;
@@ -39,9 +34,7 @@ body {
 	padding: 12px 0;
 }
 
-img {
-	border-width: 0;
-}
+img { border-width: 0; }
 
 p {
 	line-height: 1.3em;
@@ -58,7 +51,7 @@ hr {
 	clear: both;
 }
 
-html,body {
+html, body {
 	color: #536482;
 	background-color: #FFFFFF;
 }
@@ -100,13 +93,8 @@ h3 {
 	margin-top: 20px;
 }
 
-.good {
-	color: green;
-}
-
-.bad {
-	color: red;
-}
+.good { color: green; }
+.bad { color: red; }
 
 .version {
 	margin-top: 20px;
@@ -116,14 +104,14 @@ h3 {
 	border-top: 1px solid #ccc;
 }
 
-code {
-	color: #006600;
-	font-weight: normal;
-	font-family: 'Courier New', monospace;
-	border-color: #D1D7DC;
-	border-width: 1px;
-	border-style: solid;
-	background-color: #FAFAFA;
+code { 
+	color: #006600; 
+	font-weight: normal; 
+	font-family: 'Courier New', monospace; 
+	border-color: #D1D7DC; 
+	border-width: 1px; 
+	border-style: solid; 
+	background-color: #FAFAFA; 
 }
 
 #wrap {
@@ -150,7 +138,7 @@ code {
 	padding: 10px 13px 0 10px;
 }
 
-a#logo :hover {
+a#logo:hover {
 	text-decoration: none;
 }
 
@@ -170,8 +158,7 @@ a#logo :hover {
 	padding: 0 5px;
 }
 
-span.corners-top,span.corners-bottom,span.corners-top span,span.corners-bottom span
-	{
+span.corners-top, span.corners-bottom, span.corners-top span, span.corners-bottom span {
 	font-size: 1px;
 	line-height: 1px;
 	display: block;
@@ -222,30 +209,15 @@ span.corners-bottom span {
 	color: #333333;
 }
 
-.content h2,.panel h2 {
+.content h2, .panel h2 {
 	color: #115098;
-	border-bottom-color: #CCCCCC;
+	border-bottom-color:  #CCCCCC;
 }
 
-a:link {
-	color: #898989;
-	text-decoration: none;
-}
-
-a:visited {
-	color: #898989;
-	text-decoration: none;
-}
-
-a:hover {
-	color: #d3d3d3;
-	text-decoration: underline;
-}
-
-a:active {
-	color: #d2d2d2;
-	text-decoration: none;
-}
+a:link	{ color: #898989; text-decoration: none; }
+a:visited	{ color: #898989; text-decoration: none; }
+a:hover	{ color: #d3d3d3; text-decoration: underline; }
+a:active	{ color: #d2d2d2; text-decoration: none; }
 
 hr {
 	border-color: #FFFFFF;
@@ -267,6 +239,7 @@ hr {
 	color: #28313F;
 }
 
+
 span.corners-top {
 	background-image: url("corners_left.png");
 }
@@ -287,23 +260,12 @@ span.corners-bottom span {
 	color: #BC2A4D;
 }
 
-a:link {
-	color: #105289;
-}
+a:link	{ color: #105289; }
+a:visited	{ color: #105289; }
+a:hover	{ color: #D31141; }
+a:active	{ color: #368AD2; }
 
-a:visited {
-	color: #105289;
-}
-
-a:hover {
-	color: #D31141;
-}
-
-a:active {
-	color: #368AD2;
-}
-
-.paragraph span.corners-top,.paragraph span.corners-bottom {
+.paragraph span.corners-top, .paragraph span.corners-bottom {
 	margin: 0 -10px;
 }
 
@@ -313,13 +275,13 @@ a:active {
 	color: #333333;
 }
 
-.content h2,.panel h2 {
+.content h2, .panel h2 {
 	color: #115098;
-	border-bottom-color: #CCCCCC;
+	border-bottom-color:  #CCCCCC;
 }
 
 .notice {
-	border-top-color: #CCCCCC;
+	border-top-color:  #CCCCCC;
 }
 
 .codebox {
@@ -329,21 +291,13 @@ a:active {
 	font-size: 1em;
 	margin-bottom: 10px;
 	display: block;
-	font: 0.9em Monaco, "Andale Mono", "Courier New", Courier, mono;
+	font: 0.9em Monaco, "Andale Mono","Courier New", Courier, mono;
 	line-height: 1.3em;
 }
 
-* html hr {
-	margin: 0;
-}
-
-* html span.corners-top,* html span.corners-bottom {
-	background-image: url("corners_left.gif");
-}
-
-* html span.corners-top span,* html span.corners-bottom span {
-	background-image: url("corners_right.gif");
-}
+* html hr { margin: 0; }
+* html span.corners-top, * html span.corners-bottom { background-image: url("corners_left.gif"); }
+* html span.corners-top span, * html span.corners-bottom span { background-image: url("corners_right.gif"); }
 
 .back2top {
 	clear: both;
@@ -354,88 +308,79 @@ a:active {
 .content ol {
 	margin-left: 25px;
 }
-//
--->
+
+//-->
 </style>
 
 </head>
 
 <body id="phpbb" class="section-docs">
 
-<div id="wrap"><a id="top" name="top" accesskey="t"></a>
-<div id="page-header">
-<div class="headerbar">
-<div class="inner"><span class="corners-top"><span></span></span>
+<div id="wrap">
+	<a id="top" name="top" accesskey="t"></a>
+	<div id="page-header">
+		<div class="headerbar">
+			<div class="inner"><span class="corners-top"><span></span></span>
 
-<div id="doc-description"><a href="../index.php" id="logo"><img
-	src="site_logo.gif" alt="" /></a>
-<h1>Hook System</h1>
-<p>This is an explanation of how to use the phpBB3 hook system.</p>
-<p style="display: none;"><a href="#start_here">Skip</a></p>
-</div>
+			<div id="doc-description">
+				<a href="../index.php" id="logo"><img src="site_logo.gif" alt="" /></a>
+				<h1>Hook System</h1>
+				<p>This is an explanation of how to use the phpBB3 hook system.</p>
+				<p style="display: none;"><a href="#start_here">Skip</a></p>
+			</div>
 
-<span class="corners-bottom"><span></span></span></div>
-</div>
-</div>
+			<span class="corners-bottom"><span></span></span></div>
+		</div>
+	</div>
 
-<a name="start_here"></a>
+	<a name="start_here"></a>
 
-<div id="page-body">
+	<div id="page-body">
 
-<h1>Hook System</h1>
+	<h1>Hook System</h1>
 
-<div class="paragraph menu">
-<div class="inner"><span class="corners-top"><span></span></span>
+	<div class="paragraph menu">
+		<div class="inner"><span class="corners-top"><span></span></span>
 
-<div class="content">
+		<div class="content">
 
-<ol>
-	<li><a href="#intro">Introduction</a></li>
-	<li><a href="#use">Allow hooks in functions/methods</a></li>
-	<li><a href="#register">Registering hooks</a></li>
-	<li><a href="#return">Result returning</a></li>
-	<li><a href="#embed">Embedding your hook files/classes/methods</a></li>
-	<li><a href="#disclaimer">Copyright and disclaimer</a></li>
-</ol>
+			<ol>
+				<li><a href="#intro">Introduction</a></li>
+				<li><a href="#use">Allow hooks in functions/methods</a></li>
+				<li><a href="#register">Registering hooks</a></li>
+				<li><a href="#return">Result returning</a></li>
+				<li><a href="#embed">Embedding your hook files/classes/methods</a></li>
+				<li><a href="#disclaimer">Copyright and disclaimer</a></li>
+			</ol>
 
-</div>
+		</div>
 
-<span class="corners-bottom"><span></span></span></div>
-</div>
+		<span class="corners-bottom"><span></span></span></div>
+	</div>
 
-<hr />
+	<hr />
 
-<a name="intro"></a>
-<h2>1. Introduction</h2>
+	<a name="intro"></a><h2>1. Introduction</h2>
 
-<div class="paragraph">
-<div class="inner"><span class="corners-top"><span></span></span>
+	<div class="paragraph">
+		<div class="inner"><span class="corners-top"><span></span></span>
 
-<div class="content">
+		<div class="content">
 
 <h3>What is it?</h3>
 
-<p>The hook system allows applicaton and mod developers to hook into
-phpBB's or their own functions.</p>
+<p>The hook system allows applicaton and mod developers to hook into phpBB's or their own functions.</p>
 
 <h3>Pre-defined hookable phpBB3 functions</h3>
 
-<p>In phpBB3 there are four functions you are able to hook into with
-your custom functions:</p>
+<p>In phpBB3 there are four functions you are able to hook into with your custom functions:</p>
 
-<p><code>phpbb_user_session_handler();</code> which is called within
-user::setup after the session and the user object is correctly
-initialized.<br />
-<code>append_sid($url, $params = false, $is_amp = true,
-$session_id = false);</code> which is called for building urls (appending the
-session id)<br />
-<code>$template-&gt;display($handle, $include_once = true);</code> which
-is called directly before outputting the (not-yet-compiled) template.<br />
-<code>exit_handler();</code> which is called at the very end of phpBB3's
-execution.</p>
+<p><code>phpbb_user_session_handler();</code> which is called within user::setup after the session and the user object is correctly initialized.<br />
+<code>append_sid($url, $params = false, $is_amp = true, $session_id = false);</code> which is called for building urls (appending the session id)<br />
+<code>$template-&gt;display($handle, $include_once = true);</code> which is called directly before outputting the (not-yet-compiled) template.<br />
+<code>exit_handler();</code> which is called at the very end of phpBB3's execution.</p>
 
-<p>There are also valid external constants you may want to use if
-you embed phpBB3 into your application:</p>
+<p>There are also valid external constants you may want to use if you embed phpBB3 into your application:</p>
 
 <div class="codebox"><pre>
 PHPBB_MSG_HANDLER (overwrite message handler)
@@ -444,28 +389,23 @@ PHPBB_ROOT_PATH   (overwrite $phpbb_root_path)
 PHPBB_ADMIN_PATH  (overwrite $phpbb_admin_path)
 </pre></div>
 
-</div>
+		</div>
 
-<div class="back2top"><a href="#wrap" class="top">Back to Top</a></div>
+		<div class="back2top"><a href="#wrap" class="top">Back to Top</a></div>
 
-<span class="corners-bottom"><span></span></span></div>
-</div>
+		<span class="corners-bottom"><span></span></span></div>
+	</div>
 
-<a name="use"></a>
-<h2>2. Allow hooks in functions/methods</h2>
+	<a name="use"></a><h2>2. Allow hooks in functions/methods</h2>
 
-<div class="paragraph">
-<div class="inner"><span class="corners-top"><span></span></span>
+	<div class="paragraph">
+		<div class="inner"><span class="corners-top"><span></span></span>
 
-<div class="content">
+		<div class="content">
 
-<p>The following examples explain how phpBB3 utilize the in-build
-hook system. You will be more interested in registering your hooks, but
-showing you this may help you understand the system better along the
-way.</p>
+<p>The following examples explain how phpBB3 utilize the in-build hook system. You will be more interested in registering your hooks, but showing you this may help you understand the system better along the way.</p>
 
-<p>First of all, this is how a function need to be layed out if you
-want to allow it to be hookable...</p>
+<p>First of all, this is how a function need to be layed out if you want to allow it to be hookable...</p>
 
 <div class="codebox"><pre>
 function my_own_function($my_first_parameter, $my_second_parameter)
@@ -484,8 +424,7 @@ function my_own_function($my_first_parameter, $my_second_parameter)
 }
 </pre></div>
 
-<p>Above, the call_hook function should always be mapping your
-function call... in regard to the number of parameters passed.</p>
+<p>Above, the call_hook function should always be mapping your function call... in regard to the number of parameters passed.</p>
 
 <p>This is how you could make a method being hookable...</p>
 
@@ -509,14 +448,9 @@ class my_hookable_object
 }
 </pre></div>
 
-<p>The only difference about calling it is the way you define the
-first parameter. For a function it is only <code>__FUNCTION__</code>,
-for a method it is <code>array(__CLASS__, __FUNCTION__)</code>. In PHP4
-__CLASS__ is always returning the class in lowercase.</p>
+<p>The only difference about calling it is the way you define the first parameter. For a function it is only <code>__FUNCTION__</code>, for a method it is <code>array(__CLASS__, __FUNCTION__)</code>. In PHP4 __CLASS__ is always returning the class in lowercase.</p>
 
-<p>Now, in phpBB there are some pre-defined hooks available, but how
-do you make your own hookable function available (and therefore allowing
-others to hook into it)? For this, there is the add_hook() method:</p>
+<p>Now, in phpBB there are some pre-defined hooks available, but how do you make your own hookable function available (and therefore allowing others to hook into it)? For this, there is the add_hook() method:</p>
 
 <div class="codebox"><pre>
 // Adding your own hookable function:
@@ -526,33 +460,26 @@ $phpbb_hook-&gt;add_hook('my_own_function');
 $phpbb_hook-&gt;add_hook(array('my_hookable_object', 'hook_me'));
 </pre></div>
 
-<p>You are also able to remove the possibility of hooking a
-function/method by calling <code>$phpbb_hook-&gt;remove_hook()</code>
-with the same parameters as add_hook().<br />
-This comes in handy if you want to force some hooks not to be called -
-at all.</p>
+<p>You are also able to remove the possibility of hooking a function/method by calling <code>$phpbb_hook-&gt;remove_hook()</code> with the same parameters as add_hook().<br />
+This comes in handy if you want to force some hooks not to be called - at all.</p>
 
-</div>
+		</div>
 
-<div class="back2top"><a href="#wrap" class="top">Back to Top</a></div>
+		<div class="back2top"><a href="#wrap" class="top">Back to Top</a></div>
 
-<span class="corners-bottom"><span></span></span></div>
-</div>
+		<span class="corners-bottom"><span></span></span></div>
+	</div>
 
-<a name="register"></a>
-<h2>3. Registering hooks</h2>
+	<a name="register"></a><h2>3. Registering hooks</h2>
 
-<div class="paragraph">
-<div class="inner"><span class="corners-top"><span></span></span>
+	<div class="paragraph">
+		<div class="inner"><span class="corners-top"><span></span></span>
 
-<div class="content">
+		<div class="content">
 
-<h3>Registering hooks</h3>
+		<h3>Registering hooks</h3>
 
-<p>Now to actually defining your functions which should be called.
-For this we take the append_sid() function as an example (this function
-is able to be hooked by default). We create two classes, one being
-static and a function:</p>
+<p>Now to actually defining your functions which should be called. For this we take the append_sid() function as an example (this function is able to be hooked by default). We create two classes, one being static and a function:</p>
 
 <div class="codebox"><pre>
 class my_append_sid_class
@@ -592,13 +519,9 @@ function my_append_sid(&amp;$hook, $url, $params = false, $is_amp = true, $sessi
 $my_second_append_sid_class = new my_second_append_sid_class();
 </pre></div>
 
-<p>Make sure you add the same parameters to your function as is
-defined for the hookable function with one exception: The first variable
-is always <code>&amp;$hook</code>... this is the hook object itself you
-are able to operate on.</p>
+<p>Make sure you add the same parameters to your function as is defined for the hookable function with one exception: The first variable is always <code>&amp;$hook</code>... this is the hook object itself you are able to operate on.</p>
 
-<p>Now we register the hooks one by one with the <code>$phpbb_hook-&gt;register()</code>
-method:</p>
+<p>Now we register the hooks one by one with the <code>$phpbb_hook-&gt;register()</code> method:</p>
 
 <div class="codebox"><pre>
 // Now, we register our append_sid &quot;replacements&quot; in a stacked way...
@@ -610,8 +533,7 @@ $phpbb_hook-&gt;register('append_sid', array('my_append_sid_class', 'my_append_s
 $phpbb_hook-&gt;register('append_sid', array(&amp;$my_second_append_sid_class, 'my_append_sid'));
 </pre></div>
 
-<p>With this you are even able to make your own functions that are
-already hooked itself being hooked again...</p>
+<p>With this you are even able to make your own functions that are already hooked itself being hooked again...</p>
 
 <div class="codebox"><pre>
 // Registering hook, which will be called
@@ -624,39 +546,23 @@ $phpbb_hook-&gt;add_hook('my_own_append_sid');
 $phpbb_hook-&gt;register('my_own_append_sid', 'also_my_own_append_sid');
 </pre></div>
 
-<h3>Special treatment/chains</h3>
+		<h3>Special treatment/chains</h3>
 
-<p>The <code>register</code> method is able to take a third argument
-to specify a special 'chain' mode. The valid modes are <code>first</code>,
-<code>last</code> and <code>standalone</code></p>
+		<p>The <code>register</code> method is able to take a third argument to specify a special 'chain' mode. The valid modes are <code>first</code>, <code>last</code> and <code>standalone</code></p>
 
-<p><code>$phpbb_hook-&gt;register('append_sid',
-'my_own_append_sid', 'first')</code> would make sure that the function is
-called in the beginning of the chain. It is possible that more than one
-function is called within the first block - here the FIFO principle is
-used.</p>
+		<p><code>$phpbb_hook-&gt;register('append_sid', 'my_own_append_sid', 'first')</code> would make sure that the function is called in the beginning of the chain. It is possible that more than one function is called within the first block - here the FIFO principle is used.</p>
 
-<p><code>$phpbb_hook-&gt;register('append_sid',
-'my_own_append_sid', 'last')</code> would make sure that the function is called
-at the very end of the chain. It is possible that more than one function
-is called within the last block - here the FIFO principle is used.</p>
+		<p><code>$phpbb_hook-&gt;register('append_sid', 'my_own_append_sid', 'last')</code> would make sure that the function is called at the very end of the chain. It is possible that more than one function is called within the last block - here the FIFO principle is used.</p>
 
-<p><code>$phpbb_hook-&gt;register('append_sid',
-'my_own_append_sid', 'standalone')</code> makes sure only the defined function
-is called. All other functions are removed from the chain and no other
-functions are added to it later on. If two applications try to trigger
-the standalone mode a PHP notice will be printed and the second function
-being discarded.</p>
+		<p><code>$phpbb_hook-&gt;register('append_sid', 'my_own_append_sid', 'standalone')</code> makes sure only the defined function is called. All other functions are removed from the chain and no other functions are added to it later on. If two applications try to trigger the standalone mode a PHP notice will be printed and the second function being discarded.</p>
 
-<h3>Only allowing hooks for some objects</h3>
+		<h3>Only allowing hooks for some objects</h3>
 
-<p>Because the hook system is not able to differate between
-initialized objects and only operate on the class, you need to solve
-this on the code level.</p>
+		<p>Because the hook system is not able to differate between initialized objects and only operate on the class, you need to solve this on the code level.</p>
 
-<p>One possibility would be to use a property:</p>
+		<p>One possibility would be to use a property:</p>
 
-<div class="codebox"><pre>
+		<div class="codebox"><pre>
 class my_hookable_object
 {
 	function blabla()
@@ -713,10 +619,9 @@ not hooked
 hooked 
 </pre></div>
 
-<p>A different possibility would be using a function variable (which
-could be left out on passing the function variables to the hook):</p>
+		<p>A different possibility would be using a function variable (which could be left out on passing the function variables to the hook):</p>
 
-<div class="codebox"><pre>
+		<div class="codebox"><pre>
 class my_hookable_object
 {
 	function blabla()
@@ -761,33 +666,28 @@ echo $first_object-&gt;hook_me('first', 'second', false) . '&lt;br /&gt;';
 echo $second_object-&gt;hook_me('first', 'second') . '&lt;br /&gt;';
 		</pre></div>
 
-<p>OUTPUT:</p>
+		<p>OUTPUT:</p>
 
-<div class="codebox"><pre>
+		<div class="codebox"><pre>
 not hooked
 hooked 
 		</pre></div>
 
-</div>
+		</div>
 
-<div class="back2top"><a href="#wrap" class="top">Back to Top</a></div>
+		<div class="back2top"><a href="#wrap" class="top">Back to Top</a></div>
 
-<span class="corners-bottom"><span></span></span></div>
-</div>
+		<span class="corners-bottom"><span></span></span></div>
+	</div>
 
-<a name="return"></a>
-<h2>4. Result returning</h2>
+	<a name="return"></a><h2>4. Result returning</h2>
 
-<div class="paragraph">
-<div class="inner"><span class="corners-top"><span></span></span>
+	<div class="paragraph">
+		<div class="inner"><span class="corners-top"><span></span></span>
 
-<div class="content">
+		<div class="content">
 
-<p>Generally, the distinction has to be made if a function returns
-the result obtained from the called function or continue the execution.
-Based on the needs of the application this may differ. Therefore, the
-function returns the results only if the called hook function is
-returning a result.</p>
+<p>Generally, the distinction has to be made if a function returns the result obtained from the called function or continue the execution. Based on the needs of the application this may differ. Therefore, the function returns the results only if the called hook function is returning a result.</p>
 
 <h3>Case 1 - Returning the result</h3>
 
@@ -812,8 +712,7 @@ function append_sid($url, $params = false, $is_amp = true, $session_id = false)
 }
 </pre></div>
 
-<p>Now, the following function is yours. Since you return a value,
-the append_sid() function itself is returning it as is:</p>
+<p>Now, the following function is yours. Since you return a value, the append_sid() function itself is returning it as is:</p>
 
 <div class="codebox"><pre>
 // The function called
@@ -826,15 +725,11 @@ function my_append_sid(&amp;$hook, $url, $params = false, $is_amp = true, $sessi
 }
 </pre></div>
 
-<p>To be able to get the results returned from functions higher in
-the change the <code>previous_hook_result()</code> method should always
-be used, it returns an <code>array('result' => [your result])</code>
-construct.</p>
+<p>To be able to get the results returned from functions higher in the change the <code>previous_hook_result()</code> method should always be used, it returns an <code>array('result' => [your result])</code> construct.</p>
 
 <h3>Case 2 - Not Returning any result</h3>
 
-<p>Sometimes applications want to return nothing and therefore force
-the underlying function to continue it's execution:</p>
+<p>Sometimes applications want to return nothing and therefore force the underlying function to continue it's execution:</p>
 
 <div class="codebox"><pre>
 function append_sid($url, $params = false, $is_amp = true, $session_id = false)
@@ -866,8 +761,7 @@ function my_append_sid(&amp;$hook, $url, $params = false, $is_amp = true, $sessi
 }
 </pre></div>
 
-<p>Please Note: The decision to return or not return is solely made
-of the very last function call within the hook chain. An example:</p>
+<p>Please Note: The decision to return or not return is solely made of the very last function call within the hook chain. An example:</p>
 
 <div class="codebox"><pre>
 // The function called
@@ -895,37 +789,27 @@ $phpbb_hook->register('append_sid', 'my_append_sid');
 $phpbb_hook->register('append_sid', 'my_own_append_sid');
 </pre></div>
 
-</div>
+		</div>
 
-<div class="back2top"><a href="#wrap" class="top">Back to Top</a></div>
+		<div class="back2top"><a href="#wrap" class="top">Back to Top</a></div>
 
-<span class="corners-bottom"><span></span></span></div>
-</div>
+		<span class="corners-bottom"><span></span></span></div>
+	</div>
 
-<a name="embed"></a>
-<h2>5. Embedding your hook files/classes/methods</h2>
+	<a name="embed"></a><h2>5. Embedding your hook files/classes/methods</h2>
 
-<div class="paragraph">
-<div class="inner"><span class="corners-top"><span></span></span>
+	<div class="paragraph">
+		<div class="inner"><span class="corners-top"><span></span></span>
 
-<div class="content">
+		<div class="content">
 
 <p>There are basically two methods you are able to choose from:</p>
 
-<p>1) Add a file to includes/hooks/. The file need to be prefixed by
-<code>hook_</code>. This file is included within common.php, you are
-able to register your hooks, include other files or functions, etc. It
-is advised to only include other files if needed (within a function call
-for example).</p>
+<p>1) Add a file to includes/hooks/. The file need to be prefixed by <code>hook_</code>. This file is included within common.php, you are able to register your hooks, include other files or functions, etc. It is advised to only include other files if needed (within a function call for example).</p>
 
-<p>Please be aware that you need to purge your cache within the ACP
-to make your newly placed file available to phpBB3.</p>
+<p>Please be aware that you need to purge your cache within the ACP to make your newly placed file available to phpBB3.</p>
 
-<p>2) The second method is meant for those wanting to wrap phpBB3
-without placing a custom file to the hooks directory. This is mostly
-done by including phpBB's files within the application file. To be able
-to register your hooks you need to create a function within your
-application:</p>
+<p>2) The second method is meant for those wanting to wrap phpBB3 without placing a custom file to the hooks directory. This is mostly done by including phpBB's files within the application file. To be able to register your hooks you need to create a function within your application:</p>
 
 <div class="codebox"><pre>
 // My function which gets executed within the hooks constuctor
@@ -939,49 +823,37 @@ function phpbb_hook_register(&amp;$hook)
 
 <p>You should get the idea. ;)</p>
 
-</div>
+		</div>
 
-<div class="back2top"><a href="#wrap" class="top">Back to Top</a></div>
+		<div class="back2top"><a href="#wrap" class="top">Back to Top</a></div>
 
-<span class="corners-bottom"><span></span></span></div>
-</div>
+		<span class="corners-bottom"><span></span></span></div>
+	</div>
 
-<a name="disclaimer"></a>
-<h2>6. Copyright and disclaimer</h2>
+	<a name="disclaimer"></a><h2>6. Copyright and disclaimer</h2>
 
-<div class="paragraph">
-<div class="inner"><span class="corners-top"><span></span></span>
+	<div class="paragraph">
+		<div class="inner"><span class="corners-top"><span></span></span>
 
-<div class="content">
+		<div class="content">
 
-<p>This application is opensource software released under the <a
-	href="http://opensource.org/licenses/gpl-license.php">GPL</a>. Please
-see source code and the docs directory for more details. This package
-and its contents are Copyright (c) 2000, 2002, 2005, 2007 <a
-	href="http://www.phpbb.com/">phpBB Group</a>, All Rights Reserved.</p>
+	<p>This application is opensource software released under the <a href="http://opensource.org/licenses/gpl-license.php">GPL</a>. Please see source code and the docs directory for more details. This package and its contents are Copyright (c) 2000, 2002, 2005, 2007 <a href="http://www.phpbb.com/">phpBB Group</a>, All Rights Reserved.</p>
 
-</div>
+		</div>
 
-<div class="back2top"><a href="#wrap" class="top">Back to Top</a></div>
+		<div class="back2top"><a href="#wrap" class="top">Back to Top</a></div>
 
-<span class="corners-bottom"><span></span></span></div>
-</div>
+		<span class="corners-bottom"><span></span></span></div>
+	</div>
 
-<<<<<<< hook_system.html
-<div id="page-footer">
-<div class="version">$Id: hook_system.html,v 1.3 2007/09/23
-14:14:31 acydburn Exp $</div>
-</div>
-</div>
-</div>
-=======
 	<div id="page-footer">
-		<div class="version">$Id: hook_system.html,v 1.4 2007/11/18 15:37:17 naderman Exp $</div>
+		<div class="version">$Id$</div>
 	</div>
 </div></div>
->>>>>>> 1.4
 
-<div><a id="bottom" name="bottom" accesskey="z"></a></div>
+<div>
+	<a id="bottom" name="bottom" accesskey="z"></a>
+</div>
 
 </body>
 </html>

@@ -1,0 +1,9 @@
+[b]MOD neve:[/b] [url={U_MOD}]{MOD_HU_TITLE}[/url]
+[b]MOD angol neve:[/b] {MOD_EN_TITLE}
+[b]Verzió:[/b] {MOD_VERSION}
+[b]MOD leírása:[/b] {MOD_DESC}
+[b]Szerző:[/b] [url={U_MOD_AUTHOR}]{MOD_AUTHOR}[/url]
+[b]phpBB.com MOD adatbázis oldal:[/b] [url={U_MOD_COM_DB}]Megtekintés[/url]
+[b]Címkék:[/b] {MOD_TAGS}
+
+[url={U_MOD}][b]« Vissza a MOD-hoz[/b][/url]

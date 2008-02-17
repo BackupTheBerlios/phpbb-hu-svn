@@ -155,7 +155,7 @@ class compress_zip extends compress
 	*/
 	function compress_zip($mode, $file)
 	{
-		return $this->fp = @fopen($file, $mode . 'b');
+		return $this->fp = fopen($file, $mode . 'b');
 	}
 
 	/**

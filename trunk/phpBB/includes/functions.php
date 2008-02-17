@@ -2,7 +2,7 @@
 /**
 *
 * @package phpBB3
-* @version $Id: functions.php,v 1.647 2007/12/10 18:35:28 kellanved Exp $
+* @version $Id$
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -235,7 +235,7 @@ function still_on_time($extra_time = 15)
 
 /**
 *
-* @version Version 0.1 / $Id: functions.php,v 1.647 2007/12/10 18:35:28 kellanved Exp $
+* @version Version 0.1 / $Id$
 *
 * Portable PHP password hashing framework.
 *

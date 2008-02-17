@@ -1,0 +1,88 @@
+<!-- INCLUDE site_header.html -->
+
+<div id="main">
+	<a href="{U_MODS_DB}"><h2 class="mods">{L_MODS_DB}</h2></a>
+
+	<h3>{MOD_TITLE}</h3>
+	
+	<p>{MOD_DESC}</p>
+	
+	<div class="forabg">
+		<div class="inner"><span class="corners-top"><span></span></span>
+		<ul class="topiclist">
+			<li class="header">
+				<dl class="icon">
+					<dt>{MOD_TITLE}</dt>
+					<dd></dd>
+				</dl>
+	
+			</li>
+		</ul>
+		<ul class="topiclist forums">
+			<li class="row">
+				<dl>
+					<dt>{L_AUTHOR}:</dt>
+					<dd>{MOD_AUTHOR_FULL}</dd>
+				</dl>
+			</li>
+			<li class="row">
+				<dl>
+					<dt>{L_UPLOADER}:</dt>
+					<dd>{MOD_POSTER_FULL}</dd>
+				</dl>
+			</li>
+			<li class="row">
+				<dl>
+					<dt>{L_VERSION}:</dt>
+					<dd>{MOD_VERSION}</dd>
+				</dl>
+			</li>
+			<li class="row">
+				<dl>
+					<dt>{L_MOD_EN_TITLE}:</dt>
+					<dd>{MOD_EN_TITLE}</dd>
+				</dl>
+			</li>
+			<li class="row">
+				<dl>
+					<dt>{L_COM_MOD_DB_PAGE}:</dt>
+					<dd><a href="{U_COM_PAGE}">{L_VIEW}</a></dd>
+				</dl>
+			</li>
+			<li class="row">
+				<dl>
+					<dt><strong>{L_TAGS}</strong></dt>
+					<dd></dd>
+				</dl>
+			</li>
+			<!-- BEGIN tagcat -->
+			<li class="row">
+				<dl>
+					<dt>{tagcat.TAGCAT_TITLE}:</dt>
+					<dd>
+						<ul>
+							<!-- BEGIN tag -->
+							<li><a href="{tagcat.tag.U_TAG}">{tagcat.tag.TAG_TITLE}</a></li>
+							<!-- END tag -->
+						</ul>
+					</dd>
+				</dl>
+			</li>
+			<!-- END tagcat -->
+		</ul>
+		<span class="corners-bottom"><span></span></span></div>
+	</div>
+</div>
+	
+<div id="extras2">
+	<dl class="extra-box download-contrib">
+		<dt><a href="{U_DOWNLOAD}">{DOWNLOAD_MOD}</a></dt>
+		<dd>{L_SIZE}: {MOD_SIZE}<br />{L_MD5}: {MOD_MD5}</dd>
+	</dl>
+</div>
+
+<!-- DEFINE $VIEW_MOD = 1 -->
+
+<!-- INCLUDE sidemenu.html -->
+
+<!-- INCLUDE site_footer.html -->

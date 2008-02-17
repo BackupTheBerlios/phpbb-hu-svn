@@ -102,6 +102,15 @@ $urls = array(
 		array('^mode=delete&id=([0-9]+)', 'utmutatok/torol/$1'),
 		array('^', 'utmutatok'),
 	),
+	'mods.php' => array(
+		array('^mode=tagcat&cat=([a-zA-Z0-9.+_-]+)', 'modok/cimkek/$1'),
+		array('^mode=listtag&cat=([a-zA-Z0-9.+_-]+)&tag=([a-zA-Z0-9.+_-]+)', 'modok/cimkek/$1/$2'),
+		array('^mode=mod&id=([0-9]+)', 'modok/mod/$1'),
+		array('^mode=add', 'modok/uj'),
+		array('^mode=edit&id=([0-9]+)', 'modok/szerk/$1'),
+		array('^mode=delete&id=([0-9]+)', 'modok/torol/$1'),
+		array('^', 'modok'),
+	),
 );
 
 ?>

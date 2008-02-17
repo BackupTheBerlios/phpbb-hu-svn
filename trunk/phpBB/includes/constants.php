@@ -2,7 +2,7 @@
 /**
 *
 * @package phpBB3
-* @version $Id: constants.php 2 2008-01-26 21:50:36Z fberci $
+* @version $Id$
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -249,6 +249,7 @@ define('BUGS_REPORTS_TABLE',		$table_prefix . 'bugs_reports');
 define('BUGS_STATUSES_TABLE',		$table_prefix . 'bugs_statuses');
 define('BUGS_VERSIONS_TABLE',		$table_prefix . 'bugs_versions');
 define('KB_ARTICLES_TABLE',			$table_prefix . 'kb_articles');
+define('MODS_TABLE',				$table_prefix . 'mods');
 define('PAGES_TABLE',				$table_prefix . 'pages');
 define('TAGCATS_TABLE',				$table_prefix . 'tagcats');
 define('TAGMATCH_TABLE',			$table_prefix . 'tagmatch');
@@ -265,6 +266,7 @@ define('BOT_USER', 2163);
 define('CMS_FORUM_ID', 50); // The forum id of the category containing the site-related contents
 define('BUGS_FORUM_ID', 51);
 define('KB_FORUM_ID', 183);
+define('MODS_FORUM_ID', 184);
 
 // Tag modules
 define('TAG_KB', 1);

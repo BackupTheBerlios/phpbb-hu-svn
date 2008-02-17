@@ -2,7 +2,7 @@
 /**
 *
 * @package install
-* @version $Id: functions_convert.php,v 1.68 2007/10/14 12:31:32 kellanved Exp $
+* @version $Id$
 * @copyright (c) 2006 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *

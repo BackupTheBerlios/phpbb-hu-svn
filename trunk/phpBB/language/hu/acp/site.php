@@ -34,9 +34,15 @@ if (empty($lang) || !is_array($lang))
 $lang = array_merge($lang, array(
 	'ACP_SITE_SETTINGS_EXPLAIN'	=> 'Itt az oldallal kapcsolatos beállításokat változtathatsz meg.',
 
-	'TEST'	=> 'Teszt beállítás',
+	'DOWNLOADS_DIR'			=> 'Letöltések könyvtára',
+	'DOWNLOADS_DIR_EXPLAIN'	=> 'Elérési út ahhoz a könyvtárhoz, ahol a letöltések (pl. phpBB csomagok, MOD-ok) tárolásra kerülnek. Megadott alkönyvtárakkal kell rendelkezni (pl. külön MOD-oknak és phpBB csomagoknak).',
 
-	
+	'MODS_LOC_STORE'		=> 'MOD fordítás csomagok tárolási helye',
+	'MODS_LOC_STORE_EXPLAIN'=> 'Itt kerülnek eltárolásra a MOD fordítás csomagok (hogy később az újabb verziójú csomagokhoz fel lehessen őket használni, ill. külön ellenőrizni lehessen csak a fordítást).',
+	'MODS_TMP_DIR'			=> 'Ideiglenes tmp könyvtár letöltésekkel kapcsolatos műveletekhez',
+	'MODS_TMP_DIR_EXPLAIN'	=> 'Ide kerülnek kicsomagolásra a MOD csomagok az újracsomagolás előtt; a könyvtár elvileg mindig kiürítésre kerül.',
+
+	'TEST'	=> 'Teszt beállítás',
 ));
 
 // Bug tracker

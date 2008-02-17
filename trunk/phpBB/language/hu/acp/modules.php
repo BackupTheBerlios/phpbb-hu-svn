@@ -4,7 +4,7 @@
 * acp_modules [Hungarian]
 *
 * @package language
-* @version $Id: modules.php,v 1.10 2007/11/08 20:56:23 fberci Exp $
+* @version $Id$
 * @copyright (c) 2007 „Magyar phpBB Közösség fordítók”
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 * Original copyright: (c) 2005 phpBB Group

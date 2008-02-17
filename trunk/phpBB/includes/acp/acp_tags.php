@@ -2,7 +2,7 @@
 /**
 *
 * @package acp
-* @version $Id: acp_forums.php,v 1.68 2007/07/22 20:10:08 acydburn Exp $
+* @version $Id$
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -366,11 +366,11 @@ class acp_tags
 				}
 
 				$tagcats_list = '';
-				$sql = 'SELECT tagcat_id, tagcat_title FROM ' . TAGCATS_TABLE . ' ORDER BY tagcat_title';
+				$sql = 'SELECT tagcat_id, tagcat_module, tagcat_title FROM ' . TAGCATS_TABLE . ' ORDER BY tagcat_module, tagcat_title';
 				$result = $db->sql_query($sql);
 				while ($row = $db->sql_fetchrow($result))
 					{
-						$tagcats_list .= '<option value="' . $row['tagcat_id'] . '" ' . ($row['tagcat_id'] == $tag_data['tagcat_id'] ? ' selected="selected"' : '') . '>' . $row['tagcat_title'] . '</option>';
+						$tagcats_list .= '<option value="' . $row['tagcat_id'] . '" ' . ($row['tagcat_id'] == $tag_data['tagcat_id'] ? ' selected="selected"' : '') . '>' . $row['tagcat_title'] . ' (' . $user->lang[$this->modules[$row['tagcat_module']]] . ')</option>';
 					}					
 
 				$template->assign_vars(array(
@@ -475,7 +475,7 @@ class acp_tags
 					)
 				),		
 				'GROUP_BY'	=> 't.tag_id',
-				'ORDER_BY'	=> 'tc.tagcat_title, t.tag_title',
+				'ORDER_BY'	=> 'tc.tagcat_module, tc.tagcat_title, t.tag_title',
 			));
 			$result = $db->sql_query($sql);
 
@@ -505,17 +505,7 @@ class acp_tags
 				'U_ACTION'		=> $this->u_action,)
 			);
 		}
-
-
-
-
-
 	}
-
-
-
-
-
 }
 
 ?>

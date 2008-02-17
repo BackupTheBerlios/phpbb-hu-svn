@@ -4,7 +4,7 @@
 * install [English]
 *
 * @package language
-* @version $Id: install.php,v 1.131 2007/11/18 11:48:18 acydburn Exp $
+* @version $Id$
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *

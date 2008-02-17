@@ -2,7 +2,7 @@
 /**
 *
 * @package acp
-* @version $Id: acp_board.php,v 1.77 2007/07/19 20:36:49 acydburn Exp $
+* @version $Id$
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -40,6 +40,10 @@ class acp_site
 					'title'	=> 'ACP_SITE_SETTINGS',
 					'vars'	=> array(
 						'legend1'				=> 'ACP_SITE_SETTINGS',
+						'downloads_path'		=> array('lang' => 'DOWNLOADS_DIR',			'validate' => 'wpath',	'type' => 'text:25:100', 'explain' => true),
+						'mods_tmp_dir_path'		=> array('lang' => 'MODS_TMP_DIR',			'validate' => 'wpath',	'type' => 'text:25:100', 'explain' => true),
+						'mods_loc_store_path'	=> array('lang' => 'MODS_LOC_STORE',		'validate' => 'wpath',	'type' => 'text:25:100', 'explain' => true),
+				
 						//'test'				=> array('lang' => 'TEST',				'validate' => 'string',	'type' => 'text:40:255', 'explain' => false),
 						/*'site_desc'				=> array('lang' => 'SITE_DESC',				'validate' => 'string',	'type' => 'text:40:255', 'explain' => false),
 						'board_disable'			=> array('lang' => 'DISABLE_BOARD',			'validate' => 'bool',	'type' => 'custom', 'method' => 'board_disable', 'explain' => true),

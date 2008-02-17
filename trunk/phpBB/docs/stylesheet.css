@@ -2,16 +2,10 @@
 	The original "prosilver" theme for phpBB3
 	Created by subBlue design :: http://www.subBlue.com
 */
-* {
-	margin: 0;
-	padding: 0;
-}
 
-html {
-	font-size: 100%;
-	height: 100%;
-	margin-bottom: 1px;
-}
+* { margin: 0; padding: 0; }
+
+html { font-size: 100%; height: 100%; margin-bottom: 1px; }
 
 body {
 	font-family: Verdana, Helvetica, Arial, sans-serif;
@@ -22,9 +16,7 @@ body {
 	padding: 12px 0;
 }
 
-img {
-	border-width: 0;
-}
+img { border-width: 0; }
 
 p {
 	line-height: 1.3em;
@@ -41,7 +33,7 @@ hr {
 	clear: both;
 }
 
-html,body {
+html, body {
 	color: #536482;
 	background-color: #FFFFFF;
 }
@@ -93,13 +85,8 @@ h4 {
 	margin-top: 20px;
 }
 
-.good {
-	color: green;
-}
-
-.bad {
-	color: red;
-}
+.good { color: green; }
+.bad { color: red; }
 
 .version {
 	margin-top: 20px;
@@ -109,14 +96,14 @@ h4 {
 	border-top: 1px solid #ccc;
 }
 
-code {
-	color: #006600;
-	font-weight: normal;
-	font-family: 'Courier New', monospace;
-	border-color: #D1D7DC;
-	border-width: 1px;
-	border-style: solid;
-	background-color: #FAFAFA;
+code { 
+	color: #006600; 
+	font-weight: normal; 
+	font-family: 'Courier New', monospace; 
+	border-color: #D1D7DC; 
+	border-width: 1px; 
+	border-style: solid; 
+	background-color: #FAFAFA; 
 }
 
 #wrap {
@@ -143,7 +130,7 @@ code {
 	padding: 10px 13px 0 10px;
 }
 
-a#logo :hover {
+a#logo:hover {
 	text-decoration: none;
 }
 
@@ -163,8 +150,7 @@ a#logo :hover {
 	padding: 0 5px;
 }
 
-span.corners-top,span.corners-bottom,span.corners-top span,span.corners-bottom span
-	{
+span.corners-top, span.corners-bottom, span.corners-top span, span.corners-bottom span {
 	font-size: 1px;
 	line-height: 1px;
 	display: block;
@@ -215,30 +201,15 @@ span.corners-bottom span {
 	color: #333333;
 }
 
-.content h2,.panel h2 {
+.content h2, .panel h2 {
 	color: #115098;
-	border-bottom-color: #CCCCCC;
+	border-bottom-color:  #CCCCCC;
 }
 
-a:link {
-	color: #898989;
-	text-decoration: none;
-}
-
-a:visited {
-	color: #898989;
-	text-decoration: none;
-}
-
-a:hover {
-	color: #d3d3d3;
-	text-decoration: underline;
-}
-
-a:active {
-	color: #d2d2d2;
-	text-decoration: none;
-}
+a:link	{ color: #898989; text-decoration: none; }
+a:visited	{ color: #898989; text-decoration: none; }
+a:hover	{ color: #d3d3d3; text-decoration: underline; }
+a:active	{ color: #d2d2d2; text-decoration: none; }
 
 hr {
 	border-color: #FFFFFF;
@@ -260,6 +231,7 @@ hr {
 	color: #28313F;
 }
 
+
 span.corners-top {
 	background-image: url("corners_left.png");
 }
@@ -280,23 +252,12 @@ span.corners-bottom span {
 	color: #BC2A4D;
 }
 
-a:link {
-	color: #105289;
-}
+a:link	{ color: #105289; }
+a:visited	{ color: #105289; }
+a:hover	{ color: #D31141; }
+a:active	{ color: #368AD2; }
 
-a:visited {
-	color: #105289;
-}
-
-a:hover {
-	color: #D31141;
-}
-
-a:active {
-	color: #368AD2;
-}
-
-.paragraph span.corners-top,.paragraph span.corners-bottom {
+.paragraph span.corners-top, .paragraph span.corners-bottom {
 	margin: 0 -10px;
 }
 
@@ -306,13 +267,13 @@ a:active {
 	color: #333333;
 }
 
-.content h2,.panel h2 {
+.content h2, .panel h2 {
 	color: #115098;
-	border-bottom-color: #CCCCCC;
+	border-bottom-color:  #CCCCCC;
 }
 
 .notice {
-	border-top-color: #CCCCCC;
+	border-top-color:  #CCCCCC;
 }
 
 .codebox {
@@ -322,21 +283,13 @@ a:active {
 	font-size: 1em;
 	margin-bottom: 10px;
 	display: block;
-	font: 0.9em Monaco, "Andale Mono", "Courier New", Courier, mono;
+	font: 0.9em Monaco, "Andale Mono","Courier New", Courier, mono;
 	line-height: 1.3em;
 }
 
-* html hr {
-	margin: 0;
-}
-
-* html span.corners-top,* html span.corners-bottom {
-	background-image: url("corners_left.gif");
-}
-
-* html span.corners-top span,* html span.corners-bottom span {
-	background-image: url("corners_right.gif");
-}
+* html hr { margin: 0; }
+* html span.corners-top, * html span.corners-bottom { background-image: url("corners_left.gif"); }
+* html span.corners-top span, * html span.corners-bottom span { background-image: url("corners_right.gif"); }
 
 .back2top {
 	clear: both;
@@ -344,12 +297,12 @@ a:active {
 	text-align: right;
 }
 
-.content ol,.content ul {
+.content ol, .content ul {
 	margin-left: 25px;
 	margin-top: 0;
 }
 
-.content ul+p,.content ul+div {
+.content ul + p, .content ul + div {
 	margin-top: 20px;
 }
 
@@ -361,23 +314,23 @@ a:active {
 	margin-left: 20px;
 }
 
-.paragraph table {
-	font-size: 8pt;
+.paragraph table  {
+	font-size:	8pt;
 	border-collapse: collapse;
 	border: 1px solid #cfcfcf;
 	margin-bottom: 20px;
 }
 
-.paragraph table caption {
+.paragraph table caption  {
 	display: none;
 }
 
-.paragraph table thead {
+.paragraph table thead  {
 	background-color: #cadceb;
 	color: #000;
 }
 
-.paragraph table td,.paragraph table th {
+.paragraph table td, .paragraph table th {
 	border: 1px solid #006699;
 	padding: 0.5em;
 	background-color: #e1ebf2;

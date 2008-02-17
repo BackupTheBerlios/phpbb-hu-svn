@@ -2,7 +2,7 @@
 /**
 *
 * @package VC
-* @version $Id: ucp_confirm.php,v 1.27 2007/10/05 14:36:33 acydburn Exp $
+* @version $Id$
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *

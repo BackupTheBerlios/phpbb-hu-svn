@@ -2,7 +2,7 @@
 /**
 *
 * @package acp
-* @version $Id: index.php,v 1.74 2007/12/12 16:45:58 acydburn Exp $
+* @version $Id$
 * @copyright (c) 2005 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
