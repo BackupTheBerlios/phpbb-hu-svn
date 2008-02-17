@@ -1,6 +1,6 @@
 /*
 
- $Id: mssql_schema.sql 2 2008-01-26 21:50:36Z fberci $
+ $Id$
 
 */
 
@@ -1930,6 +1930,40 @@ ALTER TABLE [phpbb_pages] WITH NOCHECK ADD
 GO
 
 CREATE  UNIQUE  INDEX [page_url] ON [phpbb_pages]([page_url]) ON [PRIMARY]
+GO
+
+
+/*
+	Table: 'phpbb_mods'
+*/
+CREATE TABLE [phpbb_mods] (
+	[mod_id] [int] IDENTITY (1, 1) NOT NULL ,
+	[topic_id] [int] DEFAULT (0) NOT NULL ,
+	[mod_db_id] [int] DEFAULT (0) NOT NULL ,
+	[mod_filename] [varchar] (255) DEFAULT ('') NOT NULL ,
+	[mod_hu_title] [varchar] (100) DEFAULT ('') NOT NULL ,
+	[mod_en_title] [varchar] (100) DEFAULT ('') NOT NULL ,
+	[mod_version] [varchar] (10) DEFAULT ('') NOT NULL ,
+	[mod_md5] [varchar] (32) DEFAULT ('') NOT NULL ,
+	[mod_size] [int] DEFAULT (0) NOT NULL ,
+	[mod_author_id] [int] DEFAULT (0) NOT NULL ,
+	[mod_author_name] [varchar] (100) DEFAULT ('') NOT NULL ,
+	[mod_desc] [varchar] (4000) DEFAULT ('') NOT NULL ,
+	[mod_last_checked] [int] DEFAULT (0) NOT NULL 
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [phpbb_mods] WITH NOCHECK ADD 
+	CONSTRAINT [PK_phpbb_mods] PRIMARY KEY  CLUSTERED 
+	(
+		[mod_id]
+	)  ON [PRIMARY] 
+GO
+
+CREATE  INDEX [topic_id] ON [phpbb_mods]([topic_id]) ON [PRIMARY]
+GO
+
+CREATE  UNIQUE  INDEX [mod_db_id] ON [phpbb_mods]([mod_db_id]) ON [PRIMARY]
 GO
 
 

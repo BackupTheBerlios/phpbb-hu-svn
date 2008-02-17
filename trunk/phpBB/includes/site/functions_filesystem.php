@@ -45,10 +45,15 @@ function scandir_rec($dir, $original_dir_length = 0)
 }
 
 /**
-* Delete a directory and all of its contents
+* Delete a directory and all of its content
 */
 function rmdir_rec ($dir_name)
 {
+	if (!is_dir($dir_name))
+	{
+		return false;
+	}
+	
 	$dir = opendir($dir_name);
 	
 	while(($file = readdir($dir)) !== false)

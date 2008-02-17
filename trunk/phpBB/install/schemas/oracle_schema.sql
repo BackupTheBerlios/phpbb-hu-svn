@@ -1,6 +1,6 @@
 /*
 
- $Id: oracle_schema.sql 2 2008-01-26 21:50:36Z fberci $
+ $Id$
 
 */
 
@@ -2169,6 +2169,47 @@ FOR EACH ROW WHEN (
 BEGIN
 	SELECT phpbb_pages_seq.nextval
 	INTO :new.page_id
+	FROM dual;
+END;
+/
+
+
+/*
+	Table: 'phpbb_mods'
+*/
+CREATE TABLE phpbb_mods (
+	mod_id number(8) NOT NULL,
+	topic_id number(8) DEFAULT '0' NOT NULL,
+	mod_db_id number(8) DEFAULT '0' NOT NULL,
+	mod_filename varchar2(255) DEFAULT '' ,
+	mod_hu_title varchar2(300) DEFAULT '' ,
+	mod_en_title varchar2(300) DEFAULT '' ,
+	mod_version varchar2(10) DEFAULT '' ,
+	mod_md5 varchar2(32) DEFAULT '' ,
+	mod_size number(8) DEFAULT '0' NOT NULL,
+	mod_author_id number(8) DEFAULT '0' NOT NULL,
+	mod_author_name varchar2(300) DEFAULT '' ,
+	mod_desc clob DEFAULT '' ,
+	mod_last_checked number(8) DEFAULT '0' NOT NULL,
+	CONSTRAINT pk_phpbb_mods PRIMARY KEY (mod_id),
+	CONSTRAINT u_phpbb_mod_db_id UNIQUE (mod_db_id)
+)
+/
+
+CREATE INDEX phpbb_mods_topic_id ON phpbb_mods (topic_id)
+/
+
+CREATE SEQUENCE phpbb_mods_seq
+/
+
+CREATE OR REPLACE TRIGGER t_phpbb_mods
+BEFORE INSERT ON phpbb_mods
+FOR EACH ROW WHEN (
+	new.mod_id IS NULL OR new.mod_id = 0
+)
+BEGIN
+	SELECT phpbb_mods_seq.nextval
+	INTO :new.mod_id
 	FROM dual;
 END;
 /

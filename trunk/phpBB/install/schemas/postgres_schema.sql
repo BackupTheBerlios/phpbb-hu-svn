@@ -1,6 +1,6 @@
 /*
 
- $Id: postgres_schema.sql 2 2008-01-26 21:50:36Z fberci $
+ $Id$
 
 */
 
@@ -1423,6 +1423,31 @@ CREATE TABLE phpbb_pages (
 );
 
 CREATE UNIQUE INDEX phpbb_pages_page_url ON phpbb_pages (page_url);
+
+/*
+	Table: 'phpbb_mods'
+*/
+CREATE SEQUENCE phpbb_mods_seq;
+
+CREATE TABLE phpbb_mods (
+	mod_id INT4 DEFAULT nextval('phpbb_mods_seq'),
+	topic_id INT4 DEFAULT '0' NOT NULL CHECK (topic_id >= 0),
+	mod_db_id INT4 DEFAULT '0' NOT NULL CHECK (mod_db_id >= 0),
+	mod_filename varchar(255) DEFAULT '' NOT NULL,
+	mod_hu_title varchar(100) DEFAULT '' NOT NULL,
+	mod_en_title varchar(100) DEFAULT '' NOT NULL,
+	mod_version varchar(10) DEFAULT '' NOT NULL,
+	mod_md5 varchar(32) DEFAULT '' NOT NULL,
+	mod_size INT4 DEFAULT '0' NOT NULL CHECK (mod_size >= 0),
+	mod_author_id INT4 DEFAULT '0' NOT NULL CHECK (mod_author_id >= 0),
+	mod_author_name varchar(100) DEFAULT '' NOT NULL,
+	mod_desc varchar(4000) DEFAULT '' NOT NULL,
+	mod_last_checked INT4 DEFAULT '0' NOT NULL CHECK (mod_last_checked >= 0),
+	PRIMARY KEY (mod_id)
+);
+
+CREATE INDEX phpbb_mods_topic_id ON phpbb_mods (topic_id);
+CREATE UNIQUE INDEX phpbb_mods_mod_db_id ON phpbb_mods (mod_db_id);
 
 
 COMMIT;

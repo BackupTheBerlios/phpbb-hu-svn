@@ -1,5 +1,5 @@
 #
-# $Id: firebird_schema.sql 2 2008-01-26 21:50:36Z fberci $
+# $Id$
 #
 
 
@@ -1655,6 +1655,39 @@ BEFORE INSERT
 AS
 BEGIN
 	NEW.page_id = GEN_ID(phpbb_pages_gen, 1);
+END;;
+
+
+# Table: 'phpbb_mods'
+CREATE TABLE phpbb_mods (
+	mod_id INTEGER NOT NULL,
+	topic_id INTEGER DEFAULT 0 NOT NULL,
+	mod_db_id INTEGER DEFAULT 0 NOT NULL,
+	mod_filename VARCHAR(255) CHARACTER SET NONE DEFAULT '' NOT NULL,
+	mod_hu_title VARCHAR(100) CHARACTER SET UTF8 DEFAULT '' NOT NULL COLLATE UNICODE,
+	mod_en_title VARCHAR(100) CHARACTER SET UTF8 DEFAULT '' NOT NULL COLLATE UNICODE,
+	mod_version VARCHAR(10) CHARACTER SET NONE DEFAULT '' NOT NULL,
+	mod_md5 VARCHAR(32) CHARACTER SET NONE DEFAULT '' NOT NULL,
+	mod_size INTEGER DEFAULT 0 NOT NULL,
+	mod_author_id INTEGER DEFAULT 0 NOT NULL,
+	mod_author_name VARCHAR(100) CHARACTER SET UTF8 DEFAULT '' NOT NULL COLLATE UNICODE,
+	mod_desc BLOB SUB_TYPE TEXT CHARACTER SET UTF8 DEFAULT '' NOT NULL,
+	mod_last_checked INTEGER DEFAULT 0 NOT NULL
+);;
+
+ALTER TABLE phpbb_mods ADD PRIMARY KEY (mod_id);;
+
+CREATE INDEX phpbb_mods_topic_id ON phpbb_mods(topic_id);;
+CREATE UNIQUE INDEX phpbb_mods_mod_db_id ON phpbb_mods(mod_db_id);;
+
+CREATE GENERATOR phpbb_mods_gen;;
+SET GENERATOR phpbb_mods_gen TO 0;;
+
+CREATE TRIGGER t_phpbb_mods FOR phpbb_mods
+BEFORE INSERT
+AS
+BEGIN
+	NEW.mod_id = GEN_ID(phpbb_mods_gen, 1);
 END;;
 
 

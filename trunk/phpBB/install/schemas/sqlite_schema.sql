@@ -1,5 +1,5 @@
 #
-# $Id: sqlite_schema.sql 2 2008-01-26 21:50:36Z fberci $
+# $Id$
 #
 
 BEGIN TRANSACTION;
@@ -1070,6 +1070,26 @@ CREATE TABLE phpbb_pages (
 );
 
 CREATE UNIQUE INDEX phpbb_pages_page_url ON phpbb_pages (page_url);
+
+# Table: 'phpbb_mods'
+CREATE TABLE phpbb_mods (
+	mod_id INTEGER PRIMARY KEY NOT NULL ,
+	topic_id INTEGER UNSIGNED NOT NULL DEFAULT '0',
+	mod_db_id INTEGER UNSIGNED NOT NULL DEFAULT '0',
+	mod_filename varchar(255) NOT NULL DEFAULT '',
+	mod_hu_title text(65535) NOT NULL DEFAULT '',
+	mod_en_title text(65535) NOT NULL DEFAULT '',
+	mod_version varchar(10) NOT NULL DEFAULT '',
+	mod_md5 varchar(32) NOT NULL DEFAULT '',
+	mod_size INTEGER UNSIGNED NOT NULL DEFAULT '0',
+	mod_author_id INTEGER UNSIGNED NOT NULL DEFAULT '0',
+	mod_author_name text(65535) NOT NULL DEFAULT '',
+	mod_desc text(65535) NOT NULL DEFAULT '',
+	mod_last_checked INTEGER UNSIGNED NOT NULL DEFAULT '0'
+);
+
+CREATE INDEX phpbb_mods_topic_id ON phpbb_mods (topic_id);
+CREATE UNIQUE INDEX phpbb_mods_mod_db_id ON phpbb_mods (mod_db_id);
 
 
 COMMIT;

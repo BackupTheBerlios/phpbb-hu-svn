@@ -1,5 +1,5 @@
 #
-# $Id: mysql_41_schema.sql 2 2008-01-26 21:50:36Z fberci $
+# $Id$
 #
 
 # Table: 'phpbb_attachments'
@@ -1110,6 +1110,27 @@ CREATE TABLE phpbb_pages (
 	page_comments text NOT NULL,
 	PRIMARY KEY (page_id),
 	UNIQUE page_url (page_url)
+) CHARACTER SET `utf8` COLLATE `utf8_bin`;
+
+
+# Table: 'phpbb_mods'
+CREATE TABLE phpbb_mods (
+	mod_id mediumint(8) UNSIGNED NOT NULL auto_increment,
+	topic_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
+	mod_db_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
+	mod_filename varchar(255) DEFAULT '' NOT NULL,
+	mod_hu_title varchar(100) DEFAULT '' NOT NULL,
+	mod_en_title varchar(100) DEFAULT '' NOT NULL,
+	mod_version varchar(10) DEFAULT '' NOT NULL,
+	mod_md5 varchar(32) DEFAULT '' NOT NULL,
+	mod_size mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
+	mod_author_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
+	mod_author_name varchar(100) DEFAULT '' NOT NULL,
+	mod_desc text NOT NULL,
+	mod_last_checked mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
+	PRIMARY KEY (mod_id),
+	KEY topic_id (topic_id),
+	UNIQUE mod_db_id (mod_db_id)
 ) CHARACTER SET `utf8` COLLATE `utf8_bin`;
 
 

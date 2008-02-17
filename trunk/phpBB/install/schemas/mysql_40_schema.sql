@@ -1,5 +1,5 @@
 #
-# $Id: mysql_40_schema.sql 2 2008-01-26 21:50:36Z fberci $
+# $Id$
 #
 
 # Table: 'phpbb_attachments'
@@ -1110,6 +1110,27 @@ CREATE TABLE phpbb_pages (
 	page_comments blob NOT NULL,
 	PRIMARY KEY (page_id),
 	UNIQUE page_url (page_url)
+);
+
+
+# Table: 'phpbb_mods'
+CREATE TABLE phpbb_mods (
+	mod_id mediumint(8) UNSIGNED NOT NULL auto_increment,
+	topic_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
+	mod_db_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
+	mod_filename varbinary(255) DEFAULT '' NOT NULL,
+	mod_hu_title blob NOT NULL,
+	mod_en_title blob NOT NULL,
+	mod_version varbinary(10) DEFAULT '' NOT NULL,
+	mod_md5 varbinary(32) DEFAULT '' NOT NULL,
+	mod_size mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
+	mod_author_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
+	mod_author_name blob NOT NULL,
+	mod_desc blob NOT NULL,
+	mod_last_checked mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
+	PRIMARY KEY (mod_id),
+	KEY topic_id (topic_id),
+	UNIQUE mod_db_id (mod_db_id)
 );
 
 

@@ -16,12 +16,12 @@
 class mod_pack
 {
 	// MOD details
-	protected $mod_id;
-	protected $data = array();
-	protected $tags = array();
-	protected $filename;
+	public $mod_id;
+	public $data = array();
+	public $tags = array();
+	public $filename;
 	
-	// Temporary directory for the handling of files
+	// Temporary directory for handling the files
 	public $tmp_dir = 'files/private/mods/tmp/';
 		
 	// For development
@@ -30,18 +30,11 @@ class mod_pack
 	/**
 	* Set some basic settings
 	*/
-	public function __construct($mode, $mod_id)
+	public function __construct($mod_id)
 	{
-		$this->mod_id = $mod_id;
+		global $config;
 		
-		/*if ($mode == 'new')
-		{
-			$this->get_pack();
-		}
-		elseif ($mode == 'update')
-		{
-			$this->get_pack();
-		}*/
+		$this->mod_id = $mod_id;
 		
 		// Enable opening of remote URLs
 		@ini_set('allow_url_fopen', 1);
@@ -49,26 +42,21 @@ class mod_pack
 		// If memory is not enough try to set it to a higher value (code from install/index.php)
 		increase_mem_limit(32);
 		
+		// Set temp directory
+		$this->temp_dir = $config['mods_tmp_dir_path'];
+		
 		// For developmental purposes
 		$this->start_time = microtime_float();
-		
-		// Development: test functions
-		$this->get_pack_details();
-		$this->get_pack();
-		
-		$this->merge_packs();
-		
-		//$this->cleanup();
 	}
 	
 	/**
 	* Download the package from phpBB.com
 	*/
-	public function get_pack()
+	public function get_archive()
 	{
-		$url = 'http://www.phpbb.com/mods/db/download/' . $this->mod_id . '/';
+		global $phpbb_root_path;
 		
-		$this->time('before downloading');
+		$url = 'http://www.phpbb.com/mods/db/download/' . $this->mod_id . '/';
 		
 		// Create a new cURL resource
 		$ch = curl_init();
@@ -81,13 +69,13 @@ class mod_pack
 		// Get the pack
 		curl_exec($ch);
 		// Store the content of the pack
-		file_put_contents($this->tmp_dir . 'mods/' . $this->filename . '.zip', ob_get_contents());
+		file_put_contents($phpbb_root_path . $this->tmp_dir . 'mods/' . $this->filename . '.zip', ob_get_contents());
 		// Stop storing the output
 		ob_end_clean();
 		// Close cURL resource, and free up system resources
 		curl_close($ch);
 		
-		$this->time('after download');
+		return true;
 	}
 	
 	/**
@@ -113,36 +101,30 @@ class mod_pack
 	{
 		$url = 'http://www.phpbb.com/mods/db/index.php?i=misc&mode=display&contrib_id=' . $this->mod_id;
 	
-		$this->time('begin');
-		
 		// Parse the file with the DOM parser
 		$page = new DOMDocument();
-
-		$this->time('loadbegin');
 		
 		// Load the HTML file, but suppress warnings as the HTML can be not totally valid
 		@$page->loadHTMLFile($url);
 		
-		$this->time('loaded');
-		
 		// Make a SimpleXML object from DOM	
 		$page = simplexml_import_dom($page);
-		
-		$this->time('imported');
-		
+
 		// Get title
 		list($title) = $page->xpath("//div[@id='main']/h3");
 		$this->data['title'] = (string) $title;
 		
-		$this->time('title');
-		
+		// If the page/MOD does not exists return with an array containing the error key
+		if (empty($this->data['title']))
+		{
+			throw new ModException(array('MOD_NOT_EXISTS'));
+		}
+
 		// Get MD5
 		$result = $page->xpath("//div[@id='extras']//dl[@class='extra-box download-contrib']//dd");
 		preg_match('#MD5 hash: ([a-f0-9]+)$#is', (string) $result[0], $match);
 		$this->data['md5'] = $match[1];
-		
-		$this->time('md5');
-		
+
 		// Get details
 		$details_list = $page->xpath("//ul[@class='topiclist forums']/li[@class='row']");
 		
@@ -180,139 +162,157 @@ class mod_pack
 							$this->tags[$tagcat_name] = array();
 						}
 						
-						$this->tags[$tagcat_name][] = $tag_name;
+						$this->tags[$tagcat_name][$tag_name] = array($tag_name, (string) $tag_element->a);
 					}			
 					break;
 			}
 		}
 		
-		$this->time('details');
+		return true;
 	}
 	
 	/**
 	* Merge MOD and the according language pack together
-	*/
-	public function merge_packs()
+	*
+	* @param bool $test Whether to generate the MOD package or just test the language pack
+	*/	
+	public function merge_packs($test = false)
 	{
+		global $phpbb_root_path;
+		
 		/**
 		* Unzip both packages
 		*/
+		$mod = new compress_zip('r', $phpbb_root_path . $this->tmp_dir . 'mods/' . $this->filename . '.zip');
+		$mod->extract($phpbb_root_path . $this->tmp_dir . 'mods/');
+		
+		/* ZipArchive is not currently supported on the server - leave this here for possible later use
 		$mod = new ZipArchive();
 		$mod->open($this->tmp_dir . 'mods/' . $this->filename . '.zip');
-		$mod->extractTo($this->tmp_dir . 'mods/');
+		$mod->extractTo($this->tmp_dir . 'mods/');*/
 		
-		$loc = new ZipArchive();
-		$loc->open($this->tmp_dir . 'localisations/' . $this->filename . '.zip');
-		$loc->extractTo($this->tmp_dir . 'localisations/');
+		// If no localisation pack exists then we just check the original MOD package to make sure all Hungarian translation files are included
+		if (file_exists($phpbb_root_path . $this->tmp_dir . 'localisations/' . $this->filename . '.zip'))
+		{
+			$loc = new compress_zip('r', $phpbb_root_path . $this->tmp_dir . 'localisations/' . $this->filename . '.zip');
+			$loc->extract($phpbb_root_path . $this->tmp_dir . 'localisations/');
+		}
 		
 		/**
 		* Merge packages
 		*/
 		$errors = array();
 		
+		// Introduce variables with short names for frequently used file paths
+		$mod_dir = $phpbb_root_path . $this->tmp_dir . 'mods/' . $this->filename;
+		$loc_dir = $phpbb_root_path . $this->tmp_dir . 'localisations/' . $this->filename;
+		
 		// First look at the language files in the mods directory
-		if (file_exists($this->tmp_dir . 'mods/' . $this->filename . '/root/language/en/') && !file_exists($this->tmp_dir . 'mods/' . $this->filename . '/root/language/hu/'))
+		if (file_exists($mod_dir . '/root/language/en/') && !file_exists($mod_dir . '/root/language/hu/'))
 		{
-			$files = scandir_rec($this->tmp_dir . 'mods/' . $this->filename . '/root/language/en/');
+			$files = scandir_rec($mod_dir . '/root/language/en/');
 			
 			foreach ($files as $file)
 			{
-				if (!file_exists($this->tmp_dir . 'localisations/' . $this->filename . '/root/language/hu/' . $file))
+				if (!file_exists($loc_dir . '/root/language/hu/' . $file))
 				{
 					$errors[] = array('MISSING_LANGUAGE_FILE', 'root/language/hu/' . $file);
 				}
 				else
 				{
 					// Check PHP syntax (assume we are on a unix-based system)
-					if (substr(shell_exec('php -l ' . $this->tmp_dir . 'localisations/' . $this->filename . '/root/language/hu/' . $file), 0, 11) == 'Parse error')
+					if (substr(shell_exec('php -l ' . $loc_dir . '/root/language/hu/' . $file), 0, 11) == 'Parse error')
 					{
 						$errors[]= array('SYNTAX_ERROR', 'root/language/hu/' . $file);
 					}
 					else
 					{
-						$dir_name = $this->tmp_dir . 'mods/' . $this->filename . '/root/language/hu/' . dirname($file);
+						$dir_name = $mod_dir . '/root/language/hu/' . site_dirname($file);
 						if (!file_exists($dir_name))
 						{
 							mkdir($dir_name, 0755, true);
 						}
 						
-						rename($this->tmp_dir . 'localisations/' . $this->filename . '/root/language/hu/' . $file, $this->tmp_dir . 'mods/' . $this->filename . '/root/language/hu/' . $file);
+						rename($loc_dir . '/root/language/hu/' . $file, $mod_dir . '/root/language/hu/' . $file);
 					}
 				}
 			}
 		}
 		
 		// Next the styles directory
-		if (file_exists($this->tmp_dir . 'mods/' . $this->filename . '/root/styles/prosilver/imageset/en/') && !file_exists($this->tmp_dir . 'mods/' . $this->filename . '/root/styles/prosilver/imageset/hu/'))
+		if (file_exists($mod_dir . '/root/styles/prosilver/imageset/en/') && !file_exists($mod_dir . '/root/styles/prosilver/imageset/hu/'))
 		{
 			// Check whether prosilver images are in place
-			$files = scandir_rec($this->tmp_dir . 'mods/' . $this->filename . '/root/styles/prosilver/imageset/en/');
+			$files = scandir_rec($mod_dir . '/root/styles/prosilver/imageset/en/');
 			
 			foreach($files as $file)
 			{
-				if (!file_exists($this->tmp_dir . 'localisations/' . $this->filename . '/root/styles/prosilver/imageset/hu/' . $file))
+				if (!file_exists($loc_dir . '/root/styles/prosilver/imageset/hu/' . $file))
 				{
 					$errors[]= array('MISSING_STYLE_IMAGE', '/root/styles/prosilver/imageset/hu/' . $file);
 				}
 			}
 			
 			// Copy all image files
-			$files = scandir_rec($this->tmp_dir . 'localisations/' . $this->filename . '/root/styles/');
+			$files = scandir_rec($loc_dir . '/root/styles/');
 			
 			foreach ($files as $file)
 			{
-				if (substr($file, -4) == '.gif' && !file_exists($this->tmp_dir . 'localisations/' . $this->filename . '/root/styles/' . $file))
+				if (substr($file, -4) == '.gif' && !file_exists($loc_dir . '/root/styles/' . $file))
 				{
-						$dir_name = $this->tmp_dir . 'mods/' . $this->filename . '/root/styles/' . dirname($file);
+						$dir_name = $mod_dir . '/root/styles/' . site_dirname($file);
 						if (!file_exists($dir_name))
 						{
 							mkdir($dir_name, 0755, true);
 						}
 						
-						rename($this->tmp_dir . 'localisations/' . $this->filename . '/root/styles/' . $file, $this->tmp_dir . 'mods/' . $this->filename . '/root/styles/' . $file);
+						rename($loc_dir . '/root/styles/' . $file, $mod_dir . '/root/styles/' . $file);
 				}
 			}
 		}
 				
 		// Copy the entire contrib directory
-		if (file_exists($this->tmp_dir . 'localisations/' . $this->filename . '/contrib/'))
+		if (file_exists($loc_dir . '/contrib/'))
 		{
-			$files = scandir_rec($this->tmp_dir . 'localisations/' . $this->filename . '/contrib/');
+			$files = scandir_rec($loc_dir . '/contrib/');
 			
 			foreach($files as $file)
 			{
-				if (!file_exists($this->tmp_dir . 'mods/' . $this->filename . '/contrib/' . $file))
+				if (!file_exists($mod_dir . '/contrib/' . $file))
 				{
-					$dir_name = $this->tmp_dir . 'mods/' . $this->filename . '/contrib/' . dirname($file);
+					$dir_name = $mod_dir . '/contrib/' . site_dirname($file) . '/';
 					if (!file_exists($dir_name))
 					{
 						mkdir($dir_name, 0755, true);
 					}
 					
-					rename($this->tmp_dir . 'localisations/' . $this->filename . '/contrib/' . $file, $this->tmp_dir . 'mods/' . $this->filename . '/contrib/' . $file);
+					rename($loc_dir . '/contrib/' . $file, $mod_dir . '/contrib/' . $file);
 				}
 			}
 		}
 		
 		// Now the Hungarian MODX file
-		if (file_exists($this->tmp_dir . 'localisations/' . $this->filename . '/languages/hu.xml'))
+		if (file_exists($loc_dir . '/languages/hu.xml') && !file_exists($mod_dir . '/languages/hu.xml'))
 		{
-			if (!file_exists($this->tmp_dir . 'mods/' . $this->filename . '/languages/'))
+			if (!file_exists($mod_dir . '/languages/'))
 			{
-				mkdir($this->tmp_dir . 'mods/' . $this->filename . '/languages/', 0755);
+				mkdir($mod_dir . '/languages/', 0755);
 			}
 			
-			rename($this->tmp_dir . 'localisations/' . $this->filename . '/languages/hu.xml', $this->tmp_dir . 'mods/' . $this->filename . '/languages/hu.xml');
+			rename($loc_dir . '/languages/hu.xml', $mod_dir . '/languages/hu.xml');
 		}
 		
 		// Style localisations
-		$files = scandir_rec($this->tmp_dir . 'localisations/' . $this->filename . '/templates/');
-		foreach ($files as $file)
+		if (file_exists($loc_dir . '/templates/'))
 		{
-			if (preg_match('#^([^/]+)\/hu\.xml$#is', $file, $match))
+			$files = scandir_rec($loc_dir . '/templates/');
+			foreach ($files as $file)
 			{
-				mkdir($this->tmp_dir . 'mods/' . $this->filename . '/templates/' . $match[1], 0755, true);
-				rename($this->tmp_dir . 'localisations/' . $this->filename . '/templates/' . $file, $this->tmp_dir . 'mods/' . $this->filename . '/templates/' . $file);
+				if (preg_match('#^([^/]+)\/hu\.xml$#is', $file, $match) && !file_exists($mod_dir . '/templates/' . $file))
+				{
+					mkdir($mod_dir . '/templates/' . $match[1], 0755, true);
+					rename($loc_dir . '/templates/' . $file, $mod_dir . '/templates/' . $file);
+				}
 			}
 		}
 		
@@ -324,37 +324,61 @@ class mod_pack
 		*/
 		if (!empty($errors))
 		{
-			return $errors;
+			throw new ModException($errors);
+		}
+		
+		if ($test)
+		{
+			return true;
 		}
 		
 		// Remove old file?
-		/*if (file_exists('files/downloads/mods/' . $this->filename . '.zip'))
+		if (file_exists('files/downloads/mods/' . $this->filename . '.zip'))
 		{
 			unlink('files/downloads/mods/' . $this->filename . '.zip');
-		}*/
+		}
 		
+		/* ZipArchive is not supported on the server - but leave this here for possible later use
 		$final = new DirZipArchive();
 		$final->open('files/downloads/mods/' . $this->filename . '.zip', ZIPARCHIVE::CREATE);
-		$final->addDir($this->tmp_dir . 'mods/' . $this->filename . '/', $this->filename);
+		$final->addDir($mod_dir . '/', $this->filename);
+		$final->close();*/
+		
+		// Generate final MOD pack
+		$final = new compress_zip('w', 'files/downloads/mods/' . $this->filename . '.zip');	
+		$filelist = scandir_rec($mod_dir . '/');	
+		foreach ($filelist as $file)
+		{
+			// Add file to archive
+			$final->add_custom_file($mod_dir . '/' . $file, $this->filename . '/' . $file);
+		}	
 		$final->close();
+		
+		$this->data['size'] = filesize('files/downloads/mods/' . $this->filename . '.zip');
 		
 		return true;
 	}
 	
 	/**
-	* Do cleanup: delete every temporarily created directory and file
+	* Do cleanup: remove every temporarily created directory and file
 	*/
 	public function cleanup()
 	{
 		rmdir_rec($this->tmp_dir . 'mods/' . $this->filename . '/');
 		rmdir_rec($this->tmp_dir . 'localisations/' . $this->filename . '/');
 		
-		unlink($this->tmp_dir . 'mods/' . $this->filename . '.zip');
-		unlink($this->tmp_dir . 'localisations/' . $this->filename . '.zip');
+		if (file_exists($this->tmp_dir . 'mods/' . $this->filename . '.zip'))
+		{
+			unlink($this->tmp_dir . 'mods/' . $this->filename . '.zip');
+		}
+		if (file_exists($this->tmp_dir . 'localisations/' . $this->filename . '.zip'))
+		{
+			unlink($this->tmp_dir . 'localisations/' . $this->filename . '.zip');
+		}
 	}
 	
 	/**
-	* Print out the time currently spent
+	* Print out the time currently spent (for developmental purposes)
 	*/
 	protected function time($log)
 	{
@@ -366,6 +390,8 @@ class mod_pack
 /**
 * Class for adding dirs with files and subdirectories
 * Source: http://hu.php.net/manual/hu/ref.zip.php#78940
+* 
+* @todo Remove this class as there is no need for it since we don't use ZipArchive for packaging anymore
 *
 * <code>
 *  $archive = new DirZipArchive;
@@ -397,7 +423,7 @@ class DirZipArchive extends ZipArchive
 	* @param string $name Name in archive
 	* @access private
 	*/
-	private function addDirDo($location, $name)
+	protected function addDirDo($location, $name)
 	{
 		$name .= '/';
 		$location .= '/';
@@ -414,6 +440,53 @@ class DirZipArchive extends ZipArchive
 			}
 		}
 	}
+}
+
+/**
+* Custom exception class for handling errors occuring while querying the phpBB.com MOD DB
+*/
+class ModException extends Exception
+{
+	protected $errors = array();
+	
+	// Redefine the exception so message isn't optional
+	public function __construct($error, $code = 0)
+	{
+		$this->errors = $error;
+
+		// Make sure everything is assigned properly
+		parent::__construct('MOD packaging error', $code);
+	}
+
+	// Return error
+	public function getErrors()
+	{
+		global $user;
+		
+		$errors = array();
+
+		foreach ($this->errors as $error)
+		{
+			if (is_array($error))
+			{
+				$errors[] = sprintf((isset($user->lang['NO_MOD_' . $error[0]])) ? $user->lang['NO_MOD_' . $error[0]] : $user->lang[$error[0]], $error[1]);
+			}
+			else
+			{
+				$errors[] = (isset($user->lang['NO_MOD_' . $error])) ? 'NO_MOD_' . $error : $error;
+			}
+		}
+		
+		return $errors;
+	}
+}
+
+/*
+* Custom version of dirname that is recognised by file_exists()
+*/
+function site_dirname($file)
+{
+	return ($dirname = dirname($file)) == '.' ? '' : $dirname . '/';
 }
 
 ?>

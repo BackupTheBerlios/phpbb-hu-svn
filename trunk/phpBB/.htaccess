@@ -94,23 +94,32 @@ RewriteRule ^forum/tema/([0-9]+)$ viewtopic.php?t=$1 [L,QSA]
 
 # SITE #
 # bugs.php
-RewriteRule ^bugs/([a-z0-9_-]+)$ bugs.php?mode=project&project=$1 [L,QSA]
-RewriteRule ^bugs/([a-z0-9_-]+)/([0-9]+)$ bugs.php?mode=report&project=$1&report_id=$2 [L,QSA]
-RewriteRule ^bugs/([a-z0-9_-]+)/uj$ bugs.php?mode=add&project=$1 [L,QSA]
-RewriteRule ^bugs/([a-z0-9_-]+)/([0-9]+)/szerk$ bugs.php?mode=edit&project=$1&report_id=$2 [L,QSA]
-RewriteRule ^bugs/([a-z0-9_-]+)/([0-9]+)/hozzaszol$ bugs.php?mode=reply&project=$1&report_id=$2 [L,QSA]
+RewriteRule ^bugs/([a-zA-Z0-9_-]+)$ bugs.php?mode=project&project=$1 [L,QSA]
+RewriteRule ^bugs/([a-zA-Z0-9_-]+)/([0-9]+)$ bugs.php?mode=report&project=$1&report_id=$2 [L,QSA]
+RewriteRule ^bugs/([a-zA-Z0-9_-]+)/uj$ bugs.php?mode=add&project=$1 [L,QSA]
+RewriteRule ^bugs/([a-zA-Z0-9_-]+)/([0-9]+)/szerk$ bugs.php?mode=edit&project=$1&report_id=$2 [L,QSA]
+RewriteRule ^bugs/([a-zA-Z0-9_-]+)/([0-9]+)/hozzaszol$ bugs.php?mode=reply&project=$1&report_id=$2 [L,QSA]
 RewriteRule ^bugs$ bugs.php [L,QSA]
 
 # kb.php
 RewriteRule ^utmutatok/cimkek$ kb.php?mode=listtags [L,QSA]
-#RewriteRule ^utmutatok/cimkek/([a-z0-9+_-]+)$ kb.php?mode=listtagcats&cat=$1 [L,QSA]
-RewriteRule ^utmutatok/cimkek/([a-z0-9+_-]+)/([a-z0-9+_-]+)$ kb.php?mode=tag&cat=$1&tag=$2 [L,QSA]
-RewriteRule ^utmutatok/cikk/([a-z0-9_-]+)$ kb.php?mode=article&name=$1 [L,QSA]
+#RewriteRule ^utmutatok/cimkek/([a-zA-Z0-9+_-]+)$ kb.php?mode=listtagcats&cat=$1 [L,QSA]
+RewriteRule ^utmutatok/cimkek/([a-zA-Z0-9+_-]+)/([a-z0-9+_-]+)$ kb.php?mode=tag&cat=$1&tag=$2 [L,QSA]
+RewriteRule ^utmutatok/cikk/([a-zA-Z0-9_-]+)$ kb.php?mode=article&name=$1 [L,QSA]
 RewriteRule ^utmutatok/uj$ kb.php?mode=add [L,QSA]
 RewriteRule ^utmutatok/szerk/([0-9]+)$ kb.php?mode=edit&id=$1 [L,QSA]
 RewriteRule ^utmutatok/torol/([0-9]+)$ kb.php?mode=delete&id=$1 [L,QSA]
 RewriteRule ^utmutatok/([0-9]+)$ kb.php?mode=article_id&id=$1 [L,QSA]
 RewriteRule ^utmutatok$ kb.php [L,QSA]
+
+# mods.php
+RewriteRule ^modok/cimkek/([a-zA-Z0-9+_-]+)$ mods.php?mode=tagcat&cat=$1 [L,QSA]
+RewriteRule ^modok/cimkek/([a-zA-Z0-9+_-]+)/([a-zA-Z0-9.+_-]+)$ mods.php?mode=listtag&cat=$1&tag=$2 [L,QSA]
+RewriteRule ^modok/mod/([0-9]+)$ mods.php?mode=mod&id=$1 [L,QSA]
+RewriteRule ^modok/uj$ mods.php?mode=add [L,QSA]
+RewriteRule ^modok/szerk/([0-9]+)$ mods.php?mode=edit&id=$1 [L,QSA]
+RewriteRule ^modok/torol/([0-9]+)$ mods.php?mode=delete&id=$1 [L,QSA]
+RewriteRule ^modok$ mods.php [L,QSA]
 
 # 404
 RewriteCond %{REQUEST_FILENAME} !-f
