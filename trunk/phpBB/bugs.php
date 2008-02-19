@@ -763,7 +763,7 @@ elseif ($mode == 'add' || $mode == 'edit')
 		'poster_id'			=> $user->data['user_id'], // Set default to current user
 		'post_time'			=> time(), // Set default to current time
 		'post_edit_reason'	=> null,
-		'post_edit_locked'	=> 0, // Set deafult value to false
+		'post_edit_locked'	=> 1, // The user will not be able to edit the post although it is his/her own
 	);
 
 	// Load the to be edited report
