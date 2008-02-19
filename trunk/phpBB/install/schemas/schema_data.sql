@@ -175,6 +175,7 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('min_pass_chars', '
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('min_search_author_chars', '3');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('min_time_reg', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('min_time_terms', '0');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('mod_notif_users', '3', 0);
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('mods_loc_store_path', 'files/private/mods/localisations/', 0);
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('mods_tmp_dir_path', 'files/private/mods/tmp/', 0);
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('override_user_style', '0');

@@ -43,6 +43,7 @@ class acp_site
 						'downloads_path'		=> array('lang' => 'DOWNLOADS_DIR',			'validate' => 'wpath',	'type' => 'text:25:100', 'explain' => true),
 						'mods_tmp_dir_path'		=> array('lang' => 'MODS_TMP_DIR',			'validate' => 'wpath',	'type' => 'text:25:100', 'explain' => true),
 						'mods_loc_store_path'	=> array('lang' => 'MODS_LOC_STORE',		'validate' => 'wpath',	'type' => 'text:25:100', 'explain' => true),
+						'mod_notif_users'		=> array('lang' => 'MOD_NOTIFICATION_USERS','validate' => 'string',	'type' => 'text:25:100', 'explain' => true),
 				
 						//'test'				=> array('lang' => 'TEST',				'validate' => 'string',	'type' => 'text:40:255', 'explain' => false),
 						/*'site_desc'				=> array('lang' => 'SITE_DESC',				'validate' => 'string',	'type' => 'text:40:255', 'explain' => false),

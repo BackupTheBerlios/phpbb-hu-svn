@@ -25,23 +25,6 @@ define('SITE_SECTION', 'mods');
 
 $mode = request_var('mode', '');
 
-
-/*
-$start_time = microtime_float();
-
-//$mod = new mod_pack('new', 2964); // 3177
-$mod = new mod_pack('new', 2964);
-//$mod->get_pack_details();
-$mod->get_archive();
-$mod->merge_packs();
-
-//$mod->get_pack_details();
-
-print number_format(microtime_float() - $start_time, 8);
-
-exit;
-*/
-
 // Check permission for viewing the MODs database
 if (!$auth->acl_get('f_c_see', MODS_FORUM_ID))
 {
@@ -178,6 +161,21 @@ elseif ($mode == 'listtag')
 	}
 	$db->sql_freeresult($result);
 	
+	// First get all tags - cache for 6 hours
+	$sql = $db->sql_build_query('SELECT', array(
+		'SELECT'	=> 't.tag_id, t.tag_name, t.tag_title, tc.tagcat_id, tc.tagcat_name, tc.tagcat_title',
+		'FROM'		=> array(TAGS_TABLE	=> 't', TAGCATS_TABLE => 'tc'),
+		'WHERE'		=> 't.tagcat_id = tc.tagcat_id AND tagcat_module = ' . TAG_MODS,
+	));
+	$result = $db->sql_query($sql, 21600);
+	
+	$tags = array();
+	while($row = $db->sql_fetchrow($result))
+	{
+		$tags[$row['tag_id']] = $row;
+	}
+	$db->sql_freeresult($result);
+	
 	// Get the total number of MODs
 	$sql = $db->sql_build_query('SELECT', array(
 		'SELECT'=> 'COUNT(m.mod_id) AS mods_count',		
@@ -191,7 +189,7 @@ elseif ($mode == 'listtag')
 	
 	// Query last ten MODs
 	$sql = $db->sql_build_query('SELECT', array(
-		'SELECT'	=> 'm.mod_id, m.topic_id, m.mod_hu_title, m.mod_version, m.mod_desc,
+		'SELECT'	=> 'm.mod_id, m.topic_id, m.mod_hu_title, m.mod_version, m.mod_author_id, m.mod_author_name, m.mod_desc,
 						t.topic_approved, t.topic_title, t.topic_poster, t.topic_time, t.topic_views, t.topic_first_poster_name, t.topic_first_poster_colour,
 						GROUP_CONCAT(tms.tag_id) AS tags',
 		'FROM'		=> array(MODS_TABLE => 'm', TAGMATCH_TABLE => 'tm'),
@@ -214,6 +212,24 @@ elseif ($mode == 'listtag')
 
 	while ($row = $db->sql_fetchrow($result))
 	{
+		// Deal with tags
+		$mod_tags = array();
+		$tags_list = (!empty($row['tags'])) ? explode(',', $row['tags']) : array();
+		
+		// Group assigned tags into categories
+		foreach ($tags_list as $tag)
+		{
+			$mod_tags[$tags[$tag]['tagcat_name']][] = &$tags[$tag]; // Maybe the index could be changed from tagcat_id to tagcat_name as the latter is more often used
+		}
+		
+		// Sort the array containing the article tags in order to list them always in the same order
+		ksort($mod_tags);
+		
+		// Display the most recent version the MOD is compatible with
+		usort($mod_tags['phpbb'], 'version_compare_tag');
+		
+		$version_tag = array_pop($mod_tags['phpbb']);
+
 		// Assign some general variables about the article
 		$template->assign_block_vars('modrow', array(
 			'MOD_TITLE'				=> $row['mod_hu_title'],
@@ -221,52 +237,20 @@ elseif ($mode == 'listtag')
 			'MOD_DESC'				=> trim_text($row['mod_desc'], 120),
 			'MOD_ID'				=> $row['mod_id'],
 			'U_MOD'					=> append_sid($phpbb_root_path . 'mods.' . $phpEx, 'mode=mod&amp;id=' . $row['mod_id']),
-			/*'MOD_POSTER'			=> get_username_string('username', $row['topic_poster'], $row['topic_first_poster_name'], $row['topic_first_poster_colour']),
+			'MOD_POSTER'			=> get_username_string('username', $row['topic_poster'], $row['topic_first_poster_name'], $row['topic_first_poster_colour']),
 			'MOD_POSTER_COLOUR'		=> get_username_string('colour', $row['topic_poster'], $row['topic_first_poster_name'], $row['topic_first_poster_colour']),
-			'MOD_POSTER_FULL'		=> get_username_string('full', $row['topic_poster'], $row['topic_first_poster_name'], $row['topic_first_poster_colour']),*/
+			'MOD_POSTER_FULL'		=> get_username_string('full', $row['topic_poster'], $row['topic_first_poster_name'], $row['topic_first_poster_colour']),
 			'MOD_POSTED'			=> $user->format_date($row['topic_time']),	
-			//'MOD_VIEWS'			=> $row['topic_views'],	
-			'MOD_APPROVED'			=> $row['topic_approved'],	
+			'MOD_VIEWS'				=> $row['topic_views'],	
+			'MOD_APPROVED'			=> $row['topic_approved'],
+			'MOD_AUTHOR'			=> $row['mod_author_name'],
+			'U_MOD_AUTHOR'			=> 'http://www.phpbb.com/community/memberlist.php?mode=viewprofile&ampu=' . $row['mod_author_id'],
+			'MOD_AUTHOR_FULL'		=> '<a href="http://www.phpbb.com/community/memberlist.php?mode=viewprofile&amp;u=' . $row['mod_author_id'] . '">' . $row['mod_author_name'] . '</a>',
+			'MOD_PHPBB_VERSION'		=> $version_tag['tag_title'],
 		
 			'U_MCP_QUEUE'		=> ($auth->acl_get('m_approve', MODS_FORUM_ID)) ? append_sid("{$phpbb_root_path}mcp.$phpEx", "i=queue&amp;mode=approve_details&amp;t={$row['topic_id']}", true) : false,
 			'UNAPPROVED_IMG'	=> $user->img('icon_topic_unapproved', 'TOPIC_UNAPPROVED'),
 		));
-		
-		/* Isn't needed for the time being
-		* @todo It still needs to be decided what info to show
-		* One thing is sure, we don't want to display all tags
-		// Assign tags
-		$mod_tags = array();
-		$tags_list = (!empty($row['tags'])) ? explode(',', $row['tags']) : array();
-		
-		// Group assigned tags into categories
-		foreach ($tags_list as $tag)
-		{
-			$mod_tags[$tags[$tag]['tagcat_id']][] = &$tags[$tag]; // Maybe the index could be changed from tagcat_id to tagcat_name as the latter is more often used
-		}
-		
-		// Sort the array containing the article tags in order to list them always in the same order
-		ksort($mod_tags);
-		
-		// Loop over the tag categories
-		foreach ($mod_tags as $tagcat)
-		{
-			// Category variables
-			$template->assign_block_vars('articles.tagcats', array(
-				'TAGCAT_NAME'	=> $tagcat[0]['tagcat_name'],
-				'TAGCAT_TITLE'	=> $tagcat[0]['tagcat_title'],
-				'U_TAGCAT'		=> append_sid($phpbb_root_path . 'mods.' . $phpEx, 'mode=tagcat&amp;cat=' . $tagcat[0]['tagcat_name']),
-			));
-			
-			// Tag details
-			foreach($tagcat as $tag)
-			{
-				$template->assign_block_vars('articles.tagcats.tags', array(
-					'TAG_TITLE'	=> $tag['tag_title'],
-					'U_TAG'		=> append_sid($phpbb_root_path . 'mods.' . $phpEx, 'mode=listtag&amp;cat=' . $tag['tagcat_name'] . '&amp;tag=' . $tag['tag_name']),
-				));
-			}
-		}*/
 	}
 	$db->sql_freeresult($result);
 	
@@ -361,6 +345,12 @@ elseif ($mode == 'mod')
 			'TAGCAT_TITLE'	=> $tagcat[0]['tagcat_title'],
 			'U_TAGCAT'		=> append_sid($phpbb_root_path . 'mods.' . $phpEx, 'mode=tagcat&amp;cat=' . $tagcat[0]['tagcat_name']),
 		));
+		
+		// Order version numbers correctly (MySQL orders everything alphabetically)
+		if ($tagcat[0]['tagcat_name'] == 'phpbb')
+		{
+			usort($tagcat, 'version_compare_tag');
+		}
 		
 		// Tag details
 		foreach($tagcat as $tag)
@@ -666,7 +656,13 @@ elseif ($mode == 'add' || $mode == 'edit')
 				{
 					unlink($config['mods_loc_store_path'] . $mod->filename . '.zip');
 				}
-				copy($phpbb_root_path . $mod->tmp_dir . 'localisations/' . $mod->filename . '.zip', $config['mods_loc_store_path'] . $mod->filename . '.zip');
+				copy($phpbb_root_path . $config['mods_tmp_dir_path'] . 'localisations/' . $mod->filename . '.zip', $config['mods_loc_store_path'] . $mod->filename . '.zip');
+			}
+			
+			// Do the cleanup
+			if(isset($mod))
+			{
+				$mod->cleanup();
 			}
 		}
 	}
@@ -719,7 +715,6 @@ elseif ($mode == 'add' || $mode == 'edit')
 		
 		/**
 		* Localise tags
-		* @todo Move this into a function
 		*/
 		// Get all possible tags
 		$sql = $db->sql_build_query('SELECT', array(
@@ -730,21 +725,15 @@ elseif ($mode == 'add' || $mode == 'edit')
 		$result = $db->sql_query($sql);
 		
 		// Group tags into categories
-		// @todo Are all of them needed?
-		$tags_by_id = $tagcats_by_id_id = $tagcats_by_id_name = $tagcats_by_name_id = $tagcats_by_name_name = array();
+		$tagcats = array();
 		while($row = $db->sql_fetchrow($result))
 		{
-			$tags_by_id[$row['tag_id']] = $row;
-			
-			if (!isset($tagcats_by_id_ids[$row['tagcat_id']]))
+			if (!isset($tagcats[$row['tagcat_name']]))
 			{
-				$tagcats_by_id_id[$row['tagcat_id']] = $tagcats_by_id_name[$row['tagcat_id']] = $tagcats_by_name_id[$row['tagcat_name']] = $tagcats_by_name_name[$row['tagcat_name']][$row['tag_name']] = array();
+				$tagcats[$row['tagcat_name']][$row['tag_name']] = array();
 			}
 			
-			$tagcats_by_id_id[$row['tagcat_id']][$row['tag_id']] = &$tags_by_id[$row['tag_id']];
-			$tagcats_by_id_name[$row['tagcat_id']][$row['tag_name']] = &$tags_by_id[$row['tag_id']];
-			$tagcats_by_name_id[$row['tagcat_name']][$row['tag_id']] = &$tags_by_id[$row['tag_id']];
-			$tagcats_by_name_name[$row['tagcat_name']][$row['tag_name']] = &$tags_by_id[$row['tag_id']];
+			$tagcats[$row['tagcat_name']][$row['tag_name']] = $row;
 		}
 		$db->sql_freeresult($result);
 		
@@ -759,7 +748,7 @@ elseif ($mode == 'add' || $mode == 'edit')
 			
 			// @todo Create tag category if it doesn't exist?
 			
-			if (isset($tagcats_by_name_name[$tagcat_hu_name]))
+			if (isset($tagcats[$tagcat_hu_name]))
 			{
 				foreach ($tagcat as $tag)
 				{
@@ -769,10 +758,9 @@ elseif ($mode == 'add' || $mode == 'edit')
 					$tag_hu_title = (isset($tag_translation_table[$tagcat_en_name]['tags'][$tag_en_name])) ? $tag_translation_table[$tagcat_en_name]['tags'][$tag_en_name]['title'] : $tag_en_title;
 					
 					// Create tag
-					if (!isset($tagcats_by_name_name[$tagcat_hu_name][$tag_hu_name]))
+					if (!isset($tagcats[$tagcat_hu_name][$tag_hu_name]))
 					{
-						//$tagcat_info = each($tagcats_by_name_name[$tagcat_hu_name]);reset($tagcats_by_name_name[$tagcat_hu_name]);
-						$tagcat_info = current($tagcats_by_name_name[$tagcat_hu_name]);
+						$tagcat_info = current($tagcats[$tagcat_hu_name]);
 						
 						$tag_info = array(
 							'tagcat_id'	=> $tagcat_info['tagcat_id'],
@@ -787,15 +775,10 @@ elseif ($mode == 'add' || $mode == 'edit')
 						$tag_info = array_merge($tagcat_info, $tag_info);
 						
 						// Populate cache arrays
-						$tags_by_id[$tag_info['tag_id']] = $tag_info;
-						
-						$tagcats_by_id_id[$tagcat_info['tagcat_id']][$tag_info['tag_id']] = &$tags_by_id[$tag_info['tag_id']];
-						$tagcats_by_id_name[$tagcat_info['tagcat_id']][$tag_info['tag_name']] = &$tags_by_id[$tag_info['tag_id']];
-						$tagcats_by_name_id[$tagcat_info['tagcat_name']][$tag_info['tag_id']] = &$tags_by_id[$tag_info['tag_id']];
-						$tagcats_by_name_name[$tagcat_info['tagcat_name']][$tag_info['tag_name']] = &$tags_by_id[$tag_info['tag_id']];
+						$tagcats[$tagcat_info['tagcat_name']][$tag_info['tag_name']] = $tag_info;
 					}
 					
-					$mod_tags[] = $tagcats_by_name_name[$tagcat_hu_name][$tag_hu_name]['tag_id'];
+					$mod_tags[] = $tagcats[$tagcat_hu_name][$tag_hu_name]['tag_id'];
 				}
 			}
 		}
@@ -814,7 +797,7 @@ elseif ($mode == 'add' || $mode == 'edit')
 			'MOD_AUTHOR'		=> $mod_data['mod_author_name'],
 			'U_MOD_AUTHOR'		=> 'http://www.phpbb.com/community/memberlist.php?mode=viewprofile&amp;u=' . $mod_data['mod_author_id'],
 			'U_MOD_COM_DB'		=> 'http://www.phpbb.com/mods/db/index.php?i=misc&mode=display&contrib_id=' . $mod_data['mod_db_id'],
-			'MOD_TAGS'			=> generate_tags_bbcode_list($mod_tags, $tagcats_by_name_name, array("{$phpbb_root_path}mods.{$phpEx}", "mode=listtag&cat=%1\$s&tag=%2\$s")),
+			'MOD_TAGS'			=> generate_tags_bbcode_list($mod_tags, $tagcats, array("{$phpbb_root_path}mods.{$phpEx}", "mode=listtag&cat=%1\$s&tag=%2\$s")),
 			'U_MOD'				=> generate_board_url() . '/' . $url_rewriter->rewrite("{$phpbb_root_path}mods.{$phpEx}", "mode=mod&id={$mod_data['mod_id']}"),
 		);
 		$message = generate_content_post('mod_pack', $vars);
@@ -866,6 +849,7 @@ elseif ($mode == 'add' || $mode == 'edit')
 			'topic_poster'			=> $mod_data['topic_poster'],
 			'topic_first_post_id'	=> $mod_data['topic_first_post_id'],
 			'topic_last_post_id'	=> $mod_data['topic_last_post_id'],
+			'post_approved'			=> ($auth->acl_get('f_noapprove', MODS_FORUM_ID) || $auth->acl_get('m_approve', MODS_FORUM_ID)) ? 1 : 0,
 		);
 		$poll = false;
 		
@@ -903,31 +887,36 @@ elseif ($mode == 'add' || $mode == 'edit')
 		// And finally commit the whole
 		$db->sql_transaction('commit');
 
-		// Give success messages
-		// @todo Send out notifications to moderators with links to the translation pack?
-		if ($auth->acl_get('f_noapprove', $data['forum_id']) || $auth->acl_get('m_approve', $data['forum_id']))
+		// Give success message
+		if ($auth->acl_get('f_noapprove', MODS_FORUM_ID) || $auth->acl_get('m_approve', MODS_FORUM_ID))
 		{
 			$redirect_url = append_sid("{$phpbb_root_path}mods.{$phpEx}", "mode=mod&amp;id={$mod_data['mod_id']}");
 			$message = sprintf($user->lang[($mode == 'add' ? 'MOD_ADDED' : 'MOD_UPDATED')], '<a href="' . $redirect_url . '">', '</a>');
 			meta_refresh(5, $redirect_url);
 		}
 		// If the article is waiting for approval do not redirect the user but tell him this
+		// And also send out a notification for the appropriate moderators
 		else
 		{
 			$redirect_url = append_sid("{$phpbb_root_path}mods.{$phpEx}");
 			$message = sprintf($user->lang[($mode == 'add' ? 'MOD_ADDED_MOD' : 'MOD_UPDATED_MOD')], '<a href="' . $redirect_url . '">', '</a>');
+		
+			// Send out moderator notification
+			send_notification(explode(',', $config['mod_notif_users']), 'mod_submitted', array(
+				'MOD_HU_TITLE'		=> $mod_data['mod_hu_title'],
+				'MOD_EN_TITLE'		=> $mod_data['mod_en_title'],
+				'MOD_VERSION'		=> $mod_data['mod_version'],
+				'MOD_DESC'			=> $mod_data['mod_desc'],
+				'MOD_AUTHOR'		=> $mod_data['mod_author_name'],
+				'U_MOD_AUTHOR'		=> 'http://www.phpbb.com/community/memberlist.php?mode=viewprofile&amp;u=' . $mod_data['mod_author_id'],
+				'U_MOD_COM_DB'		=> 'http://www.phpbb.com/mods/db/index.php?i=misc&mode=display&contrib_id=' . $mod_data['mod_db_id'],
+				'U_LOC_PACK'		=> generate_board_url() . '/' . $config['mods_loc_store_path'] . $mod->filename . '.zip',
+				'U_MOD_PACK'		=> generate_board_url() . '/' . $config['downloads_path'] . '/mods/' . $mod->filename . '.zip',
+				'U_MOD'				=> generate_board_url() . '/' . $url_rewriter->rewrite("{$phpbb_root_path}mods.{$phpEx}", "mode=mod&id={$mod_data['mod_id']}"),
+			));
 		}
 		
-		// Do cleanup
-		$mod->cleanup();
-		
 		trigger_error($message);
-	}
-
-	// @todo Move this to a better place!!
-	if (isset($mod))
-	{
-		$mod->cleanup();
 	}
 	
 	$error = preg_replace('#^([A-Z_]+)$#e', "(!empty(\$user->lang['\\1'])) ? \$user->lang['\\1'] : '\\1'", $error);			
@@ -981,10 +970,72 @@ elseif ($mode == 'add' || $mode == 'edit')
 
 /**
 * Delete article
+* @todo code this function
 */
 elseif ($mode == 'delete')
 {
+	$mod_id = request_var('id', 0);
 
+	// Check whether the mod exists
+	$sql = 'SELECT m.mod_id, m.mod_filename,
+		t.topic_id, t.topic_approved, t.topic_reported, t.topic_poster, t.topic_type, t.topic_first_post_id, t.topic_last_post_id,
+		p.poster_id, p.post_reported
+		FROM ' . MODS_TABLE . ' m, ' . TOPICS_TABLE . ' t, ' . POSTS_TABLE . ' p
+		WHERE m.topic_id = t.topic_id
+			AND t.topic_first_post_id = p.post_id
+			AND mod_id = ' . $mod_id;
+	$result = $db->sql_query($sql);
+	
+	if (($mod = $db->sql_fetchrow($result)) == false)
+	{
+		trigger_error('NO_MOD', E_USER_NOTICE);
+	}
+	
+	if (!$auth->acl_get('m_delete', MODS_FORUM_ID) && !($auth->acl_get('f_c_del', MODS_FORUM_ID) && $mod['topic_poster'] == $user->data['user_id']))
+	{
+		http_status(403);
+		trigger_error('NOT_AUTHORISED', E_USER_NOTICE);
+	}
+	
+	if (confirm_box(true))
+	{
+		include("{$phpbb_root_path}includes/functions_posting.{$phpEx}");
+		
+		$db->sql_transaction('begin');
+
+		// Delete MOD from the database
+		$sql = 'DELETE FROM ' . MODS_TABLE . '
+			WHERE mod_id = ' . $mod_id;
+		$result = $db->sql_query($sql);
+		
+		// Delete tags
+		$sql = 'DELETE FROM ' . TAGMATCH_TABLE . '
+			WHERE topic_id = ' . $mod['topic_id'];
+		$result = $db->sql_query($sql);
+		
+		// Delete topic
+		delete_post(MODS_FORUM_ID, $mod['topic_id'], $mod['topic_first_post_id'], $mod);
+		
+		// Remove MOD pack
+		unlink($config['downloads_path'] . '/mods/' . $mod['mod_filename'] . '.zip');
+		
+		// Remove localisation pack
+		if (file_exists($config['mods_loc_store_path'] . '/' . $mod['mod_filename'] . '.zip'))
+		{
+			unlink($config['mods_loc_store_path'] . '/' . $mod['mod_filename'] . '.zip');
+		}
+		
+		$db->sql_transaction('commit');
+		
+		trigger_error(sprintf($user->lang['MOD_DELETED'], '<a href="' . append_sid("{$phpbb_root_path}mods.{$phpEx}") . '">', '</a>'));
+	}
+	else
+	{
+		confirm_box(false, $user->lang['DELETE_MOD_CONFIRM'], build_hidden_fields(array(
+			'id'		=> $mod_id,
+			'mode'		=> $mode))
+		);
+	}
 }
 
 /**
@@ -1009,7 +1060,7 @@ else
 	
 	// Query last ten MODs
 	$sql = $db->sql_build_query('SELECT', array(
-		'SELECT'	=> 'm.mod_id, m.topic_id, m.mod_hu_title, m.mod_version, m.mod_desc,
+		'SELECT'	=> 'm.mod_id, m.topic_id, m.mod_hu_title, m.mod_version, m.mod_author_id, m.mod_author_name, m.mod_desc,
 						t.topic_approved, t.topic_title, t.topic_poster, t.topic_time, t.topic_views, t.topic_first_poster_name, t.topic_first_poster_colour,
 						GROUP_CONCAT(tm.tag_id) AS tags',
 		'FROM'		=> array(MODS_TABLE => 'm'),
@@ -1032,6 +1083,24 @@ else
 
 	while ($row = $db->sql_fetchrow($result))
 	{
+		// Deal with tags
+		$mod_tags = array();
+		$tags_list = (!empty($row['tags'])) ? explode(',', $row['tags']) : array();
+		
+		// Group assigned tags into categories
+		foreach ($tags_list as $tag)
+		{
+			$mod_tags[$tags[$tag]['tagcat_name']][] = &$tags[$tag]; // Maybe the index could be changed from tagcat_id to tagcat_name as the latter is more often used
+		}
+		
+		// Sort the array containing the article tags in order to list them always in the same order
+		ksort($mod_tags);
+		
+		// Display the most recent version the MOD is compatible with
+		usort($mod_tags['phpbb'], 'version_compare_tag');
+		
+		$version_tag = array_pop($mod_tags['phpbb']);
+
 		// Assign some general variables about the article
 		$template->assign_block_vars('modrow', array(
 			'MOD_TITLE'				=> $row['mod_hu_title'],
@@ -1039,52 +1108,20 @@ else
 			'MOD_DESC'				=> trim_text($row['mod_desc'], 120),
 			'MOD_ID'				=> $row['mod_id'],
 			'U_MOD'					=> append_sid($phpbb_root_path . 'mods.' . $phpEx, 'mode=mod&amp;id=' . $row['mod_id']),
-			/*'MOD_POSTER'			=> get_username_string('username', $row['topic_poster'], $row['topic_first_poster_name'], $row['topic_first_poster_colour']),
+			'MOD_POSTER'			=> get_username_string('username', $row['topic_poster'], $row['topic_first_poster_name'], $row['topic_first_poster_colour']),
 			'MOD_POSTER_COLOUR'		=> get_username_string('colour', $row['topic_poster'], $row['topic_first_poster_name'], $row['topic_first_poster_colour']),
-			'MOD_POSTER_FULL'		=> get_username_string('full', $row['topic_poster'], $row['topic_first_poster_name'], $row['topic_first_poster_colour']),*/
+			'MOD_POSTER_FULL'		=> get_username_string('full', $row['topic_poster'], $row['topic_first_poster_name'], $row['topic_first_poster_colour']),
 			'MOD_POSTED'			=> $user->format_date($row['topic_time']),	
-			//'MOD_VIEWS'			=> $row['topic_views'],	
-			'MOD_APPROVED'			=> $row['topic_approved'],	
+			'MOD_VIEWS'				=> $row['topic_views'],	
+			'MOD_APPROVED'			=> $row['topic_approved'],
+			'MOD_AUTHOR'			=> $row['mod_author_name'],
+			'U_MOD_AUTHOR'			=> 'http://www.phpbb.com/community/memberlist.php?mode=viewprofile&ampu=' . $row['mod_author_id'],
+			'MOD_AUTHOR_FULL'		=> '<a href="http://www.phpbb.com/community/memberlist.php?mode=viewprofile&amp;u=' . $row['mod_author_id'] . '">' . $row['mod_author_name'] . '</a>',
+			'MOD_PHPBB_VERSION'		=> $version_tag['tag_title'],
 		
 			'U_MCP_QUEUE'		=> ($auth->acl_get('m_approve', MODS_FORUM_ID)) ? append_sid("{$phpbb_root_path}mcp.$phpEx", "i=queue&amp;mode=approve_details&amp;t={$row['topic_id']}", true) : false,
 			'UNAPPROVED_IMG'	=> $user->img('icon_topic_unapproved', 'TOPIC_UNAPPROVED'),
 		));
-		
-		/* Isn't needed for the time being
-		* @todo It still needs to be decided what info to show
-		* One thing is sure, we don't want to display all tags
-		// Assign tags
-		$mod_tags = array();
-		$tags_list = (!empty($row['tags'])) ? explode(',', $row['tags']) : array();
-		
-		// Group assigned tags into categories
-		foreach ($tags_list as $tag)
-		{
-			$mod_tags[$tags[$tag]['tagcat_id']][] = &$tags[$tag]; // Maybe the index could be changed from tagcat_id to tagcat_name as the latter is more often used
-		}
-		
-		// Sort the array containing the article tags in order to list them always in the same order
-		ksort($mod_tags);
-		
-		// Loop over the tag categories
-		foreach ($mod_tags as $tagcat)
-		{
-			// Category variables
-			$template->assign_block_vars('articles.tagcats', array(
-				'TAGCAT_NAME'	=> $tagcat[0]['tagcat_name'],
-				'TAGCAT_TITLE'	=> $tagcat[0]['tagcat_title'],
-				'U_TAGCAT'		=> append_sid($phpbb_root_path . 'mods.' . $phpEx, 'mode=tagcat&amp;cat=' . $tagcat[0]['tagcat_name']),
-			));
-			
-			// Tag details
-			foreach($tagcat as $tag)
-			{
-				$template->assign_block_vars('articles.tagcats.tags', array(
-					'TAG_TITLE'	=> $tag['tag_title'],
-					'U_TAG'		=> append_sid($phpbb_root_path . 'mods.' . $phpEx, 'mode=listtag&amp;cat=' . $tag['tagcat_name'] . '&amp;tag=' . $tag['tag_name']),
-				));
-			}
-		}*/
 	}
 	$db->sql_freeresult($result);
 	
@@ -1125,4 +1162,5 @@ else
 
 	site_footer();
 }
+
 ?>

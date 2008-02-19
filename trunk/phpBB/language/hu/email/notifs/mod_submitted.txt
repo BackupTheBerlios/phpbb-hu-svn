@@ -1,0 +1,22 @@
+Subject: MOD átnézésre vár: {MOD_HU_TITLE}
+
+Kedves {USERNAME}!
+
+Ezt az értesítés azért kapod, mivel {PERFORMER} felhasználó beküldött egy új MOD-ot vagy szerkesztett egy korábbit, és ahhoz, hogy a MOD elérhetővé váljon, egy moderátornak jóvá kell hagynia.  
+
+MOD adatok
+-------------------------
+MOD magyar neve:	{MOD_HU_TITLE}
+MOD angol neve:		{MOD_EN_TITLE}
+MOD verziója:		{MOD_VERSION}
+MOD szerzője:		{MOD_AUTHOR}
+MOD leírása:		{MOD_DESC}
+Link az eredeti MOD-hoz: 	{U_MOD_COM_DB}
+Link a fordítás csomaghoz:	{U_LOC_PACK}
+Link a MOD csomaghoz:		{U_MOD_PACK}
+Link a MOD-hoz:				{U_MOD}
+-------------------------
+
+Amennyiben nem kívánsz további értesítést kapni, az adminisztrátori vezérlőpult Oldal füle alatt a Beállításoknál vedd ki a felhasználói azonosítód a "moderátori értesítés küldése felhasználóknak" listából.
+
+{EMAIL_SIG}

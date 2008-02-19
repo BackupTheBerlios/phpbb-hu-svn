@@ -697,4 +697,13 @@ function trim_post ($text, $uid, $max_length, $bitfield = '', $enable_bbcode = t
 	return $text;
 }
 
+/**
+* Compare the version number of two tag entries
+* (basically a wrapper for selecting the appropriate element from the array)
+*/
+function version_compare_tag($a, $b)
+{
+	return version_compare($a['tag_name'], $b['tag_name']);
+}
+
 ?>

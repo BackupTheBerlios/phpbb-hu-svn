@@ -20,9 +20,6 @@ class mod_pack
 	public $data = array();
 	public $tags = array();
 	public $filename;
-	
-	// Temporary directory for handling the files
-	public $tmp_dir = 'files/private/mods/tmp/';
 		
 	// For development
 	protected $start_time;
@@ -42,9 +39,6 @@ class mod_pack
 		// If memory is not enough try to set it to a higher value (code from install/index.php)
 		increase_mem_limit(32);
 		
-		// Set temp directory
-		$this->temp_dir = $config['mods_tmp_dir_path'];
-		
 		// For developmental purposes
 		$this->start_time = microtime_float();
 	}
@@ -54,7 +48,7 @@ class mod_pack
 	*/
 	public function get_archive()
 	{
-		global $phpbb_root_path;
+		global $phpbb_root_path, $config;
 		
 		$url = 'http://www.phpbb.com/mods/db/download/' . $this->mod_id . '/';
 		
@@ -69,7 +63,7 @@ class mod_pack
 		// Get the pack
 		curl_exec($ch);
 		// Store the content of the pack
-		file_put_contents($phpbb_root_path . $this->tmp_dir . 'mods/' . $this->filename . '.zip', ob_get_contents());
+		file_put_contents($phpbb_root_path . $config['mods_tmp_dir_path'] . 'mods/' . $this->filename . '.zip', ob_get_contents());
 		// Stop storing the output
 		ob_end_clean();
 		// Close cURL resource, and free up system resources
@@ -178,24 +172,24 @@ class mod_pack
 	*/	
 	public function merge_packs($test = false)
 	{
-		global $phpbb_root_path;
+		global $phpbb_root_path, $config;
 		
 		/**
 		* Unzip both packages
 		*/
-		$mod = new compress_zip('r', $phpbb_root_path . $this->tmp_dir . 'mods/' . $this->filename . '.zip');
-		$mod->extract($phpbb_root_path . $this->tmp_dir . 'mods/');
+		$mod = new compress_zip('r', $phpbb_root_path . $config['mods_tmp_dir_path'] . 'mods/' . $this->filename . '.zip');
+		$mod->extract($phpbb_root_path . $config['mods_tmp_dir_path'] . 'mods/');
 		
 		/* ZipArchive is not currently supported on the server - leave this here for possible later use
 		$mod = new ZipArchive();
-		$mod->open($this->tmp_dir . 'mods/' . $this->filename . '.zip');
-		$mod->extractTo($this->tmp_dir . 'mods/');*/
+		$mod->open($config['mods_tmp_dir_path'] . 'mods/' . $this->filename . '.zip');
+		$mod->extractTo($config['mods_tmp_dir_path'] . 'mods/');*/
 		
 		// If no localisation pack exists then we just check the original MOD package to make sure all Hungarian translation files are included
-		if (file_exists($phpbb_root_path . $this->tmp_dir . 'localisations/' . $this->filename . '.zip'))
+		if (file_exists($phpbb_root_path . $config['mods_tmp_dir_path'] . 'localisations/' . $this->filename . '.zip'))
 		{
-			$loc = new compress_zip('r', $phpbb_root_path . $this->tmp_dir . 'localisations/' . $this->filename . '.zip');
-			$loc->extract($phpbb_root_path . $this->tmp_dir . 'localisations/');
+			$loc = new compress_zip('r', $phpbb_root_path . $config['mods_tmp_dir_path'] . 'localisations/' . $this->filename . '.zip');
+			$loc->extract($phpbb_root_path . $config['mods_tmp_dir_path'] . 'localisations/');
 		}
 		
 		/**
@@ -204,8 +198,8 @@ class mod_pack
 		$errors = array();
 		
 		// Introduce variables with short names for frequently used file paths
-		$mod_dir = $phpbb_root_path . $this->tmp_dir . 'mods/' . $this->filename;
-		$loc_dir = $phpbb_root_path . $this->tmp_dir . 'localisations/' . $this->filename;
+		$mod_dir = $phpbb_root_path . $config['mods_tmp_dir_path'] . 'mods/' . $this->filename;
+		$loc_dir = $phpbb_root_path . $config['mods_tmp_dir_path'] . 'localisations/' . $this->filename;
 		
 		// First look at the language files in the mods directory
 		if (file_exists($mod_dir . '/root/language/en/') && !file_exists($mod_dir . '/root/language/hu/'))
@@ -333,19 +327,19 @@ class mod_pack
 		}
 		
 		// Remove old file?
-		if (file_exists('files/downloads/mods/' . $this->filename . '.zip'))
+		if (file_exists($config['downloads_path'] . '/mods/' . $this->filename . '.zip'))
 		{
-			unlink('files/downloads/mods/' . $this->filename . '.zip');
+			unlink($config['downloads_path'] . '/mods/' . $this->filename . '.zip');
 		}
 		
 		/* ZipArchive is not supported on the server - but leave this here for possible later use
 		$final = new DirZipArchive();
-		$final->open('files/downloads/mods/' . $this->filename . '.zip', ZIPARCHIVE::CREATE);
+		$final->open('$config['downloads_path'] . '/mods/' . $this->filename . '.zip', ZIPARCHIVE::CREATE);
 		$final->addDir($mod_dir . '/', $this->filename);
 		$final->close();*/
 		
 		// Generate final MOD pack
-		$final = new compress_zip('w', 'files/downloads/mods/' . $this->filename . '.zip');	
+		$final = new compress_zip('w', $config['downloads_path'] . '/mods/' . $this->filename . '.zip');	
 		$filelist = scandir_rec($mod_dir . '/');	
 		foreach ($filelist as $file)
 		{
@@ -354,7 +348,7 @@ class mod_pack
 		}	
 		$final->close();
 		
-		$this->data['size'] = filesize('files/downloads/mods/' . $this->filename . '.zip');
+		$this->data['size'] = filesize($config['downloads_path'] . '/mods/' . $this->filename . '.zip');
 		
 		return true;
 	}
@@ -364,16 +358,18 @@ class mod_pack
 	*/
 	public function cleanup()
 	{
-		rmdir_rec($this->tmp_dir . 'mods/' . $this->filename . '/');
-		rmdir_rec($this->tmp_dir . 'localisations/' . $this->filename . '/');
+		global $config;
 		
-		if (file_exists($this->tmp_dir . 'mods/' . $this->filename . '.zip'))
+		rmdir_rec($config['mods_tmp_dir_path'] . 'mods/' . $this->filename . '/');
+		rmdir_rec($config['mods_tmp_dir_path'] . 'localisations/' . $this->filename . '/');
+		
+		if (file_exists($config['mods_tmp_dir_path'] . 'mods/' . $this->filename . '.zip'))
 		{
-			unlink($this->tmp_dir . 'mods/' . $this->filename . '.zip');
+			unlink($config['mods_tmp_dir_path'] . 'mods/' . $this->filename . '.zip');
 		}
-		if (file_exists($this->tmp_dir . 'localisations/' . $this->filename . '.zip'))
+		if (file_exists($config['mods_tmp_dir_path'] . 'localisations/' . $this->filename . '.zip'))
 		{
-			unlink($this->tmp_dir . 'localisations/' . $this->filename . '.zip');
+			unlink($config['mods_tmp_dir_path'] . 'localisations/' . $this->filename . '.zip');
 		}
 	}
 	
