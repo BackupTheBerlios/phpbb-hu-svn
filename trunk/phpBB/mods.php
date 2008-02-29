@@ -639,7 +639,7 @@ elseif ($mode == 'add' || $mode == 'edit')
 				// Move localisation pack to its place since we have now the filename
 				if(isset($file) && !sizeof($file->error))
 				{
-					rename($file->filename, $config['mods_tmp_dir_path'] . '/localisations/' . $mod->filename . '.zip');
+					rename($file->filename, $phpbb_root_path . $config['mods_tmp_dir_path'] . '/localisations/' . $mod->filename . '.zip');
 				}
 				
 				$mod->merge_packs((bool) sizeof($error));
@@ -652,11 +652,11 @@ elseif ($mode == 'add' || $mode == 'edit')
 			if (empty($error))
 			{
 				// Store localisation pack
-				if (file_exists($config['mods_loc_store_path'] . $mod->filename . '.zip'))
+				if (file_exists($phpbb_root_path . $config['mods_loc_store_path'] . $mod->filename . '.zip'))
 				{
-					unlink($config['mods_loc_store_path'] . $mod->filename . '.zip');
+					unlink($phpbb_root_path . $config['mods_loc_store_path'] . $mod->filename . '.zip');
 				}
-				copy($phpbb_root_path . $config['mods_tmp_dir_path'] . 'localisations/' . $mod->filename . '.zip', $config['mods_loc_store_path'] . $mod->filename . '.zip');
+				copy($phpbb_root_path . $config['mods_tmp_dir_path'] . 'localisations/' . $mod->filename . '.zip', $phpbb_root_path . $config['mods_loc_store_path'] . $mod->filename . '.zip');
 			}
 			
 			// Do the cleanup
@@ -691,13 +691,13 @@ elseif ($mode == 'add' || $mode == 'edit')
 			'mod_filename'		=> $mod_data['mod_filename'],
 			'mod_hu_title'		=> $mod_data['mod_hu_title'],
 			'mod_en_title'		=> $mod_data['mod_en_title'],
-			'mod_filename'		=> $mod_data['mod_filename'],
 			'mod_version'		=> $mod_data['mod_version'],
 			'mod_md5'			=> $mod_data['mod_md5'],
 			'mod_size'			=> $mod_data['mod_size'],
 			'mod_author_id'		=> $mod_data['mod_author_id'],
 			'mod_author_name'	=> $mod_data['mod_author_name'],
 			'mod_desc'			=> $mod_data['mod_desc'],
+			'mod_last_checked'	=> time(),
 		);
 		
 		if ($mode == 'add')
@@ -774,7 +774,7 @@ elseif ($mode == 'add' || $mode == 'edit')
 						$tag_info['tag_id'] = $db->sql_nextid();
 						$tag_info = array_merge($tagcat_info, $tag_info);
 						
-						// Populate cache arrays
+						// Populate cache array
 						$tagcats[$tagcat_info['tagcat_name']][$tag_info['tag_name']] = $tag_info;
 					}
 					
@@ -902,18 +902,7 @@ elseif ($mode == 'add' || $mode == 'edit')
 			$message = sprintf($user->lang[($mode == 'add' ? 'MOD_ADDED_MOD' : 'MOD_UPDATED_MOD')], '<a href="' . $redirect_url . '">', '</a>');
 		
 			// Send out moderator notification
-			send_notification(explode(',', $config['mod_notif_users']), 'mod_submitted', array(
-				'MOD_HU_TITLE'		=> $mod_data['mod_hu_title'],
-				'MOD_EN_TITLE'		=> $mod_data['mod_en_title'],
-				'MOD_VERSION'		=> $mod_data['mod_version'],
-				'MOD_DESC'			=> $mod_data['mod_desc'],
-				'MOD_AUTHOR'		=> $mod_data['mod_author_name'],
-				'U_MOD_AUTHOR'		=> 'http://www.phpbb.com/community/memberlist.php?mode=viewprofile&amp;u=' . $mod_data['mod_author_id'],
-				'U_MOD_COM_DB'		=> 'http://www.phpbb.com/mods/db/index.php?i=misc&mode=display&contrib_id=' . $mod_data['mod_db_id'],
-				'U_LOC_PACK'		=> generate_board_url() . '/' . $config['mods_loc_store_path'] . $mod->filename . '.zip',
-				'U_MOD_PACK'		=> generate_board_url() . '/' . $config['downloads_path'] . '/mods/' . $mod->filename . '.zip',
-				'U_MOD'				=> generate_board_url() . '/' . $url_rewriter->rewrite("{$phpbb_root_path}mods.{$phpEx}", "mode=mod&id={$mod_data['mod_id']}"),
-			));
+			send_mod_notification($mod_data);
 		}
 		
 		trigger_error($message);

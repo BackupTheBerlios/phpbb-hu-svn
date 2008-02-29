@@ -327,9 +327,9 @@ class mod_pack
 		}
 		
 		// Remove old file?
-		if (file_exists($config['downloads_path'] . '/mods/' . $this->filename . '.zip'))
+		if (file_exists($phpbb_root_path . $config['downloads_path'] . '/mods/' . $this->filename . '.zip'))
 		{
-			unlink($config['downloads_path'] . '/mods/' . $this->filename . '.zip');
+			unlink($phpbb_root_path . $config['downloads_path'] . '/mods/' . $this->filename . '.zip');
 		}
 		
 		/* ZipArchive is not supported on the server - but leave this here for possible later use
@@ -339,7 +339,7 @@ class mod_pack
 		$final->close();*/
 		
 		// Generate final MOD pack
-		$final = new compress_zip('w', $config['downloads_path'] . '/mods/' . $this->filename . '.zip');	
+		$final = new compress_zip('w', $phpbb_root_path . $config['downloads_path'] . '/mods/' . $this->filename . '.zip');	
 		$filelist = scandir_rec($mod_dir . '/');	
 		foreach ($filelist as $file)
 		{
@@ -348,7 +348,7 @@ class mod_pack
 		}	
 		$final->close();
 		
-		$this->data['size'] = filesize($config['downloads_path'] . '/mods/' . $this->filename . '.zip');
+		$this->data['size'] = filesize($phpbb_root_path . $config['downloads_path'] . '/mods/' . $this->filename . '.zip');
 		
 		return true;
 	}
@@ -483,6 +483,34 @@ class ModException extends Exception
 function site_dirname($file)
 {
 	return ($dirname = dirname($file)) == '.' ? '' : $dirname . '/';
+}
+
+/**
+ * Send out notification about updated MODs for moderators who can then approve the MOD
+ *
+ * @param array $mod_data An array containing all the data about a MOD that is stored in the database
+ */
+function send_mod_notifications($mod_data)
+{
+	global $config, $phpbb_root_path, $phpEx, $url_rewriter;
+	
+	if (empty($config['mod_notif_users']))
+	{
+		return true;
+	}
+	
+	send_notification(explode(',', $config['mod_notif_users']), 'mod_submitted', array(
+		'MOD_HU_TITLE'		=> $mod_data['mod_hu_title'],
+		'MOD_EN_TITLE'		=> $mod_data['mod_en_title'],
+		'MOD_VERSION'		=> $mod_data['mod_version'],
+		'MOD_DESC'			=> $mod_data['mod_desc'],
+		'MOD_AUTHOR'		=> $mod_data['mod_author_name'],
+		'U_MOD_AUTHOR'		=> 'http://www.phpbb.com/community/memberlist.php?mode=viewprofile&amp;u=' . $mod_data['mod_author_id'],
+		'U_MOD_COM_DB'		=> 'http://www.phpbb.com/mods/db/index.php?i=misc&mode=display&contrib_id=' . $mod_data['mod_db_id'],
+		'U_LOC_PACK'		=> generate_board_url() . '/' . $config['mods_loc_store_path'] . $mod_data['mod_filename'] . '.zip',
+		'U_MOD_PACK'		=> generate_board_url() . '/' . $config['downloads_path'] . '/mods/' . $mod_data['mod_filename'] . '.zip',
+		'U_MOD'				=> generate_board_url() . '/' . $url_rewriter->rewrite("{$phpbb_root_path}mods.{$phpEx}", "mode=mod&id={$mod_data['mod_id']}"),
+	));
 }
 
 ?>

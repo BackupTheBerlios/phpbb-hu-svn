@@ -2051,7 +2051,7 @@ function get_schema_struct()
 			'mod_author_id'			=> array('UINT', 0),
 			'mod_author_name'		=> array('XSTEXT_UNI', ''),
 			'mod_desc'				=> array('TEXT_UNI', ''),
-			'mod_last_checked'		=> array('UINT', 0),
+			'mod_last_checked'		=> array('TIMESTAMP', 0),
 			//'mod_dls_loc'			=> array('UINT', 0),
 			//'mod_dls_com'			=> array('UINT', 0),
 	),

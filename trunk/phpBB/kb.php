@@ -961,16 +961,11 @@ else
 	));
 
 	// Display sidemenu
-	$template->assign_block_vars('sidemenublock', array(
-		'BLOCK_TITLE'	=> $user->lang['KB'],
-		'BLOCK_URL'		=> append_sid($phpbb_root_path . 'kb.' . $phpEx),
-	));
+	$sidemenu = new sidemenu();
+	$sidemenu->add_block('KB', $phpbb_root_path . 'kb.' . $phpEx);
 	if ($auth->acl_get('f_c_post', KB_FORUM_ID))
 	{
-		$template->assign_block_vars('sidemenublock.element', array(
-			'ITEM_TITLE'	=> $user->lang['ADD_ARTICLE'],
-			'U_ITEM'		=> append_sid($phpbb_root_path . 'kb.' . $phpEx, 'mode=add'),
-		));
+		$sidemenu->add_link('ADD_ARTICLE', $phpbb_root_path . 'kb.' . $phpEx, 'mode=add');
 	}
 	
 	// Output page

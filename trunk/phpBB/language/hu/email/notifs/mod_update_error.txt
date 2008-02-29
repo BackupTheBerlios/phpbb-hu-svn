@@ -1,0 +1,25 @@
+Subject: MOD frissítése nem sikerült: {MOD_HU_TITLE}
+
+Kedves {USERNAME}!
+
+Ezt az értesítés azért kapod, mivel a {MOD_HU_TITLE} nevű MOD {MOD_OLD_VERSION}-ról {MOD_NEW_VERSION} verzióra való frissítése során hiba lépett fel. A hiba a következő:
+
+{ERRORS}
+
+A MOD ideiglenesen eltávolításra került az oldalról. Kérjük, minél hamarabb frissítsd a fordítást, hogy a MOD minél előbb újra elérhető legyen.
+
+MOD adatok
+-------------------------
+MOD magyar neve:	{MOD_HU_TITLE}
+MOD angol neve:		{MOD_EN_TITLE}
+MOD régi verziója:	{MOD_OLD_VERSION}
+MOD új verziója:	{MOD_NEW_VERSION}
+MOD szerzője:		{MOD_AUTHOR}
+MOD leírása:		{MOD_DESC}
+Link az eredeti MOD-hoz: 	{U_MOD_COM_DB}
+Link a fordítás csomaghoz:	{U_LOC_PACK}
+Link a MOD csomaghoz:		{U_MOD_PACK}
+Link a MOD-hoz:				{U_MOD}
+-------------------------
+
+{EMAIL_SIG}

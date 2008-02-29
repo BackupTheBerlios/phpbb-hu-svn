@@ -207,6 +207,7 @@ $lang = array_merge($lang, array(
 	'COM_MOD_DB_PAGE'	=> 'PhpBB.com MOD adatbázisának megfelelő oldala',
 
 	'DELETE_MOD'		=> 'MOD törlése',
+	'DELETE_MOD_CONFIRM'=> 'Biztosan törölni akarod a MOD-ot?',
 	'DOWNLOAD_MOD'		=> '%1$s %2$s MOD letöltése',
 
 	'EDIT_MOD'			=> 'MOD szerkesztése',
@@ -222,6 +223,7 @@ $lang = array_merge($lang, array(
 	'MOD_ADDED_MOD'					=> 'A MOD sikeresen felvételre került, azonban mielőtt mindenki által letölhető lenne, egy moderátornak még át kell tekintenie.<br /><br />%sKattints ide, hogy visszatérj a MOD-okhoz.%s',
 	'MOD_COM_URL'					=> 'PhpBB.com MOD adatbázis link',
 	'MOD_COM_URL_EXPLAIN'			=> 'Link a MOD oldalához a phpBB.com MOD adatbázisában.',
+	'MOD_DELETED'					=> 'A MOD sikeresen törlésre került.<br /><br />%sKattints ide, hogy visszatérj a MOD adatbázis kezdőlapjára.%s',
 	'MOD_DESCRIPTION'				=> 'MOD leírása',
 	'MOD_DESCRIPTION_EXPLAIN'		=> 'Rövid leírás a MOD-ról, milyen funkciókat tartalmaz, mire kell ügyelni stb. (vedd alapul az angol leírást).',
 	'MOD_EN_TITLE'					=> 'MOD eredeti angol neve',
@@ -247,6 +249,8 @@ $lang = array_merge($lang, array(
 	'NO_MOD_UNAPPROVED'				=> 'A MOD ellenőrzés alatt van, egyelőre nem elérhető.',
 	'NO_TAGCAT'						=> 'Nincs ilyen címke kategória.',
 
+	'PHPBB_VERSION'		=> 'phpBB verzió',
+
 	'SIZE'				=> 'Méret',
 	'SUBMIT_MOD'		=> 'MOD beküldése',
 	'SUBMIT_MOD_CONFIRM'=> 'Biztosan be akarod küldeni a MOD-ot? Ellenőrizted, hogy tartalmazza az összes fordítással kapcsolatos dolgot? Átnézted a fordítást, megnézted, hogy van-e újabb verziója a MOD-nak?<br />Az elküldés után a MOD nem lesz azonnal elérhető, előbb az adminisztrátoroknak jóvá kell hagyniuk.<br />A MOD feldolgozása eltarthat egy ideig, kérünk, várj türelmesen.',
@@ -256,6 +260,7 @@ $lang = array_merge($lang, array(
 
 	'UPLOADER'			=> 'Feltöltő',
 
+	'VERSION_UNKNOWN'	=> 'ismeretlen',
 	'VIEW'				=> 'Megtekintés',
 	'VIEW_MOD'			=> '1 modifikáció',
 	'VIEW_MODS'			=> '%1$d modifikáció',
