@@ -60,7 +60,7 @@ if ($mode == 'project')
 	);
 	
 	// Forum tracking
-	if ($config['load_db_lastread'] && $user->data['is_registered'])
+	if ($config['load_db_lastread'] && $user->data['is_registered'] && !$user->data['is_bot'])
 	{
 		$sql_array['LEFT_JOIN'][] = array(
 			'FROM'	=> array(FORUMS_TRACK_TABLE => 'ft'),
@@ -197,7 +197,7 @@ if ($mode == 'project')
 	);
 	
 	// Topic tracking
-	if ($user->data['is_registered'])
+	if ($user->data['is_registered'] && !$user->data['is_bot'])
 	{
 		if ($config['load_db_track'])
 		{
@@ -230,16 +230,16 @@ if ($mode == 'project')
 	// Take care of topic tracking
 	$topic_tracking_info = $tracking_topics = array();
 
-	if ($config['load_db_lastread'] && $user->data['is_registered'])
+	if ($config['load_db_lastread'] && $user->data['is_registered'] && !$user->data['is_bot'])
 	{
 		$topic_tracking_info = get_topic_tracking($forum_id, $topic_list, $rowset, array($forum_id => $project['mark_time']));
 		$mark_time_forum = (!empty($project['mark_time'])) ? $project['mark_time'] : $user->data['user_lastmark'];
 	}
-	else if ($config['load_anon_lastread'] || $user->data['is_registered'])
+	else if ($config['load_anon_lastread'] || ($user->data['is_registered'] && !$user->data['is_bot']))
 	{
 		$topic_tracking_info = get_complete_topic_tracking($forum_id, $topic_list);
 
-		if (!$user->data['is_registered'])
+		if (!$user->data['is_registered'] || $user->data['is_bot'])
 		{
 			$user->data['user_lastmark'] = (isset($tracking_topics['l'])) ? (int) (base_convert($tracking_topics['l'], 36, 10) + $config['board_startdate']) : 0;
 		}
@@ -392,7 +392,7 @@ elseif ($mode == 'report')
 	$topic_id = $report['topic_id'];
 
 	// Find out whether the user is watching the report
-	if ($user->data['user_id'] != ANONYMOUS)
+	if ($user->data['is_registered'] && !$user->data['is_bot'])
 	{
 		$sql = 'SELECT notify_status FROM ' . TOPICS_WATCH_TABLE . " WHERE topic_id = {$topic_id} AND user_id = {$user->data['user_id']}";
 		$result = $db->sql_query($sql);
@@ -407,14 +407,14 @@ elseif ($mode == 'report')
 	/**
 	* Actions (such as assigning, subscribing etc.)
 	*/
-	if ($action == 'subscribe' && !$is_subscribed && $user->data['user_id'] != ANONYMOUS && $auth->acl_get('f_subscribe', $forum_id))
+	if ($action == 'subscribe' && !$is_subscribed && ($user->data['is_registered'] && !$user->data['is_bot']) && $auth->acl_get('f_subscribe', $forum_id))
 	{
 		$sql = 'INSERT INTO ' . TOPICS_WATCH_TABLE . " (user_id, topic_id, notify_status)
 			VALUES ({$user->data['user_id']}, {$topic_id}, 1)";
 		$db->sql_query($sql);
 		$is_subscribed = true;
 	}
-	elseif ($action == 'unsubscribe' && $is_subscribed && $user->data['user_id'] != ANONYMOUS)
+	elseif ($action == 'unsubscribe' && $is_subscribed && $user->data['is_registered'] && !$user->data['is_bot'])
 	{
 		$sql = 'DELETE FROM ' . TOPICS_WATCH_TABLE . "
 			WHERE user_id = {$user->data['user_id']} AND topic_id = {$topic_id}";
@@ -494,7 +494,7 @@ elseif ($mode == 'report')
 		}
 		
 		// Update the database
-		$sql = 'UPDATE ' . BUGS_REPORTS_TABLE . ' SET report_status = ' . $status_id . (($report['report_closed'] != $status['status_closed']) ? ', report_closed = ' . $status['status_closed'] : '');
+		$sql = 'UPDATE ' . BUGS_REPORTS_TABLE . ' SET report_status = ' . $status_id . (($report['report_closed'] != $status['status_closed']) ? ', report_closed = ' . $status['status_closed'] : '') . ' WHERE report_id = ' . $report['report_id'];
 		$db->sql_query($sql);
 		
 		$old_status_title = $report['status_title'];
@@ -1305,9 +1305,9 @@ elseif ($mode == 'reply')
 */
 else
 {
-	// @todo Display open assigned and open own reports
-	
-	// Query projects
+	/**
+	* Query projects
+	*/
 	$sql = $db->sql_build_query('SELECT', array(
 		'SELECT'	=> 'p.*, f.forum_desc AS project_description, f.forum_desc_uid, f.forum_desc_bitfield, f.forum_desc_options',
 		'FROM'		=> array(BUGS_PROJECTS_TABLE	=> 'p'),
@@ -1335,6 +1335,76 @@ else
 	}
 	$db->sql_freeresult($result);
 
+	/**
+	* Query recently opened and closed reports 
+	*/
+	$stat_reports = array(
+		'new_reports'		=> array('WHERE'	=> 'r.report_closed = 0',	'LIMIT'	=> 5),
+		'closed_reports'	=> array('WHERE'	=> 'r.report_closed = 1',	'LIMIT'	=> 5),
+	);
+	
+	if ($user->data['is_registered'] && !$user->data['is_bot'])
+	{
+		$stat_reports['own_reports'] =		array('WHERE'	=> 'r.report_closed = 0 AND t.topic_poster = ' . $user->data['user_id'],	'LIMIT'	=> false);
+		$stat_reports['assigned_reports'] =	array('WHERE'	=> 'r.report_closed = 0 AND r.report_assigned = ' . $user->data['user_id'],	'LIMIT'	=> false);
+	}
+	
+	// Query the reports
+	foreach ($stat_reports as $name => $settings)
+	{
+		$sql_array = array(
+			'SELECT'	=> 'r.report_id, r.report_title, p.project_name, p.project_title',
+			'FROM'		=> array(BUGS_REPORTS_TABLE	=> 'r'),
+			'LEFT_JOIN'		=> array(
+				array(
+					'FROM'	=> array(TOPICS_TABLE => 't'),
+					'ON'	=> 'r.topic_id = t.topic_id'
+				),
+				/*array(
+					'FROM'	=> array(BUGS_COMPONENTS_TABLE => 'c'),
+					'ON'	=> 'r.report_component = c.component_id'
+				),
+				array(
+					'FROM'	=> array(BUGS_STATUSES_TABLE => 's'),
+					'ON'	=> 'r.report_status = s.status_id'
+				),
+				array(
+					'FROM'	=> array(BUGS_VERSIONS_TABLE => 'v'),
+					'ON'	=> 'r.report_version = v.version_id'
+				),
+				array(
+					'FROM'	=> array(USERS_TABLE => 'a'),
+					'ON'	=> 'r.report_assigned = a.user_id'
+				),*/
+				array(
+					'FROM'	=> array(BUGS_PROJECTS_TABLE => 'p'),
+					'ON'	=> 'r.project_id = p.project_id'
+				),
+			),
+			'WHERE'		=> $settings['WHERE'],
+			'ORDER_BY'	=> 't.topic_time DESC',
+		);
+		if (isset($settings['LIMIT']))
+		{
+			$result = $db->sql_query_limit($db->sql_build_query('SELECT', $sql_array), $settings['LIMIT'], 0);
+		}
+		else
+		{
+			$result = $db->sql_query($db->sql_build_query('SELECT', $sql_array));
+		}
+		
+		while ($row = $db->sql_fetchrow($result))
+		{
+			$template->assign_block_vars($name, array(
+				'REPORT_ID'		=> $row['report_id'],
+				'PROJECT_TITLE'	=> $row['project_title'],
+				'REPORT_TITLE'	=> $row['report_title'],
+				'U_REPORT'		=> append_sid($phpbb_root_path . 'bugs.' . $phpEx, 'mode=report&amp;project=' . urlencode($row['project_name']) . '&amp;report_id=' . $row['report_id']),
+			));
+		}
+		$db->sql_freeresult($result);
+	}
+	
 	// Assign some vars
 	$template->assign_vars(array(
 		'U_BUG_TRACKER'	=> append_sid($phpbb_root_path . 'bugs.' . $phpEx),

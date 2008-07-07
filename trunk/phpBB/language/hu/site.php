@@ -58,6 +58,7 @@ $lang = array_merge($lang, array(
 	'ASSIGN'				=> 'Hozzárendelés',
 	'ASSIGN_TO'				=> 'Hozzárendelés',
 	'ASSIGNED_TO'			=> 'Hozzárendelve',
+	'ASSIGNED_REPORTS'		=> 'Hozzámrendelt jelentések',
 
 	'BUG_DESCRIPTION'			=> 'Hiba leírás',
 	'BUG_DESCRIPTION_EXPLAIN'	=> 'Részletes leírás a hibáról, hol mi miért nem jó. Kérünk, adj meg minnél több adatot.',
@@ -72,6 +73,7 @@ $lang = array_merge($lang, array(
 	'CANNOT_REASSIGN_SAME'	=> 'Nem rendelheted hozzá a hibajelentéshez újra ugyanazt az embert.',
 	'CHANGE_STATUS'			=> 'Állapot megváltoztatása',
 	'CLOSED_BUGS'			=> 'Lezárt hibák',
+	'CLOSED_REPORTS'		=> 'Lezárt jelentések',
 	'COMMENT_ADDED'			=> 'A hozzászólás sikeresen elküldésre került.<br /><br />%sA hozzászólás megtekintéséhez kattints ide.%s',
 	'COMMENTS'				=> 'Hozzászólások',
 	'COMMENT_SUBJECT'		=> 'Hozzászólás témája',
@@ -86,9 +88,12 @@ $lang = array_merge($lang, array(
 	'MY_ASSIGNED_REPORTS'	=> 'Hozzámrendelt jelentések',
 	'MY_REPORTS'			=> 'Saját jelentések',
 
+	'NEW_REPORTS'			=> 'Új jelentések',
 	'NONE_SELECTED'			=> '(válassz)',
+	'NO_CLOSED_REPORTS'		=> 'Nincs lezárt jelentés.',
 	'NO_COMMENTS'			=> 'Még nem küldtek hozzászólást.',
 	'NO_COMPONENT'			=> 'Nem választottál ki komponenst.',
+	'NO_NEW_REPORTS'		=> 'Nincs frissen beküldött jelentés.',
 	'NO_PROJECT'			=> 'Nincs ilyen projekt.',
 	'NO_PROJECTS'			=> 'Nincsenek projektek.',
 	'NO_REPORT'				=> 'Nincs ilyen jelentés.',
@@ -98,6 +103,7 @@ $lang = array_merge($lang, array(
 	'NO_VERSION'			=> 'Nem választottál ki verziót.',
 
 	'OPEN_BUGS'				=> 'Nyitott hibák',
+	'OWN_REPORTS'			=> 'Saját jelentéseim',
 
 	'POSTED_INFO'			=> 'Küldte %1$s %2$s %3$s-kor.',
 	'PREVIEW_COMMENT'		=> 'Hozzászólás előnézete',

@@ -4,7 +4,7 @@
 	<a href="{U_BUG_TRACKER}"><h2 class="bugs">{L_BUG_TRACKER}</h2></a>
 	<p>{L_BUG_TRACKER_EXPLAIN}</p>
 
-	<div class="forabg">
+	<!-- <div class="forabg">
 		<div class="inner"><span class="corners-top"><span/></span></span>
 			<ul class="topiclist">
 				<li class="header">
@@ -28,6 +28,7 @@
 			</ul>
 		<span class="corners-bottom"><span/></span></span></div>
 	</div>
+	-->
 
 	<!-- IF .projects -->
 	<div class="forabg">
@@ -56,6 +57,54 @@
 		<strong>{L_NO_PROJECTS}</strong>
 		<span class="corners-bottom"><span></span></span></div>
 	</div>
+	<!-- ENDIF -->
+	
+	<div style="float: left; width: 49%; margin: 5px">
+		<h3>{L_NEW_REPORTS}</h3>
+		<!-- IF .new_reports -->
+		<ul>
+			<!-- BEGIN new_reports -->
+			<li>{new_reports.PROJECT_TITLE}: <a href="{new_reports.U_REPORT}">{new_reports.REPORT_TITLE}</a></li>
+			<!-- END new_reports -->
+		</ul>
+		<!-- ELSE -->
+		<p>{L_NO_NEW_REPORTS}</p>
+		<!-- ENDIF -->
+	</div>
+	
+	<div style="float: left; width: 49%; margin: 5px">
+		<h3>{L_CLOSED_REPORTS}</h3>
+		<!-- IF .closed_reports -->
+		<ul>
+			<!-- BEGIN closed_reports -->
+			<li>{closed_reports.PROJECT_TITLE}: <a href="{closed_reports.U_REPORT}">{closed_reports.REPORT_TITLE}</a></li>
+			<!-- END closed_reports -->
+		</ul>
+		<!-- ELSE -->
+		<p>{L_NO_CLOSED_REPORTS}</p>
+		<!-- ENDIF -->
+	</div><span class="clear"></span>
+	
+	<!-- IF .own_reports -->
+	<div style="float: left; width: 49%; margin: 5px">
+		<h3>{L_OWN_REPORTS}</h3>
+		<ul>
+			<!-- BEGIN own_reports -->
+			<li>{own_reports.PROJECT_TITLE}: <a href="{own_reports.U_REPORT}">{own_reports.REPORT_TITLE}</a></li>
+			<!-- END own_reports -->
+		</ul>
+	</div>
+	<!-- ENDIF -->
+	
+	<!-- IF .assigned_reports -->
+	<div style="float: left; width: 49%; margin: 5px">
+		<h3>{L_ASSIGNED_REPORTS}</h3>
+		<ul>
+			<!-- BEGIN assigned_reports -->
+			<li>{assigned_reports.PROJECT_TITLE}: <a href="{assigned_reports.U_REPORT}">{assigned_reports.REPORT_TITLE}</a></li>
+			<!-- END assigned_reports -->
+		</ul>
+	</div><span class="clear"></span>
 	<!-- ENDIF -->
 </div>
 
