@@ -8,15 +8,26 @@
 <!-- INCLUDE sidemenu.html -->
 
 <div class="wide">
-	<form method="post" action="{U_FILTER_ACTION}">
-		<fieldset class="display-options" style="text-align:left">
-			<strong>{L_FILTER}</strong>:
-			<!-- BEGIN tagcats -->
-			<label>{tagcats.TAGCAT_TITLE}: <select name="filter[]">{tagcats.TAG_OPTIONS}</select></label>
-			<!-- END tagcats -->
-			<input type="submit" value="{L_GO}" class="button2" />
+	<div class="search-box">
+		<form method="post" action="{S_FILTER_ACTION}">
+			<fieldset class="display-options" style="text-align:left">
+				<strong>{L_FILTER}</strong>:
+				<!-- BEGIN tagcats -->
+				<label>{tagcats.TAGCAT_TITLE}: <select name="filter[]">{tagcats.TAG_OPTIONS}</select></label>
+				<!-- END tagcats -->
+				<input type="submit" value="{L_GO}" class="button2" />
+			</fieldset>
+		</form>
+	</div>
+	
+	<div class="search-box">
+		<form method="post" id="forum-search" action="{S_SEARCHBOX_ACTION}">	
+		<fieldset>
+			<input class="inputbox search tiny" type="text" name="keywords" id="search_keywords" size="20" value="{L_SEARCH_KB}" onclick="if (this.value == '{LA_SEARCH_KB}') this.value = '';" onblur="if (this.value == '') this.value = '{LA_SEARCH_KB}';" />
+			<input class="button2" type="submit" value="{L_SEARCH}" />	
 		</fieldset>
-	</form>
+		</form>
+	</div>
 	
 	<!-- IF .articles -->
 	<div class="forabg">

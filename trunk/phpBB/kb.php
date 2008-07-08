@@ -957,7 +957,9 @@ else
 	// Assign some vars
 	$template->assign_vars(array(
 		'U_KB'				=> append_sid($phpbb_root_path . 'kb.' . $phpEx),
-		'U_FILTER_ACTION'	=> append_sid($phpbb_root_path . 'kb.' . $phpEx),
+
+		'S_FILTER_ACTION'	=> append_sid($phpbb_root_path . 'kb.' . $phpEx),
+		'S_SEARCHBOX_ACTION'=> append_sid("{$phpbb_root_path}search.$phpEx", 'fid[]=' . KB_FORUM_ID),
 	));
 
 	// Display sidemenu

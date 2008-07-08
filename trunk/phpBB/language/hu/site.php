@@ -190,6 +190,7 @@ $lang = array_merge($lang, array(
 
 	'RECENT_ARTICLES'		=> 'Legújabb útmutatók',
 
+	'SEARCH_KB'				=> 'Keresés az útmutatók között…',
 	'SUBMIT_ARTICLE'		=> 'Útmutató elküldése',
 	'SUBMIT_ARTICLE_CONFIRM'=> 'Biztosan kész az útmutatód? Nem tartalmaz elírást vagy helyesírási hibát, illetve megfelelően tagolva van?',
 
