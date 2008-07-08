@@ -3327,7 +3327,8 @@ function page_header($page_title = '', $display_online_list = true)
 		'PRIVATE_MESSAGE_INFO_UNREAD'	=> $l_privmsgs_text_unread,
 
 		// Assign base href (for the url rewrite)
-		'BASE_HREF'	=> ($GLOBALS['url_rewriter']->enabled) ? generate_board_url() . '/' . (substr(dirname($_SERVER['SCRIPT_NAME']), -3) == 'adm' ? 'adm/' : '') : false, 
+		'BASE_HREF'		=> ($GLOBALS['url_rewriter']->enabled) ? generate_board_url() . '/' . (substr(dirname($_SERVER['SCRIPT_NAME']), -3) == 'adm' ? 'adm/' : '') : false, 
+		'PAGE_URL'		=> $_SERVER['REQUEST_URI'],
 
 		'S_USER_NEW_PRIVMSG'			=> $user->data['user_new_privmsg'],
 		'S_USER_UNREAD_PRIVMSG'			=> $user->data['user_unread_privmsg'],
