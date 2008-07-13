@@ -85,7 +85,7 @@ $lang = array_merge($lang, array(
 	'IM_MSNM_CONNECT'		=> 'Az MSNM nem csatlakozott.\nA folytatáshoz kapcsolódnod kell az MSNM-hez.',
 	'IM_NAME'				=> 'Neved',
  	'IM_NO_DATA'			=> 'Nincs megfelelő kapcsolat információ ehhez a felhasználóhoz.',
-	'IM_NO_JABBER'			=> 'Sajnos ezen a szerveren a direkt üzenetek nem támogatottak. A címzettel való kapcsolatba lépéshez szükséged lesz egy Jabber kliensre.',
+	'IM_NO_JABBER'			=> 'Sajnos ezen a fórumon nem támogatott a direkt üzenetküldés Jabberes felhasználóknak. A címzettel való kapcsolatba lépéshez szükséged lesz egy Jabber kliensre.',
 	'IM_RECIPIENT'			=> 'Címzett',
 	'IM_SEND'				=> 'Üzenet elküldése',
 	'IM_SEND_MESSAGE'		=> 'Üzenet küldése',
@@ -133,6 +133,7 @@ $lang = array_merge($lang, array(
 
 	'USERNAME_BEGINS_WITH'	=> 'Felhasználónév kezdőbetűje',
 	'USER_ADMIN'			=> 'Felhasználó kezelése',
+	'USER_BAN'				=> 'Kitiltások',
 	'USER_FORUM'			=> 'Statisztika',
 	'USER_ONLINE'			=> 'Online',
 	'USER_PRESENCE'			=> 'Jelenlét a fórumban',

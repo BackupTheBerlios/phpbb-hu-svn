@@ -127,6 +127,8 @@ $lang = array_merge($lang, array(
 	'ACP_MOD_LOGS'				=> 'Moderátori napló',
 	'ACP_MOD_ROLES'				=> 'Moderátori szerepek',
 
+	'ACP_NO_ITEMS'				=> 'Még nincs ilyen elem.',
+
 	'ACP_ORPHAN_ATTACHMENTS'	=> 'Árva csatolmányok',
 
 	'ACP_PERMISSIONS'			=> 'Jogosultságok',
@@ -200,6 +202,9 @@ $lang = array_merge($lang, array(
 	'ADMIN_INDEX'			=> 'Adminisztrátori kezdőlap',
 	'ADMIN_PANEL'			=> 'Adminisztrátori vezérlőpult',
 
+	'ADM_LOGOUT'			=> 'AVP kilépés',
+	'ADM_LOGGED_OUT'		=> 'Sikeresen kiléptél az adminisztrátori vezérlőpultból.',
+
 	'BACK'					=> 'Vissza',
 
 	'COLOUR_SWATCH'			=> 'Webbiztos színválasztó',
@@ -262,6 +267,11 @@ $lang = array_merge($lang, array(
 
 	'SELECT_ANONYMOUS'		=> 'Vendég felhasználó kiválasztása',
 	'SELECT_OPTION'			=> 'Opció kiválasztása',
+
+	'SETTING_TOO_LOW'		=> 'A „%1$s” beállításnak megadott érték túl kicsi. A legkisebb engedélyezett érték %2$d.',
+	'SETTING_TOO_BIG'		=> 'A „%1$s” beállításnak megadott érték túl nagy. A legnagyobb engedélyezett érték %2$d.',
+	'SETTING_TOO_LONG'		=> 'A „%1$s” beállításnak megadott érték túl hosszú. A leghosszabb engedélyezett érték %2$d karakter.',
+	'SETTING_TOO_SHORT'		=> 'A „%1$s” beállításnak megadott érték túl rövid. A legrövidebb engedélyezett érték %2$d karakter.',
 
 	'UCP'					=> 'Felhasználói vezérlőpult',
 	'USERNAMES_EXPLAIN'		=> 'Minden felhasználónevet külön sorba írj.',
@@ -395,13 +405,13 @@ $lang = array_merge($lang, array(
 	'LOG_ACL_ADD_GROUP_LOCAL_F_'		=> '<strong>Csoportok</strong> %1$s <strong>fórum hozzáférésének módosítása</strong><br />» %2$s',
 	'LOG_ACL_ADD_GROUP_LOCAL_M_'		=> '<strong>Csoportok</strong> %1$s <strong>fórum moderátori hozzáférésének módosítása</strong><br />» %2$s',
 
-	'LOG_ACL_ADD_MOD_LOCAL_M_'			=> '<strong>Moderátorok hozzáadása vagy módosítása</strong> a %1$s fórumban<br />» %2$s',
-	'LOG_ACL_ADD_FORUM_LOCAL_F_'		=> '<strong>Fórum jogosultságok módosítása</strong> a %1$s fórumban<br />» %2$s',
+	'LOG_ACL_ADD_MOD_LOCAL_M_'			=> '<strong>Moderátorok hozzáadása vagy módosítása</strong> %1$s fórumban<br />» %2$s',
+	'LOG_ACL_ADD_FORUM_LOCAL_F_'		=> '<strong>Fórum jogosultságok módosítása</strong> %1$s fórumban<br />» %2$s',
 
 	'LOG_ACL_DEL_ADMIN_GLOBAL_A_'		=> '<strong>Adminisztrátorok eltávolítása</strong><br />» %s',
 	'LOG_ACL_DEL_MOD_GLOBAL_M_'			=> '<strong>Globális moderátorok eltávolítása</strong><br />» %s',
-	'LOG_ACL_DEL_MOD_LOCAL_M_'			=> '<strong>Moderátorok eltávolítása</strong> a %1$s fórumból<br />» %2$s',
-	'LOG_ACL_DEL_FORUM_LOCAL_F_'		=> '<strong>Felhasználói/csoport jogosultságok törlése</strong> a %1$s fórumban<br />» %2$s',
+	'LOG_ACL_DEL_MOD_LOCAL_M_'			=> '<strong>Moderátorok eltávolítása</strong> %1$s fórumból<br />» %2$s',
+	'LOG_ACL_DEL_FORUM_LOCAL_F_'		=> '<strong>Felhasználói/csoport jogosultságok törlése</strong> %1$s fórumban<br />» %2$s',
 
 	'LOG_ACL_TRANSFER_PERMISSIONS'		=> '<strong>Jogosultságok átvétele mástól:</strong><br />» %s',
 	'LOG_ACL_RESTORE_PERMISSIONS'		=> '<strong>Saját jogosultságok visszaállítása más jogosultságainak használata után:</strong><br />» %s',
@@ -602,6 +612,7 @@ $lang = array_merge($lang, array(
 	'LOG_REASON_REMOVED'	=> '<strong>Jelentés/visszautasítás ok törlése</strong><br />» %s',
 	'LOG_REASON_UPDATED'	=> '<strong>Jelentés/visszautasítás ok frissítése</strong><br />» %s',
 
+	'LOG_REFERER_INVALID'		=> '<strong>Sikertelen referer összevetés</strong><br />»Referer értéke: “<em>%1$s</em>”. A kérés visszautasításra került, a munkamenet meg lett szüntetve.',
 	'LOG_RESET_DATE'			=> '<strong>Fórum indulási dátumának lenullázása</strong>',
 	'LOG_RESET_ONLINE'			=> '<strong>Valaha jelenlévő legtöbb felhasználó számának lenullázása</strong>',
 	'LOG_RESYNC_POSTCOUNTS'		=> '<strong>Felhasználói hozzászólásszámok újraszinkronizálása</strong>',

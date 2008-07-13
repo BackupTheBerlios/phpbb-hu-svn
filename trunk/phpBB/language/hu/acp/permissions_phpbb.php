@@ -98,7 +98,7 @@ $lang = array_merge($lang, array(
 
 // User Permissions
 $lang = array_merge($lang, array(
-	'acl_u_viewprofile'	=> array('lang' => 'Megtekintheti a profilokat, a taglistát és jelenlévők listáját', 'cat' => 'profile'),
+	'acl_u_viewprofile'	=> array('lang' => 'Láthatja a profilokat, a taglistát és jelenlévők listáját', 'cat' => 'profile'),
 	'acl_u_chgname'		=> array('lang' => 'Megváltoztathatja a felhasználónevét', 'cat' => 'profile'),
 	'acl_u_chgpasswd'	=> array('lang' => 'Megváltoztathatja a jelszavát', 'cat' => 'profile'),
 	'acl_u_chgemail'	=> array('lang' => 'Megváltoztathatja az e-mail címét', 'cat' => 'profile'),

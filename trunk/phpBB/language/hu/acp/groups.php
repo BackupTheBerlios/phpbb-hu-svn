@@ -37,7 +37,7 @@ if (empty($lang) || !is_array($lang))
 // in a url you again do not need to specify an order e.g., 'Click %sHERE%s' is fine
 
 $lang = array_merge($lang, array(
-	'ACP_GROUPS_MANAGE_EXPLAIN'		=> 'Az oldal e részén a csoportokat tudod adminisztrálni. Létrehozhatsz újakat, valamint törölheted és szerkesztheted a már meglévőket. Ezen túl csoportvezetőket jelölhetsz ki, megadhatod, a csoportok státusza nyitott/rejtett/zárt legyen vagy módosíthatod a csoportok nevét és leírását.',
+	'ACP_GROUPS_MANAGE_EXPLAIN'		=> 'Az oldal e részén a csoportokat tudod adminisztrálni. Létrehozhatsz újakat, valamint törölheted és szerkesztheted a már meglévőket. Ezen túl csoportvezetőket jelölhetsz ki, megadhatod, a csoportok státusza nyitott/rejtett/zárt legyen, vagy módosíthatod a csoportok nevét és leírását.',
 	'ADD_USERS'						=> 'Felhasználók felvétele',
 	'ADD_USERS_EXPLAIN'				=> 'Itt fel tudsz venni új felhasználókat a csoportba. Megadhatod azt is, hogy a felhasználóknak ez legyen az új elsődleges csoportjuk. Továbbá csoportvezetőkké is teheted őket. Kérjük, minden felhasználónevet külön sorba írj.',
 
@@ -108,6 +108,8 @@ $lang = array_merge($lang, array(
 	'NO_GROUPS_CREATED'			=> 'Még nem lett létrehozva csoport.',
 	'NO_PERMISSIONS'			=> 'Ne másolja a jogosultságokat',
 	'NO_USERS'					=> 'Nem adtál meg egy felhasználót se.',
+	'NO_USERS_ADDED'			=> 'Nem került felhasználó hozzáadásra a csoporthoz.',
+	'NO_VALID_USERS'			=> 'Nem adtál meg felhasználót, akin elvégezhető lenne ez a művelet.',
 
 	'SPECIAL_GROUPS'			=> 'Előre meghatározott csoportok',
 	'SPECIAL_GROUPS_EXPLAIN'	=> 'Az előre meghatározott csoportok speciális csoportok, melyeket nem lehet törölni vagy közvetlenül módosítani. Mindazonáltal felhasználókat fel tudsz venni beléjük és néhány alap beállítást is megváltoztathatsz.',
@@ -117,7 +119,7 @@ $lang = array_merge($lang, array(
 	'USERS_APPROVED'				=> 'A felhasználók sikeresen jóváhagyásra kerültek',
 	'USER_DEFAULT'					=> 'Felhasználói alapértelmezett',
 	'USER_DEF_GROUPS'				=> 'Felhasználói csoportok',
-	'USER_DEF_GROUPS_EXPLAIN'		=> 'Ezeket a csoportokat te vagy a fórum egyik másik adminisztrátora hozta létre. Kezelheted a tagságokat, szerkesztheted a csoport beállításait és akár törölheted is a csoportot.',
+	'USER_DEF_GROUPS_EXPLAIN'		=> 'Ezeket a csoportokat te vagy a fórum egyik másik adminisztrátora hozta létre. Kezelheted a tagságokat, szerkesztheted a csoport beállításait, és akár törölheted is a csoportot.',
 	'USER_GROUP_DEFAULT'			=> 'Beállítás elsődleges csoportnak',
 	'USER_GROUP_DEFAULT_EXPLAIN'	=> 'Ha igenre állítod, a felvett felhasználóknak ez lesz beállítva elsődleges csoportnak.',
 	'USER_GROUP_LEADER'				=> 'Beállítás csoportvezetőnek',

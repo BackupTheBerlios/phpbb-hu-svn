@@ -696,6 +696,15 @@ parse_css_file = {PARSE_CSS_FILE}
 		{
 			trigger_error($user->lang['NO_TEMPLATE'] . adm_back_link($this->u_action), E_USER_WARNING);
 		}
+		
+		if ($save_changes && !check_form_key('acp_styles'))
+		{
+			trigger_error($user->lang['FORM_INVALID'] . adm_back_link($this->u_action), E_USER_WARNING);
+		}
+		else if (!$save_changes)
+		{
+			add_form_key('acp_styles');
+		}
 
 		// save changes to the template if the user submitted any
 		if ($save_changes && $template_file)
@@ -1004,7 +1013,7 @@ parse_css_file = {PARSE_CSS_FILE}
 
 				'CACHED'		=> $user->format_date(filemtime("{$phpbb_root_path}cache/$filename")),
 				'FILENAME'		=> $file,
-				'FILESIZE'		=> sprintf('%.1f KB', filesize("{$phpbb_root_path}cache/$filename") / 1024),
+				'FILESIZE'		=> sprintf('%.1f ' . $user->lang['KIB'], filesize("{$phpbb_root_path}cache/$filename") / 1024),
 				'MODIFIED'		=> $user->format_date((!$template_row['template_storedb']) ? filemtime("{$phpbb_root_path}styles/{$template_row['template_path']}/template/$tpl_file.html") : $filemtime[$file . '.html']))
 			);
 		}

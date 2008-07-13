@@ -92,7 +92,7 @@ $lang = array_merge($lang, array(
 	'SEARCH_STORE_RESULTS_EXPLAIN'			=> 'A gyorsítótárazott keresési eredmények ennyi másodperc elteltével járnak le. A kereső gyorsítótár kikapcsolásához állítsd 0-ra .',
 	'SEARCH_TYPE'							=> 'Keresőmodul',
 	'SEARCH_TYPE_EXPLAIN'					=> 'A phpBB lehetővé teszi, hogy kiválaszd milyen motor legyen használva a hozzászólások tartalmában való kereséshez. Alapból a phpBB saját fulltext keresője lesz használva.',
-	'SWITCHED_SEARCH_BACKEND'				=> 'Keresőmodult váltottál. Hogy használni tudd az új keresőmotort, győződj meg róla, hogy van index a kiválasztott keresőmodulhoz.',
+	'SWITCHED_SEARCH_BACKEND'				=> 'Keresőmodult váltottál. Hogy az új keresőmotort használni tudd, győződj meg róla, hogy a kiválasztott keresőmodulhoz való index létezik.',
 
 	'TOTAL_WORDS'							=> 'Indexelt szavak száma',
 	'TOTAL_MATCHES'							=> 'Szó–hozzászólás kapcsolatok száma',

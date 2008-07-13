@@ -39,7 +39,7 @@ if (empty($lang) || !is_array($lang))
 // BBCodes
 // Note to translators: you can translate everything but what's between { and }
 $lang = array_merge($lang, array(
-	'ACP_BBCODES_EXPLAIN'		=> 'A BBCode a HTML nyelv egy speciális változata, mely nagy teret enged egy szövegrészlet megformázásához. Ezen az oldalon felvehetsz, törölheted és, szerkesztehted az egyedi BBCode-okat.',
+	'ACP_BBCODES_EXPLAIN'		=> 'A BBCode a HTML nyelv egy speciális változata, mely nagy teret enged egy szövegrészlet megformázásához. Ezen az oldalon felvehetsz, törölheted és szerkesztehted az egyedi BBCode-okat.',
 	'ADD_BBCODE'				=> 'Új BBCode felvétele',
 
 	'BBCODE_ADDED'				=> 'A BBCode sikeresen felvételre került.',
@@ -144,6 +144,8 @@ $lang = array_merge($lang, array(
 	'NO_ICONS_PAK'		=> 'Nem található ikon csomag.',
 	'NO_SMILIES_ADD'	=> 'Nincs felvehető emotikon',
 	'NO_SMILIES_EDIT'	=> 'Nincs módosítható emotikon.',
+	'SMILIE_NO_CODE'	=> 'Az „%s” emotikon nem lett figyelembe véve, mivel nem lett hozzá kód megadva.',
+	'SMILIE_NO_EMOTION'	=> 'Az „%s” emotikon nem lett figyelembe véve, mivel nem lett hozzá kitöltve az érzelem mező.',
 	'NO_SMILIES_EXPORT'	=> 'Nincs emotikonod, melyből csomagot készíthetnél.',
 	'NO_SMILIES_PAK'	=> 'Nem található emotikon csomag.',
 

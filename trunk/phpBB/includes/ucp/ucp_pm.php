@@ -92,7 +92,7 @@ class ucp_pm
 				{
 					if ($user->data['user_new_privmsg'])
 					{
-						$l_new_message = ($user->data['user_new_privmsg'] == 1 ) ? $user->lang['YOU_NEW_PM'] : $user->lang['YOU_NEW_PMS'];
+						$l_new_message = ($user->data['user_new_privmsg'] == 1) ? $user->lang['YOU_NEW_PM'] : $user->lang['YOU_NEW_PMS'];
 					}
 					else
 					{
@@ -129,15 +129,7 @@ class ucp_pm
 			break;
 
 			case 'options':
-				$sql = 'SELECT group_message_limit
-					FROM ' . GROUPS_TABLE . '
-					WHERE group_id = ' . $user->data['group_id'];
-				$result = $db->sql_query($sql, 3600);
-				$message_limit = (int) $db->sql_fetchfield('group_message_limit');
-				$db->sql_freeresult($result);
-
-				$user->data['message_limit'] = (!$message_limit) ? $config['pm_max_msgs'] : $message_limit;
-
+				set_user_message_limit();
 				get_folder($user->data['user_id']);
 
 				include($phpbb_root_path . 'includes/ucp/ucp_pm_options.' . $phpEx);
@@ -168,14 +160,7 @@ class ucp_pm
 
 			case 'view':
 
-				$sql = 'SELECT group_message_limit
-					FROM ' . GROUPS_TABLE . '
-					WHERE group_id = ' . $user->data['group_id'];
-				$result = $db->sql_query($sql, 3600);
-				$message_limit = (int) $db->sql_fetchfield('group_message_limit');
-				$db->sql_freeresult($result);
-
-				$user->data['message_limit'] = (!$message_limit) ? $config['pm_max_msgs'] : $message_limit;
+				set_user_message_limit();
 
 				if ($folder_specified)
 				{

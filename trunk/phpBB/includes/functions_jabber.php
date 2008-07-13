@@ -20,11 +20,11 @@ if (!defined('IN_PHPBB'))
 *
 * Jabber class from Flyspray project
 *
-* @version class.jabber2.php 1306 2007-06-21
+* @version class.jabber2.php 1488 2007-11-25
 * @copyright 2006 Flyspray.org
 * @author Florian Schmitz (floele)
 *
-* Modified by Acyd Burn
+* Only slightly modified by Acyd Burn
 *
 * @package phpBB3
 */
@@ -286,7 +286,7 @@ class jabber
 			$read = trim(fread($this->connection, 4096));
 			$data .= $read;
 		}
-		while (time() <= $start + $timeout && ($wait || $data == '' || $read != '' || (substr(rtrim($data), -1) != '>')));
+		while (time() <= $start + $timeout && !feof($this->connection) && ($wait || $data == '' || $read != '' || (substr(rtrim($data), -1) != '>')));
 
 		if ($data != '')
 		{
@@ -385,7 +385,6 @@ class jabber
 		{
 			case 'stream:stream':
 				// Connection initialised (or after authentication). Not much to do here...
-				$this->session['id'] = $xml['stream:stream'][0]['@']['id'];
 
 				if (isset($xml['stream:stream'][0]['#']['stream:features']))
 				{
@@ -396,6 +395,17 @@ class jabber
 				{
 					$this->features = $this->listen();
 				}
+
+				$second_time = isset($this->session['id']);
+				$this->session['id'] = $xml['stream:stream'][0]['@']['id'];
+
+				/** Currently commented out due to problems with some jabber server - reason unknown
+				if ($second_time)
+				{
+					// If we are here for the second time after TLS, we need to continue logging in
+					$this->login();
+					return;
+				}*/
 
 				// go on with authentication?
 				if (isset($this->features['stream:features'][0]['#']['bind']) || !empty($this->session['tls']))
@@ -519,9 +529,10 @@ class jabber
 						'response'	=> $this->encrypt_password(array_merge($decoded, array('nc' => '00000001'))),
 						'charset'	=> 'utf-8',
 						'nc'		=> '00000001',
+						'qop'		=> 'auth',			// only auth being supported
 					);
 
-					foreach (array('nonce', 'qop', 'digest-uri', 'realm', 'cnonce') as $key)
+					foreach (array('nonce', 'digest-uri', 'realm', 'cnonce') as $key)
 					{
 						if (isset($decoded[$key]))
 						{

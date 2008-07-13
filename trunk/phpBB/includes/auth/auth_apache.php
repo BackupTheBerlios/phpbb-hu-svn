@@ -48,8 +48,18 @@ function login_apache(&$username, &$password)
 	if (!$password)
 	{
 		return array(
-			'status'	=> LOGIN_BREAK,
+			'status'	=> LOGIN_ERROR_PASSWORD,
 			'error_msg'	=> 'NO_PASSWORD_SUPPLIED',
+			'user_row'	=> array('user_id' => ANONYMOUS),
+		);
+	}
+
+	if (!$username)
+	{
+		return array(
+			'status'	=> LOGIN_ERROR_USERNAME,
+			'error_msg'	=> 'LOGIN_ERROR_USERNAME',
+			'user_row'	=> array('user_id' => ANONYMOUS),
 		);
 	}
 
@@ -138,8 +148,8 @@ function autologin_apache()
 
 	if (!empty($php_auth_user) && !empty($php_auth_pw))
 	{
-		set_var($php_auth_user, $php_auth_user, 'string');
-		set_var($php_auth_pw, $php_auth_pw, 'string');
+		set_var($php_auth_user, $php_auth_user, 'string', true);
+		set_var($php_auth_pw, $php_auth_pw, 'string', true);
 
 		$sql = 'SELECT *
 			FROM ' . USERS_TABLE . "
@@ -223,7 +233,7 @@ function validate_session_apache(&$user)
 	}
 
 	$php_auth_user = '';
-	set_var($php_auth_user, $_SERVER['PHP_AUTH_USER'], 'string');
+	set_var($php_auth_user, $_SERVER['PHP_AUTH_USER'], 'string', true);
 
 	return ($php_auth_user === $user['username']) ? true : false;
 }

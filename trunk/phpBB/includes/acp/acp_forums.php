@@ -56,7 +56,7 @@ class acp_forums
 				$total = request_var('total', 0);
 
 				$this->display_progress_bar($start, $total);
-				exit_handler();
+				exit;
 			break;
 
 			case 'delete':
@@ -74,7 +74,7 @@ class acp_forums
 				{
 					trigger_error($user->lang['NO_PERMISSION_FORUM_ADD'] . adm_back_link($this->u_action . '&amp;parent_id=' . $this->parent_id), E_USER_WARNING);
 				}
-			
+
 			break;
 		}
 
@@ -100,7 +100,7 @@ class acp_forums
 					$cache->destroy('sql', FORUMS_TABLE);
 
 					trigger_error($user->lang['FORUM_DELETED'] . adm_back_link($this->u_action . '&amp;parent_id=' . $this->parent_id));
-	
+
 				break;
 
 				case 'edit':
@@ -132,6 +132,7 @@ class acp_forums
 						'forum_rules_link'		=> request_var('forum_rules_link', ''),
 						'forum_image'			=> request_var('forum_image', ''),
 						'forum_style'			=> request_var('forum_style', 0),
+						'display_subforum_list'	=> request_var('display_subforum_list', false),
 						'display_on_index'		=> request_var('display_on_index', false),
 						'forum_topics_per_page'	=> request_var('topics_per_page', 0),
 						'enable_indexing'		=> request_var('enable_indexing', true),
@@ -188,7 +189,7 @@ class acp_forums
 								$sql = 'DELETE FROM ' . ACL_USERS_TABLE . '
 									WHERE forum_id = ' . (int) $forum_data['forum_id'];
 								$db->sql_query($sql);
-	
+
 								$sql = 'DELETE FROM ' . ACL_GROUPS_TABLE . '
 									WHERE forum_id = ' . (int) $forum_data['forum_id'];
 								$db->sql_query($sql);
@@ -244,7 +245,7 @@ class acp_forums
 
 						$auth->acl_clear_prefetch();
 						$cache->destroy('sql', FORUMS_TABLE);
-	
+
 						$acl_url = '&amp;mode=setting_forum_local&amp;forum_id[]=' . $forum_data['forum_id'];
 
 						$message = ($action == 'add') ? $user->lang['FORUM_CREATED'] : $user->lang['FORUM_UPDATED'];
@@ -471,6 +472,7 @@ class acp_forums
 							'forum_rules_link'		=> '',
 							'forum_image'			=> '',
 							'forum_style'			=> 0,
+							'display_subforum_list'	=> true,
 							'display_on_index'		=> false,
 							'forum_topics_per_page'	=> 0,
 							'enable_indexing'		=> true,
@@ -541,7 +543,7 @@ class acp_forums
 
 				$forum_type_options = '';
 				$forum_type_ary = array(FORUM_CAT => 'CAT', FORUM_POST => 'FORUM', FORUM_LINK => 'LINK');
-		
+
 				foreach ($forum_type_ary as $value => $lang)
 				{
 					$forum_type_options .= '<option value="' . $value . '"' . (($value == $forum_data['forum_type']) ? ' selected="selected"' : '') . '>' . $user->lang['TYPE_' . $lang] . '</option>';
@@ -611,7 +613,7 @@ class acp_forums
 						}
 					}
 				}
-				
+
 				if (strlen($forum_data['forum_password']) == 32)
 				{
 					$errors[] = $user->lang['FORUM_PASSWORD_OLD'];
@@ -670,6 +672,7 @@ class acp_forums
 					'S_FORUM_CAT'				=> ($forum_data['forum_type'] == FORUM_CAT) ? true : false,
 					'S_ENABLE_INDEXING'			=> ($forum_data['enable_indexing']) ? true : false,
 					'S_TOPIC_ICONS'				=> ($forum_data['enable_icons']) ? true : false,
+					'S_DISPLAY_SUBFORUM_LIST'	=> ($forum_data['display_subforum_list']) ? true : false,
 					'S_DISPLAY_ON_INDEX'		=> ($forum_data['display_on_index']) ? true : false,
 					'S_PRUNE_ENABLE'			=> ($forum_data['enable_prune']) ? true : false,
 					'S_FORUM_LINK_TRACK'		=> ($forum_data['forum_flags'] & FORUM_FLAG_LINK_TRACK) ? true : false,
@@ -916,6 +919,13 @@ class acp_forums
 			$errors[] = $user->lang['FORUM_DATA_NEGATIVE'];
 		}
 
+		$range_test_ary = array(
+			array('lang' => 'FORUM_TOPICS_PAGE', 'value' => $forum_data['forum_topics_per_page'], 'column_type' => 'TINT:0'),
+		);
+		validate_range($range_test_ary, $errors);
+
+
+
 		// Set forum flags
 		// 1 = link tracking
 		// 2 = prune old polls
@@ -964,7 +974,7 @@ class acp_forums
 			$forum_data_sql['forum_password'] = phpbb_hash($forum_data_sql['forum_password']);
 		}
 		unset($forum_data_sql['forum_password_unset']);
-		
+
 		if (!isset($forum_data_sql['forum_id']))
 		{
 			// no forum_id means we're creating a new forum
@@ -1622,7 +1632,7 @@ class acp_forums
 			WHERE p.forum_id = $forum_id
 				AND a.in_message = 0
 				AND a.topic_id = p.topic_id";
-		$result = $db->sql_query($sql);	
+		$result = $db->sql_query($sql);
 
 		$topic_ids = array();
 		while ($row = $db->sql_fetchrow($result))
@@ -1680,7 +1690,7 @@ class acp_forums
 			break;
 
 			default:
-			
+
 				// Delete everything else and curse your DB for not offering multi-table deletion
 				$tables_ary = array(
 					'post_id'	=>	array(

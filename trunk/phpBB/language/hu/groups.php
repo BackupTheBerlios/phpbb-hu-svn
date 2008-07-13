@@ -41,7 +41,9 @@ $lang = array_merge($lang, array(
 	'ALREADY_IN_GROUP'		=> 'Már tagja vagy a kiválasztott csoportnak.',
 	'ALREADY_IN_GROUP_PENDING'	=> 'Már kérelmezted a csatlakozást a csoporthoz.',
 
-	'CHANGED_DEFAULT_GROUP'	=> 'Az elsődleges csoport sikeresen megváltoztatásra került.',
+	'CANNOT_JOIN_GROUP'			=> 'Nem tudsz csatlakozni ehhez a csoporthoz. Csak nyitott és szabadon nyitott csoportokhoz csatlakozhatsz.',
+	'CANNOT_RESIGN_GROUP'		=> 'Nem tudod lemondani a csoporttagságod ebben a csoportban. Csak nyitott és szabadon nyitott csoportokból léphetsz ki.',
+	'CHANGED_DEFAULT_GROUP'		=> 'Az elsődleges csoport sikeresen megváltoztatásra került.',
 
 	'GROUP_AVATAR'						=> 'Csoport avatar',
 	'GROUP_CHANGE_DEFAULT'				=> 'Biztosan meg akarod változtatni az elsődleges csoportodat a „%s” csoportra?',

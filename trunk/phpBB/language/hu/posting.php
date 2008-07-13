@@ -83,9 +83,10 @@ $lang = array_merge($lang, array(
 	'DISABLE_BBCODE'			=> 'BBCode kikapcsolása',
 	'DISABLE_MAGIC_URL'			=> 'Webcímek automatikus linkké alakításának kikapcsolása',
 	'DISABLE_SMILIES'			=> 'Emotikonok kikapcsolása',
+	'DISALLOWED_CONTENT'		=> 'A feltöltés visszautasításra került, mivel a feltöltött állomány egy esetleges támadás hordozója lehet.',
 	'DISALLOWED_EXTENSION'		=> 'A %s kiterjesztés nem engedélyezett.',
-	'DRAFT_LOADED'				=> 'A piszkozat sikeresen betöltésre került, most már befejezheted a hozzászólásod.<br />A piszkozat törlésre kerül miután elküldted a hozzászólást.',
-	'DRAFT_LOADED_PM'			=> 'A piszkozat sikeresen betöltésre került, most már befejezheted a privát üzenetet.<br />A piszkozat törlésre kerül miután elküldted a privát üzenetet.',
+	'DRAFT_LOADED'				=> 'A piszkozat sikeresen betöltésre került, most már befejezheted a hozzászólásod.<br />A piszkozat a hozzászólás elküldése után törlésre fog kerülni.',
+	'DRAFT_LOADED_PM'			=> 'A piszkozat sikeresen betöltésre került, most már befejezheted a privát üzenetet.<br />A piszkozat a privát üzenet elküldése után törlésre fog kerülni.',
 	'DRAFT_SAVED'				=> 'A piszkozat sikeresen elmentésre került.',
 	'DRAFT_TITLE'				=> 'Piszkozat címe',
 

@@ -42,16 +42,16 @@ $lang = array_merge($lang, array(
 	<br />
 	A fórumot a phpBB hajtja, mely egy a „<a href="http://opensource.org/licenses/gpl-license.php">General Public License</a>” (a továbbiakban „GPL”) licenc alatt kiadott fórumszoftver, és a <a href="http://www.phpbb.com/">www.phpbb.com</a>, valamint magyarul a <a href="http://phpbb.hu/">phpbb.hu</a> weboldalról tölthető le. A phpBB csak lehetőséget nyújt az internet alapú kommunikációra; a phpBB Csoport nem felelős azért, hogy milyen tartalmakat, illetve magatartást engedélyezünk. További információért a phpBB-ről, kérjük, látogasd meg a <a href="http://www.phpbb.com/">http://www.phpbb.com/</a> weboldalt.<br />
 	<br />
-	Beleegyezel, hogy nem küldesz semmilyen sértegető, obszcén, vulgáris, rágalmazó, gyűlöletkeltő, támadó, közízlést sértő vagy bármely más olyan tartalmat, mely sérti a hazádban, a fórumot kiszolgáló szerver országában érvényben lévő vagy a nemzetközi törvényeket. A fentiek megsértése azonnali és végleges kitiltáshoz vezethet az internet szolgáltatód értesítésével együtt, ha ezt szükségesnek tartjuk. Az összes hozzászóláshoz tartozó IP-címet tároljuk a feltételek betartatásának érdekében. Elfogadod, hogy a fórum fenntartóinak jogukban áll eltávolítani, szerkeszteni a hozzászólásaid vagy lezárni az általad nyitott témákat, amennyiben úgy ítélik meg, hogy ez szükséges. Mint felhasználó, elfogadod, hogy bármely adat, melyet megadsz, tárolásra kerül a fórum adatbázisában. Ezek az információk semmilyen módon nem kerülnek ki egy harmadik félhez, de a fórum fenntartói nem tudnak felelősséget vállalni az adatokért egy esetleges „hackertámadás” esetén.
+	Beleegyezel, hogy nem küldesz semmilyen sértegető, obszcén, vulgáris, rágalmazó, gyűlöletkeltő, támadó, közízlést sértő vagy bármely más olyan tartalmat, mely sérti a hazádban, a fórumot kiszolgáló szerver országában érvényben lévő vagy a nemzetközi törvényeket. A fentiek megsértése azonnali és végleges kitiltáshoz vezethet az internet szolgáltatód értesítésével együtt, ha ezt szükségesnek tartjuk. Az összes hozzászóláshoz tartozó IP-címet tároljuk a feltételek betartatásának érdekében. Elfogadod, hogy a fórum fenntartóinak jogukban áll eltávolítani, szerkeszteni a hozzászólásaid vagy lezárni az általad nyitott témákat, amennyiben úgy ítélik meg, hogy ez szükséges. Mint felhasználó, elfogadod, hogy bármely adat, melyet megadsz, tárolásra kerül a fórum adatbázisában. Ezek az információk a beleegyezésed nélkül semmilyen módon nem kerülnek átadásra egy harmadik félnek, de a fórum fenntartói nem tudnak felelősséget vállalni az adatokért egy esetleges „hackertámadás” esetén.
 	',
 
 	'PRIVACY_POLICY'		=> 'Ezen nyilatkozat írja le, hogy a phpBB és a „%1$s” fórum (a továbbiakban „mi”, „a fórum”, „%1$s”, „%2$s”) üzemeltetői hogyan kezelik a fórum használata közben keletkező információkat.
 	<br />
 	Ezen információk két módon jönnek létre. Egyrészt automatikusan: azzal, hogy felkeresed a fórumot, a phpBB ún. sütiket hoz létre (kis szöveges állományok, melyeket a böngésződ letölt az ideiglenes állományok könyvtárába). Ezen sütik olyan fontos adatokat tartalmaznak, melyek a fórum használatához feltétlenül szükségesek. Ilyen információt tárol az első két süti: a felhasználói azonosítót, illetve egy névtelen munkamenet azonosítót, amit a rendszer a böngésződhöz rendel. A harmadik süti akkor jön létre, amikor a fórumot böngészed – ebben kerül tárolásra melyik témákat olvastad, így javítva a felhasználói élményt. A „%1$s” oldal böngészése során a phpBB-n kívül más szoftverek is létrehozhatnak sütiket, ezeket azonban nem tárgyalja ez a dokumentum, ugyanis csak a phpBB által létrehozott oldalakkal foglalkozik.
 	<br />
-	A másik mód, ami tárolásra kerülő információt generál, az maga az interakció: például ha vendégként vagy regisztrált tagként hozzászólást írsz vagy regisztrálsz. Ez utóbbi folyamat során meg kell adnod egy egyedien azonosítható nevet („a felhasználói neved”), egy, a belépéshez használt személyes jelszót („a jelszavad”), illetve egy valós e-mail címet („az e-mail címed”). Az általad létrehozott azonosítót azon ország adatvédelmi törvényei védelmezik, melyben a fórum szervere található. A regisztráció során megadott egyéb adatok kötelezősége az adott fórum adminisztrátorainak döntésétől függ. Lehetőséged van rá, hogy megválaszd, milyen információk jelenjenek meg rólad nyilvánosan a profilodban. Ezen felül ki-, illetve bekapcsolhatod a számodra küldött automatikus leveleket.
+	A másik mód, ami tárolásra kerülő információt generál, az maga az interakció: például ha vendégként vagy regisztrált tagként hozzászólást írsz vagy regisztrálsz. Ez utóbbi folyamat során meg kell adnod egy egyedien azonosítható nevet („a felhasználói neved”), egy – a belépéshez használt – személyes jelszót („a jelszavad”), illetve egy valós e-mail címet („az e-mail címed”). Az általad létrehozott azonosítót azon ország adatvédelmi törvényei védelmezik, melyben a fórum szervere található. A regisztráció során megadott egyéb adatok kötelezősége az adott fórum adminisztrátorainak döntésétől függ. Lehetőséged van rá, hogy megválaszd, milyen információk jelenjenek meg rólad nyilvánosan a profilodban. Ezen felül ki-, illetve bekapcsolhatod a számodra küldött automatikus leveleket.
 	<br />
-	A jelszavad biztonságosan, egyirányúan kódolva tároljuk. Javasoljuk, hogy teljesen egyedi jelszavat használj! Ezen jelszóval férhetsz hozzá a fórumos azonosítódhoz, így kérjük, gondosan kezeld. Semmilyen körülmények közt ne add ki harmadik személynek, még ha az az oldal üzemeltetője is, vagy ha a phpBB-vel kapcsolatban kérik! Amennyiben elfelejted a jelszavad, használd az "Elfelejtettem a jelszavam" funkciót. A rendszer kérni fogja a felhasználóneved és az e-mail címed, majd generálni fog egy új jelszót, így újra használhatod az azonosítód.
+	A jelszavad biztonságosan, egyirányúan kódolva tároljuk. Javasoljuk, hogy teljesen egyedi jelszavat használj! Ezen jelszóval férhetsz hozzá a fórumos azonosítódhoz, így kérjük, gondosan kezeld. Semmilyen körülmények közt ne add ki harmadik személynek, még ha az az oldal üzemeltetője is, vagy ha a phpBB-vel kapcsolatban kérik! Amennyiben elfelejted a jelszavad, használd az „Elfelejtettem a jelszavam” funkciót. A rendszer kérni fogja a felhasználóneved és az e-mail címed, majd generálni fog egy új jelszót, így újra használhatod az azonosítód.
 	',
 ));
 
@@ -81,13 +81,13 @@ $lang = array_merge($lang, array(
 	'ADMIN_EMAIL'					=> 'Információs e-mailek fogadása adminisztrátoroktól',
 	'AGREE'							=> 'Elfogadom a feltételeket',
 	'ALLOW_PM'						=> 'Privát üzenetek fogadása felhasználóktól',
-	'ALLOW_PM_EXPLAIN'				=> 'Kérjük, vedd figyelembe, hogy az adminisztrátorok és a moderátorok mindig fognak tudni küldeni neked privát üzenetet.',
+	'ALLOW_PM_EXPLAIN'				=> 'Kérjük, vedd figyelembe, hogy az adminisztrátorok és a moderátorok mindig fognak tudni privát üzenetet küldeni neked.',
 	'ALREADY_ACTIVATED'				=> 'Az azonosítód aktiválása már korábban megtörtént.',
-	'ATTACHMENTS_EXPLAIN'			=> 'Ez a lista az ebbe fórumba küldött csatolmányaidat tartalmazza.',
+	'ATTACHMENTS_EXPLAIN'			=> 'Az alábbi lista a fórumon a hozzászólásaidhoz csatolt állományokat tartalmazza.',
 	'ATTACHMENTS_DELETED'			=> 'A csatolmányok sikeresen törlésre kerültek.',
 	'ATTACHMENT_DELETED'			=> 'A csatolmány sikeresen törlésre került.',
 	'AVATAR_CATEGORY'				=> 'Kategória',
-	'AVATAR_EXPLAIN'				=> 'Maximális méret: szélesség %1$d pixel, magasság %2$d pixel, állomány mérete %3$d KB.',
+	'AVATAR_EXPLAIN'				=> 'Maximális méret: szélesség %1$d pixel, magasság %2$d pixel, állomány mérete %3$.2f KiB.',
 	'AVATAR_FEATURES_DISABLED'		=> 'Az avatarok funkció jelenleg ki van kapcsolva.',
 	'AVATAR_GALLERY'				=> 'Helyi galéria',
 	'AVATAR_GENERAL_UPLOAD_ERROR'	=> 'Nem sikerült feltölteni az avatart a következő helyre: %s.',
@@ -104,7 +104,7 @@ $lang = array_merge($lang, array(
 	'BOARD_STYLE'				=> 'Megjelenés',
 	'BOARD_TIMEZONE'			=> 'Időzóna',
 	'BOOKMARKS'					=> 'Kedvencek',
-	'BOOKMARKS_EXPLAIN'			=> 'Felvehetsz témákat a kedvenceid közé, hogy aztán később felkeresd őket. Ha törölni szeretnél egy témát a kedvencekből, jelöld be a jelölőnégyzetét, majd kattints a <em>Kijelölt kedvencek törlése</em> gombra.',
+	'BOOKMARKS_EXPLAIN'			=> 'Fel tudsz venni témákat a kedvenceid közé, hogy aztán később felkeresd őket. Ha törölni szeretnél egy témát a kedvencekből, jelöld be a jelölőnégyzetét, majd kattints a <em>Kijelölt kedvencek törlése</em> gombra.',
 	'BOOKMARKS_DISABLED'		=> 'A kedvencek funkció nem elérhető ezen a fórumon.',
 	'BOOKMARKS_REMOVED'			=> 'A megjelölt témák sikeresen törlésre kerültek a kedvencekből.',
 
@@ -222,6 +222,7 @@ $lang = array_merge($lang, array(
 
 	'IF_FOLDER_FULL'			=> 'Művelet mappa megtelése esetén',
 	'IMPORTANT_NEWS'			=> 'Fontos közlemények',
+	'INVALID_USER_BIRTHDAY'		=> 'A megadott születésnap nem érvényes dátum.',
 	'INVALID_CHARS_USERNAME'	=> 'A felhasználónév nem engedélyezett karaktereket tartalmaz.',
 	'INVALID_CHARS_NEW_PASSWORD'=> 'A jelszó nem tartalmazza a szükséges karaktereket.',
 	'ITEMS_REQUIRED'			=> 'A *-gal megjelölt mezők kitöltése kötelező.',
@@ -250,7 +251,7 @@ $lang = array_merge($lang, array(
 	'MESSAGE_STORED'				=> 'Az üzenet sikeresen elküldésre került.',
 	'MESSAGE_TO'					=> 'Címzett',
 	'MESSAGES_DELETED'				=> 'Az üzenet sikeresen törlésre került.',
-	'MOVE_DELETED_MESSAGES_TO'		=> 'Töröltmappabeli üzenetek áthelyezése:',
+	'MOVE_DELETED_MESSAGES_TO'		=> 'Töröltmappabeli üzenetek áthelyezése',
 	'MOVE_DOWN'						=> 'Lejjebb',
 	'MOVE_MARKED_TO_FOLDER'			=> 'Kijelöltek áthelyezése: %s',
 	'MOVE_PM_ERROR'					=> 'Hiba lépett fel az üzenetek áthelyezése közben, csak a %1d és a %2d közötti üzeneteket sikerült áthelyezni.',
@@ -292,7 +293,7 @@ $lang = array_merge($lang, array(
 	'NO_AUTH_SIGNATURE'				=> 'Nincs jogosultságod aláírás megadásához.',
 
 	'NO_BCC_RECIPIENT'			=> 'Nincs',
-	'NO_BOOKMARKS'				=> 'Nincsenek kedvenceid.',
+	'NO_BOOKMARKS'				=> 'Nincs kedvenced.',
 	'NO_BOOKMARKS_SELECTED'		=> 'Nem választottál ki egy kedvencet sem.',
  	'NO_EDIT_READ_MESSAGE'		=> 'A privát üzenetet nem lehet szerkeszteni, mivel már elolvasásra került.',
 	'NO_EMAIL_USER'				=> 'Nem található a megadott e-mail címhez és felhasználónévhez tartozó azonosító.',
@@ -308,8 +309,8 @@ $lang = array_merge($lang, array(
 	'NO_OLDER_PM'				=> 'Nincs régebbi üzenet.',
 	'NO_PASSWORD_SUPPLIED'		=> 'Nem adtad meg a jelszavad.',
 	'NO_RECIPIENT'				=> 'Nem adtál meg címzettet.',
-	'NO_RULES_DEFINED'			=> 'Nincsenek szűrők.',
-	'NO_SAVED_DRAFTS'			=> 'Nincsenek piszkozatok.',
+	'NO_RULES_DEFINED'			=> 'Nincs szűrő.',
+	'NO_SAVED_DRAFTS'			=> 'Nincs piszkozat.',
 	'NO_TO_RECIPIENT'			=> 'Nincs',
 	'NO_WATCHED_FORUMS'			=> 'Nem iratkoztál fel egy fórumra se.',
 	'NO_WATCHED_TOPICS'			=> 'Nem iratkoztál fel egy témára se.',
@@ -344,7 +345,7 @@ $lang = array_merge($lang, array(
 	'POST_REPLY_PM'				=> 'Válasz az üzenetre',
 	'PRINT_PM'					=> 'Nyomtatóbarát verzió',
 	'PREFERENCES_UPDATED'		=> 'A beállításaid sikeresen frissítésre kerültek.',
-	'PROFILE_INFO_NOTICE'		=> 'Kérjük, vedd figyelembe, hogy ezek az információk lehet, hogy láthatóak lesznek a többi felhasználó számára. Légy óvatos bármilyen személyes adat megadásánál. A *-gal megjelölt mezők kitöltése kötelező.',
+	'PROFILE_INFO_NOTICE'		=> 'Kérjük, vedd figyelembe, hogy ezek az információk lehet, hogy a többi felhasználó számára is láthatóak lesznek. Légy óvatos bármilyen személyes adat megadásánál. A *-gal megjelölt mezők kitöltése kötelező.',
 	'PROFILE_UPDATED'			=> 'A profilod sikeresen frissítésre került.',
 
 	'RECIPIENT'							=> 'Címzett',
@@ -376,7 +377,7 @@ $lang = array_merge($lang, array(
 	'SEND_PASSWORD'				=> 'Jelszó elküldése',
 	'SENT_AT'					=> 'Elküldve',
 	'SHOW_EMAIL'				=> 'E-mailek fogadása felhasználóktól',
-	'SIGNATURE_EXPLAIN'			=> 'Ez egy szöveg, melyet automatikusan hozzáfűzhetsz a hozzászólásaidhoz. Legfeljebb %d karakter hosszú lehet.',
+	'SIGNATURE_EXPLAIN'			=> 'Az aláírás egy szöveg, melyet automatikusan hozzáfűzhetsz a hozzászólásaidhoz. Legfeljebb %d karakter hosszú lehet.',
 	'SIGNATURE_PREVIEW'			=> 'Így fog megjelenni az aláírásod a hozzászólásaidban',
 	'SIGNATURE_TOO_LONG'		=> 'Az aláírásod túl hosszú.',
 	'SORT'						=> 'Rendezés',
@@ -482,7 +483,7 @@ $lang = array_merge($lang, array(
 	'VIEW_POSTS_DIR'			=> 'Hozzászólások rendezésének iránya',
 	'VIEW_POSTS_KEY'			=> 'Hozzászólások rendezése a következő szerint',
 
-	'WATCHED_EXPLAIN'			=> 'Az alábbi lista azokat a fórumokat, illetve témákat tartalmazza, melyekre feliratkoztál. Az ezekbe érkező új hozzászólásokról értesítést kapsz. A leiratkozáshoz jelöld ki a fórumot vagy a témát, majd kattints a <em>Leiratkozás a kijelöltekről</em> gombra.',
+	'WATCHED_EXPLAIN'			=> 'Az alábbi lista azokat a fórumokat, illetve témákat tartalmazza, melyekre feliratkoztál. Az ezekbe érkező új hozzászólásokról értesítést kapsz. A leiratkozáshoz jelöld ki a fórumot vagy témát, majd kattints a <em>Leiratkozás a kijelöltekről</em> gombra.',
 	'WATCHED_FORUMS'			=> 'Figyelt fórumok',
 	'WATCHED_TOPICS'			=> 'Figyelt témák',
 	'WRONG_ACTIVATION'			=> 'A megadott aktivációs kulcs nem egyezik meg az adatbázisban lévővel.',
@@ -503,7 +504,7 @@ $lang = array_merge($lang, array(
 	'PM_CHECK' => array(
 		'SUBJECT'	=> 'Ha a téma',
 		'SENDER'	=> 'Ha a küldő',
-		'MESSAGE'	=> 'Ha az üzenet',
+		'MESSAGE'	=> 'Ha az üzenet tartalma',
 		'STATUS'	=> 'Ha az üzenet állapota',
 		'TO'		=> 'Ha a címzett'
 	),
@@ -525,7 +526,7 @@ $lang = array_merge($lang, array(
 	),
 
 
-	'GROUPS_EXPLAIN'	=> 'A csoportok lehetővé teszik az adminisztrátorok számára, hogy könnyebben kezelhessék a felhasználókat. Alapból egy meghatározott csoport tagja leszel, ez az elsődleges csoportod. Ez a csoport határozza meg, hogy hogyan jelensz meg más felhasználók számára, például a felhasználóneved színét, az avatarod, a rangod stb. Attól függően, hogy az adminisztrátor engedélyezi-e, megváltoztathatod az elsődleges csoportodat. Fel is vehetnek egy másik csoportba, vagy lehetőséget biztosíthatnak, hogy csatlakozz. A csoportokkal plusz jogok is járhatnak.',
+	'GROUPS_EXPLAIN'	=> 'A csoportok lehetővé teszik az adminisztrátorok számára, hogy könnyebben kezelhessék a felhasználókat. Alapból egy meghatározott csoport tagja leszel, ez az elsődleges csoportod. Ez a csoport határozza meg, hogy hogyan jelensz meg más felhasználók számára, például a felhasználóneved színét, az avatarod, a rangod stb. Attól függően, hogy az adminisztrátor engedélyezi-e, megváltoztathatod az elsődleges csoportodat. Fel is vehetnek egy másik csoportba, vagy lehetőséget biztosíthatnak, hogy csatlakozz. A csoportokkal plusz jogosultságok is járhatnak.',
 	'GROUP_LEADER'		=> 'Vezetőségi tagságok',
 	'GROUP_MEMBER'		=> 'Tagságok',
 	'GROUP_PENDING'		=> 'Függő tagságok',
@@ -534,7 +535,7 @@ $lang = array_merge($lang, array(
 
 	'NO_LEADER'		=> 'Nem vagy egy csoportnak se a vezetője.',
 	'NO_MEMBER'		=> 'Nem vagy egy csoportnak se a tagja.',
-	'NO_PENDING'	=> 'Nincsenek függő csoporttagságok.',
+	'NO_PENDING'	=> 'Nincs függő csoporttagság.',
 	'NO_NONMEMBER'	=> 'Nincs olyan csoport, melynek nem vagy a tagja.',
 ));
 

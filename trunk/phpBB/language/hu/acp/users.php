@@ -45,10 +45,10 @@ $lang = array_merge($lang, array(
 
 	'CANNOT_BAN_FOUNDER'			=> 'Alapítói azonosítót nem tudsz kitiltani.',
 	'CANNOT_BAN_YOURSELF'			=> 'Nem tudod kitiltani saját magadat.',
-	'CANNOT_DEACTIVATE_BOT'			=> 'Robot azonosítókat nem tudsz deaktiválni. Helyette deaktiváld a robotot.',
+	'CANNOT_DEACTIVATE_BOT'			=> 'Robot azonosítókat nem tudsz deaktiválni. Helyette deaktiváld a robotot a robotok oldalon.',
 	'CANNOT_DEACTIVATE_FOUNDER'		=> 'Alapítói azonosítót nem tudsz deaktiválni.',
 	'CANNOT_DEACTIVATE_YOURSELF'	=> 'A saját azonosítód nem tudod deaktiválni.',
-	'CANNOT_FORCE_REACT_BOT'		=> 'Robot azonosítókat nem tudsz újraaktivációra kötelezni. Helyette deaktiváld a robotot.',
+	'CANNOT_FORCE_REACT_BOT'		=> 'Robot azonosítókat nem tudsz újraaktivációra kötelezni. Helyette aktiváld újra a robotot a robotok oldalon.',
 	'CANNOT_FORCE_REACT_FOUNDER'	=> 'Alapítói azonosítókat nem tudsz újraaktivációra kötelezni.',
 	'CANNOT_FORCE_REACT_YOURSELF'	=> 'A saját azonosítód nem tudod újraaktivációra kötelezni.',
 	'CANNOT_REMOVE_ANONYMOUS'		=> 'A vendég felhasználói azonosítót nem tudod eltávolítani.',
@@ -63,7 +63,7 @@ $lang = array_merge($lang, array(
 
 	'FORCE_REACTIVATION_SUCCESS'	=> 'Az újraaktivációra kötelezés sikeresen megtörtént.',
 	'FOUNDER'						=> 'Alapító',
-	'FOUNDER_EXPLAIN'				=> 'Az alapítók az összes adminisztráció jogosultsággal rendelkeznek, és nem alapító tagok soha nem tilthatják ki, nem törölhetik őket, illetve nem változtathatják meg a beállításaikat.',
+	'FOUNDER_EXPLAIN'				=> 'Az alapítók az összes adminisztrációs jogosultsággal rendelkeznek, és nem alapító tagok soha nem tilthatják ki, nem törölhetik őket, illetve nem változtathatják meg a beállításaikat.',
 
 	'GROUP_APPROVE'					=> 'Tag jóváhagyása',
 	'GROUP_DEFAULT'					=> 'Csoport elsődlegessé tétele a tagnak',

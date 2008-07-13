@@ -465,7 +465,8 @@ function compose_pm($id, $mode, $action)
 					'forum_id'		=> 0,
 					'save_time'		=> $current_time,
 					'draft_subject'	=> $subject,
-					'draft_message'	=> $message)
+					'draft_message'	=> $message
+					)
 				);
 				$db->sql_query($sql);
 
@@ -488,18 +489,20 @@ function compose_pm($id, $mode, $action)
 					'g'			=> $to_group_id,
 					'p'			=> $msg_id)
 				);
+				$s_hidden_fields .= build_address_field($address_list);
+
 
 				confirm_box(false, 'SAVE_DRAFT', $s_hidden_fields);
 			}
 		}
 		else
 		{
-			if (!$subject || !utf8_clean_string($subject))
+			if (utf8_clean_string($subject) === '')
 			{
 				$error[] = $user->lang['EMPTY_MESSAGE_SUBJECT'];
 			}
 
-			if (!$message)
+			if (utf8_clean_string($message) === '')
 			{
 				$error[] = $user->lang['TOO_FEW_CHARS'];
 			}
@@ -541,7 +544,7 @@ function compose_pm($id, $mode, $action)
 
 	if ($submit || $preview || $refresh)
 	{
-		if (!check_form_key('ucp_pm_compose'))
+		if (($submit || $preview) && !check_form_key('ucp_pm_compose'))
 		{
 			$error[] = $user->lang['FORM_INVALID'];
 		}
@@ -600,7 +603,7 @@ function compose_pm($id, $mode, $action)
 		// Subject defined
 		if ($submit)
 		{
-			if (!$subject || !utf8_clean_string($subject))
+			if (utf8_clean_string($subject) === '')
 			{
 				$error[] = $user->lang['EMPTY_MESSAGE_SUBJECT'];
 			}
@@ -633,7 +636,6 @@ function compose_pm($id, $mode, $action)
 				'filename_data'			=> $message_parser->filename_data,
 				'address_list'			=> $address_list
 			);
-			unset($message_parser);
 
 			// ((!$message_subject) ? $subject : $message_subject)
 			$msg_id = submit_pm($action, $subject, $pm_data);
@@ -767,7 +769,6 @@ function compose_pm($id, $mode, $action)
 	$attachment_data = $message_parser->attachment_data;
 	$filename_data = $message_parser->filename_data;
 	$message_text = $message_parser->message;
-	unset($message_parser);
 
 	// MAIN PM PAGE BEGINS HERE
 
@@ -888,14 +889,8 @@ function compose_pm($id, $mode, $action)
 	}
 
 	// Build hidden address list
-	$s_hidden_address_field = '';
-	foreach ($address_list as $type => $adr_ary)
-	{
-		foreach ($adr_ary as $id => $field)
-		{
-			$s_hidden_address_field .= '<input type="hidden" name="address_list[' . (($type == 'u') ? 'u' : 'g') . '][' . (int) $id . ']" value="' . (($field == 'to') ? 'to' : 'bcc') . '" />';
-		}
-	}
+	$s_hidden_address_field = build_address_field($address_list);
+
 
 	$bbcode_checked		= (isset($enable_bbcode)) ? !$enable_bbcode : (($config['allow_bbcode'] && $auth->acl_get('u_pm_bbcode')) ? !$user->optionget('bbcode') : 1);
 	$smilies_checked	= (isset($enable_smilies)) ? !$enable_smilies : (($config['allow_smilies'] && $auth->acl_get('u_pm_smilies')) ? !$user->optionget('smilies') : 1);
@@ -1115,6 +1110,22 @@ function handle_message_list_actions(&$address_list, &$error, $remove_u, $remove
 			}
 		}
 	}
+}
+
+/**
+* Build the hidden field for the recipients. Needed, as the variable is not read via request_var.
+*/
+function build_address_field($address_list)
+{
+	$s_hidden_address_field = '';
+	foreach ($address_list as $type => $adr_ary)
+	{
+		foreach ($adr_ary as $id => $field)
+		{
+			$s_hidden_address_field .= '<input type="hidden" name="address_list[' . (($type == 'u') ? 'u' : 'g') . '][' . (int) $id . ']" value="' . (($field == 'to') ? 'to' : 'bcc') . '" />';
+		}
+	}
+	return $s_hidden_address_field;
 }
 
 /**

@@ -61,7 +61,7 @@ $help = array(
 	),
 	array(
 		0 => 'Korábban regisztráltam magam, azonban már nem tudok belépni?!',
-		1 => 'Keresd elő a regisztrációkor kapott e-mailt, ellenőrizd le a felhasználóneved és a jelszavad, majd próbálkozz újra. Lehetséges, hogy az adminisztrátor valamilyen okból kifolyólag inaktiválta, vagy törölte az azonosítód. Ez utóbbinak egy lehetséges oka, hogy nem küldtél egy hozzászólást se. Néhány fórumon ugyanis szokás, hogy bizonyos időközönként eltávolítják az olyan felhasználókat, akik nem küldtek hozzászólást, hogy csökkentsék az adatbázis méretét. Próbálj meg újra regisztrálni, és bekapcsolódni a társalgásba.'
+		1 => 'Keresd elő a regisztrációkor kapott e-mailt, ellenőrizd le a felhasználóneved és a jelszavad, majd próbálkozz újra. Lehetséges, hogy az adminisztrátor valamilyen okból kifolyólag inaktiválta, vagy törölte az azonosítód. Ez utóbbinak egy lehetséges oka, hogy nem küldtél egy hozzászólást se. Néhány fórumon ugyanis szokás, hogy bizonyos időközönként eltávolítják az olyan felhasználókat, akik nem küldtek hozzászólást, hogy csökkentsék az adatbázis méretét. Próbálj meg újra regisztrálni és bekapcsolódni a társalgásba.'
 	),
 	array(
 		0 => 'Mi az a COPPA?',

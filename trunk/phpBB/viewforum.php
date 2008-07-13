@@ -110,7 +110,9 @@ if ($forum_data['forum_type'] == FORUM_LINK && $forum_data['forum_link'])
 		$db->sql_query($sql);
 	}
 
-	redirect($forum_data['forum_link']);
+	// We redirect to the url. The third parameter indicates that external redirects are allowed.
+	redirect($forum_data['forum_link'], false, true);
+	exit;
 }
 
 // Build navigation links
@@ -161,7 +163,7 @@ if (!$auth->acl_get('f_read', $forum_id))
 	$template->assign_vars(array(
 		'S_NO_READ_ACCESS'		=> true,
 		'S_AUTOLOGIN_ENABLED'	=> ($config['allow_autologin']) ? true : false,
-		'S_LOGIN_ACTION'		=> append_sid("{$phpbb_root_path}ucp.$phpEx", 'mode=login') . '&amp;redirect=' . urlencode(str_replace('&amp;', '&', build_url(array('_f_')))),
+		'S_LOGIN_ACTION'		=> append_sid("{$phpbb_root_path}ucp.$phpEx", 'mode=login') . '&amp;redirect=' . urlencode(str_replace('&amp;', '&', build_url())),
 	));
 
 	page_footer();
@@ -191,14 +193,16 @@ if ($forum_data['prune_next'] < time() && $forum_data['enable_prune'])
 }
 
 // Forum rules and subscription info
-$s_watching_forum = $s_watching_forum_img = array();
-$s_watching_forum['link'] = $s_watching_forum['title'] = '';
-$s_watching_forum['is_watching'] = false;
+$s_watching_forum = array(
+	'link'			=> '',
+	'title'			=> '',
+	'is_watching'	=> false,
+);
 
 if (($config['email_enable'] || $config['jab_enable']) && $config['allow_forum_notify'] && $auth->acl_get('f_subscribe', $forum_id))
 {
 	$notify_status = (isset($forum_data['notify_status'])) ? $forum_data['notify_status'] : NULL;
-	watch_topic_forum('forum', $s_watching_forum, $s_watching_forum_img, $user->data['user_id'], $forum_id, 0, $notify_status);
+	watch_topic_forum('forum', $s_watching_forum, $user->data['user_id'], $forum_id, 0, $notify_status);
 }
 
 $s_forum_rules = '';
@@ -349,7 +353,7 @@ if ($forum_data['forum_type'] == FORUM_POST)
 		'SELECT'	=> $sql_array['SELECT'],
 		'FROM'		=> $sql_array['FROM'],
 		'LEFT_JOIN'	=> $sql_array['LEFT_JOIN'],
-	
+
 		'WHERE'		=> 't.forum_id IN (' . $forum_id . ', 0)
 			AND t.topic_type IN (' . POST_ANNOUNCE . ', ' . POST_GLOBAL . ')',
 
@@ -496,8 +500,9 @@ if (sizeof($shadow_topic_list))
 		// We want to retain some values
 		$row = array_merge($row, array(
 			'topic_moved_id'	=> $rowset[$orig_topic_id]['topic_moved_id'],
-			'topic_status'		=> $rowset[$orig_topic_id]['topic_status'])
-		);
+			'topic_status'		=> $rowset[$orig_topic_id]['topic_status'],
+			'topic_type'		=> $rowset[$orig_topic_id]['topic_type'],
+		));
 
 		$rowset[$orig_topic_id] = $row;
 	}

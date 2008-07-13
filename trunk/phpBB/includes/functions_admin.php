@@ -196,7 +196,7 @@ function size_select_options($size_compare)
 {
 	global $user;
 
-	$size_types_text = array($user->lang['BYTES'], $user->lang['KB'], $user->lang['MB']);
+	$size_types_text = array($user->lang['BYTES'], $user->lang['KIB'], $user->lang['MIB']);
 	$size_types = array('b', 'kb', 'mb');
 
 	$s_size_options = '';
@@ -1545,7 +1545,8 @@ function sync($mode, $where_type = '', $where_ids = '', $resync_parents = false,
 					$sql = 'SELECT SUM(t.topic_replies + 1) AS forum_posts
 						FROM ' . TOPICS_TABLE . ' t
 						WHERE ' . $db->sql_in_set('t.forum_id', $forum_ids) . '
-							AND t.topic_approved = 1';
+							AND t.topic_approved = 1
+							AND t.topic_status <> ' . ITEM_MOVED;
 				}
 				else
 				{
@@ -1553,6 +1554,7 @@ function sync($mode, $where_type = '', $where_ids = '', $resync_parents = false,
 						FROM ' . TOPICS_TABLE . ' t
 						WHERE ' . $db->sql_in_set('t.forum_id', $forum_ids) . '
 							AND t.topic_approved = 1
+							AND t.topic_status <> ' . ITEM_MOVED . '
 						GROUP BY t.forum_id';
 				}
 
@@ -2878,14 +2880,7 @@ function get_database_size()
 		break;
 	}
 
-	if ($database_size !== false)
-	{
-		$database_size = ($database_size >= 1048576) ? sprintf('%.2f ' . $user->lang['MB'], ($database_size / 1048576)) : (($database_size >= 1024) ? sprintf('%.2f ' . $user->lang['KB'], ($database_size / 1024)) : sprintf('%.2f ' . $user->lang['BYTES'], $database_size));
-	}
-	else
-	{
-		$database_size = $user->lang['NOT_AVAILABLE'];
-	}
+	$database_size = ($database_size !== false) ? get_formatted_filesize($database_size) : $user->lang['NOT_AVAILABLE'];
 
 	return $database_size;
 }
@@ -2997,6 +2992,29 @@ function tidy_warnings()
 function tidy_database()
 {
 	global $db;
+
+	// Here we check permission consistency
+
+	// Sometimes, it can happen permission tables having forums listed which do not exist
+	$sql = 'SELECT forum_id
+		FROM ' . FORUMS_TABLE;
+	$result = $db->sql_query($sql);
+
+	$forum_ids = array(0);
+	while ($row = $db->sql_fetchrow($result))
+	{
+		$forum_ids[] = $row['forum_id'];
+	}
+	$db->sql_freeresult($result);
+
+	// Delete those rows from the acl tables not having listed the forums above
+	$sql = 'DELETE FROM ' . ACL_GROUPS_TABLE . '
+		WHERE ' . $db->sql_in_set('forum_id', $forum_ids, true);
+	$db->sql_query($sql);
+
+	$sql = 'DELETE FROM ' . ACL_USERS_TABLE . '
+		WHERE ' . $db->sql_in_set('forum_id', $forum_ids, true);
+	$db->sql_query($sql);
 
 	set_config('database_last_gc', time(), true);
 }

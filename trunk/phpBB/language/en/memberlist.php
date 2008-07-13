@@ -84,7 +84,7 @@ $lang = array_merge($lang, array(
 	'IM_MSNM_CONNECT'		=> 'MSNM is not connected.\nYou have to connect to MSNM to continue.',		
 	'IM_NAME'				=> 'Your Name',
 	'IM_NO_DATA'			=> 'There is no suitable contact information for this user.',
-	'IM_NO_JABBER'			=> 'Sorry, direct messaging of Jabber users is not supported on this server. You will need a Jabber client installed on your system to contact the recipient above.',
+	'IM_NO_JABBER'			=> 'Sorry, direct messaging of Jabber users is not supported on this board. You will need a Jabber client installed on your system to contact the recipient above.',
 	'IM_RECIPIENT'			=> 'Recipient',
 	'IM_SEND'				=> 'Send message',
 	'IM_SEND_MESSAGE'		=> 'Send message',
@@ -132,6 +132,7 @@ $lang = array_merge($lang, array(
 
 	'USERNAME_BEGINS_WITH'	=> 'Username begins with',
 	'USER_ADMIN'			=> 'Administrate user',
+	'USER_BAN'				=> 'Banning',
 	'USER_FORUM'			=> 'User statistics',
 	'USER_ONLINE'			=> 'Online',
 	'USER_PRESENCE'			=> 'Board presence',

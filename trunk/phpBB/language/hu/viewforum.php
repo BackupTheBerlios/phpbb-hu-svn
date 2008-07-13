@@ -51,8 +51,8 @@ $lang = array_merge($lang, array(
 
 	'NEW_POSTS_HOT'			=> 'Új hozzászólások [ népszerű ]',
 	'NEW_POSTS_LOCKED'		=> 'Új hozzászólások [ lezárt ]',
-	'NO_NEW_POSTS_HOT'		=> 'Nincsenek új hozzászólások [ népszerű ]',
-	'NO_NEW_POSTS_LOCKED'	=> 'Nincsenek új hozzászólások [ lezárt ]',
+	'NO_NEW_POSTS_HOT'		=> 'Nincs új hozzászólás [ népszerű ]',
+	'NO_NEW_POSTS_LOCKED'	=> 'Nincs új hozzászólás [ lezárt ]',
 	'NO_READ_ACCESS'		=> 'Nincs meg a kellő jogosultságod a fórumbeli témák olvasásához.',
 
 	'POST_FORUM_LOCKED'		=> 'A fórum le van zárva.',

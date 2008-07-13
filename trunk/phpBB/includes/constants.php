@@ -174,9 +174,14 @@ define('FIELD_BOOL', 4);
 define('FIELD_DROPDOWN', 5);
 define('FIELD_DATE', 6);
 
+// referer validation
+define('REFERER_VALIDATE_NONE', 0);
+define('REFERER_VALIDATE_HOST', 1);
+define('REFERER_VALIDATE_PATH', 2);
+
 
 // Additional constants
-define('VOTE_CONVERTED', 9999);
+define('VOTE_CONVERTED', 127);
 
 // Table names
 define('ACL_GROUPS_TABLE',			$table_prefix . 'acl_groups');
