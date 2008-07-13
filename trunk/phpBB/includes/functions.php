@@ -3328,7 +3328,7 @@ function page_header($page_title = '', $display_online_list = true)
 
 		// Assign base href (for the url rewrite)
 		'BASE_HREF'		=> ($GLOBALS['url_rewriter']->enabled) ? generate_board_url() . '/' . (substr(dirname($_SERVER['SCRIPT_NAME']), -3) == 'adm' ? 'adm/' : '') : false, 
-		'PAGE_URL'		=> $_SERVER['REQUEST_URI'],
+		'PAGE_URL'		=> str_replace(array('"', "'"), array('%22', '%27'), $_SERVER['REQUEST_URI']), // Being cautious
 
 		'S_USER_NEW_PRIVMSG'			=> $user->data['user_new_privmsg'],
 		'S_USER_UNREAD_PRIVMSG'			=> $user->data['user_unread_privmsg'],
