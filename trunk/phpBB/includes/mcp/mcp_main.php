@@ -532,7 +532,11 @@ function mcp_move_topic($topic_ids)
 {
 	global $auth, $user, $db, $template;
 	global $phpEx, $phpbb_root_path;
+	global $url_rewriter;
 
+	// We will need this here (notification about the moving)
+	$user->add_lang('site');
+	
 	// Here we limit the operation to one forum only
 	$forum_id = check_ids($topic_ids, TOPICS_TABLE, 'topic_id', array('m_move'), true);
 
@@ -694,6 +698,20 @@ function mcp_move_topic($topic_ids)
 
 				$topics_authed_moved--;
 				$topics_moved--;
+			}
+
+			// Send notification if requested
+			if (sizeof($topic_ids) == 1 && isset($_POST['send_notif']))
+			{
+				$topic_info =  
+				send_notification(array($row['topic_poster']), 'topic_moved', array(
+					'MODERATOR_USERNAME'	=> $user->data['username'],
+					'NOTIFICATION_MESSAGE'	=> utf8_normalize_nfc(request_var('notif_msg', '', true)),
+					'TOPIC_NAME'			=> $row['topic_title'],
+					'FORUM_FROM'			=> $forum_sync_data[$forum_id]['forum_name'],
+					'FORUM_TO'				=> $forum_data['forum_name'],
+					'U_TOPIC'				=> generate_board_url() . '/' . $url_rewriter->rewrite("viewtopic.$phpEx", "f=" . $to_forum_id . '&t=' . $topic_id),
+				));
 			}
 		}
 		unset($topic_data);

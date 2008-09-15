@@ -1481,7 +1481,7 @@ function handle_post_delete($forum_id, $topic_id, $post_id, &$post_data)
 		{
 			$template->assign_vars(array('S_IS_MODERATOR' => $auth->acl_get('m_delete', $forum_id) && $post_data['poster_id'] != $user->data['user_id']));
 			
-			confirm_box(false, 'DELETE_POST', $s_hidden_fields);
+			confirm_box(false, 'DELETE_POST', $s_hidden_fields, 'post_delete_confirm_body.html');
 		}
 	}
 

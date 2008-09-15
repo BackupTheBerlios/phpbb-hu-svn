@@ -1,0 +1,10 @@
+Subject: Téma áthelyezése
+
+Kedves {USERNAME}!
+
+Az egyik moderátor áthelyezte a [i][url={U_TOPIC}]{TOPIC_NAME}[/url][/i] című témád a [i]{FORUM_FROM}[/i] fórumból a [i]{FORUM_TO}[/i] fórumba. Legközelebb, kérünk, fordíts nagyobb gondot a témádhoz megfelelő fórum kiválasztására.
+
+A moderátornak az áthelyezéshez fűzött esetleges megjegyzése alább olvasható: 
+~~~~~~~~~~~~~~~~~~~~~~
+{NOTIFICATION_MESSAGE}
+~~~~~~~~~~~~~~~~~~~~~~
