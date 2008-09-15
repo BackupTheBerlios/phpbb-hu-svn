@@ -703,7 +703,6 @@ function mcp_move_topic($topic_ids)
 			// Send notification if requested
 			if (sizeof($topic_ids) == 1 && isset($_POST['send_notif']))
 			{
-				$topic_info =  
 				send_notification(array($row['topic_poster']), 'topic_moved', array(
 					'MODERATOR_USERNAME'	=> $user->data['username'],
 					'NOTIFICATION_MESSAGE'	=> utf8_normalize_nfc(request_var('notif_msg', '', true)),
