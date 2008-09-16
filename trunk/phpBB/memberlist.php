@@ -1194,25 +1194,18 @@ switch ($mode)
 
 		foreach ($check_params as $key => $call)
 		{
-			foreach ($$global_var as $key => $var)
+			if (!isset($_REQUEST[$key]))
 			{
-				if ($global_var == '_POST')
-				{
-					unset($_GET[$key]);
-				}
+				continue;
+			}
 
-				if (in_array($key, array('submit', 'start', 'mode', 'char')) || empty($var))
-				{
-					continue;
-				}
+			$param = call_user_func_array('request_var', $call);
+			$param = urlencode($key) . '=' . ((is_string($param)) ? urlencode($param) : $param);
+			$params[] = $param;
 
-				$param = urlencode($key) . '=' . urlencode(htmlspecialchars($var));
-				$params[] = $param;
-
-				if (!in_array($key, array('sk', 'sd')))
-				{
-					$sort_params[] = $param;
-				}
+			if ($key != 'sk' && $key != 'sd')
+			{
+				$sort_params[] = $param;
 			}
 		}
 

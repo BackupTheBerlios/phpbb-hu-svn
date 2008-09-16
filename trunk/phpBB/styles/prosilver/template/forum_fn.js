@@ -25,7 +25,8 @@ function jumpto()
 
 	if (page !== null && !isNaN(page) && page > 0)
 	{
-		document.location.href = base_url.replace(/&amp;/g, '&') + '&start=' + ((page - 1) * per_page);
+		// document.location.href = base_url.replace(/&amp;/g, '&') + '&start=' + ((page - 1) * per_page);
+		document.location.href = base_url.replace(/&amp;/g, '&') + (base_url.indexOf('?') == -1 ? '?' : '&') + 'start=' + ((page - 1) * per_page);
 	}
 }
 
