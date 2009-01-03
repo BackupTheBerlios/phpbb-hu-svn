@@ -183,7 +183,7 @@ CREATE TABLE phpbb_drafts (
 	topic_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	forum_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	save_time int(11) UNSIGNED DEFAULT '0' NOT NULL,
-	draft_subject varchar(100) DEFAULT '' NOT NULL,
+	draft_subject varchar(255) DEFAULT '' NOT NULL,
 	draft_message mediumtext NOT NULL,
 	PRIMARY KEY (draft_id),
 	KEY save_time (save_time)
@@ -228,7 +228,7 @@ CREATE TABLE phpbb_forums (
 	forum_desc_uid varchar(8) DEFAULT '' NOT NULL,
 	forum_link varchar(255) DEFAULT '' NOT NULL,
 	forum_password varchar(40) DEFAULT '' NOT NULL,
-	forum_style smallint(4) UNSIGNED DEFAULT '0' NOT NULL,
+	forum_style mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	forum_image varchar(255) DEFAULT '' NOT NULL,
 	forum_rules text NOT NULL,
 	forum_rules_link varchar(255) DEFAULT '' NOT NULL,
@@ -243,11 +243,12 @@ CREATE TABLE phpbb_forums (
 	forum_topics_real mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	forum_last_post_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	forum_last_poster_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
-	forum_last_post_subject varchar(100) DEFAULT '' NOT NULL,
+	forum_last_post_subject varchar(255) DEFAULT '' NOT NULL,
 	forum_last_post_time int(11) UNSIGNED DEFAULT '0' NOT NULL,
 	forum_last_poster_name varchar(255) DEFAULT '' NOT NULL,
 	forum_last_poster_colour varchar(6) DEFAULT '' NOT NULL,
 	forum_flags tinyint(4) DEFAULT '32' NOT NULL,
+	display_subforum_list tinyint(1) UNSIGNED DEFAULT '1' NOT NULL,
 	display_on_index tinyint(1) UNSIGNED DEFAULT '1' NOT NULL,
 	enable_indexing tinyint(1) UNSIGNED DEFAULT '1' NOT NULL,
 	enable_icons tinyint(1) UNSIGNED DEFAULT '1' NOT NULL,
@@ -311,9 +312,10 @@ CREATE TABLE phpbb_groups (
 	group_sig_chars mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	group_receive_pm tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
 	group_message_limit mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
+	group_max_recipients mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	group_legend tinyint(1) UNSIGNED DEFAULT '1' NOT NULL,
 	PRIMARY KEY (group_id),
-	KEY group_legend (group_legend)
+	KEY group_legend_name (group_legend, group_name)
 ) CHARACTER SET `utf8` COLLATE `utf8_bin`;
 
 
@@ -436,7 +438,7 @@ CREATE TABLE phpbb_posts (
 	enable_magic_url tinyint(1) UNSIGNED DEFAULT '1' NOT NULL,
 	enable_sig tinyint(1) UNSIGNED DEFAULT '1' NOT NULL,
 	post_username varchar(255) DEFAULT '' NOT NULL,
-	post_subject varchar(100) DEFAULT '' NOT NULL COLLATE utf8_unicode_ci,
+	post_subject varchar(255) DEFAULT '' NOT NULL COLLATE utf8_unicode_ci,
 	post_text mediumtext NOT NULL,
 	post_checksum varchar(32) DEFAULT '' NOT NULL,
 	post_attachment tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
@@ -470,7 +472,7 @@ CREATE TABLE phpbb_privmsgs (
 	enable_smilies tinyint(1) UNSIGNED DEFAULT '1' NOT NULL,
 	enable_magic_url tinyint(1) UNSIGNED DEFAULT '1' NOT NULL,
 	enable_sig tinyint(1) UNSIGNED DEFAULT '1' NOT NULL,
-	message_subject varchar(100) DEFAULT '' NOT NULL,
+	message_subject varchar(255) DEFAULT '' NOT NULL,
 	message_text mediumtext NOT NULL,
 	message_edit_reason varchar(255) DEFAULT '' NOT NULL,
 	message_edit_user mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
@@ -548,6 +550,7 @@ CREATE TABLE phpbb_profile_fields (
 	field_validation varchar(20) DEFAULT '' NOT NULL,
 	field_required tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
 	field_show_on_reg tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
+	field_show_profile tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
 	field_hide tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
 	field_no_view tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
 	field_active tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
@@ -659,6 +662,7 @@ CREATE TABLE phpbb_search_wordmatch (
 CREATE TABLE phpbb_sessions (
 	session_id char(32) DEFAULT '' NOT NULL,
 	session_user_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
+	session_forum_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	session_last_visit int(11) UNSIGNED DEFAULT '0' NOT NULL,
 	session_start int(11) UNSIGNED DEFAULT '0' NOT NULL,
 	session_time int(11) UNSIGNED DEFAULT '0' NOT NULL,
@@ -671,7 +675,8 @@ CREATE TABLE phpbb_sessions (
 	session_admin tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
 	PRIMARY KEY (session_id),
 	KEY session_time (session_time),
-	KEY session_user_id (session_user_id)
+	KEY session_user_id (session_user_id),
+	KEY session_fid (session_forum_id)
 ) CHARACTER SET `utf8` COLLATE `utf8_bin`;
 
 
@@ -713,13 +718,13 @@ CREATE TABLE phpbb_smilies (
 
 # Table: 'phpbb_styles'
 CREATE TABLE phpbb_styles (
-	style_id smallint(4) UNSIGNED NOT NULL auto_increment,
+	style_id mediumint(8) UNSIGNED NOT NULL auto_increment,
 	style_name varchar(255) DEFAULT '' NOT NULL,
 	style_copyright varchar(255) DEFAULT '' NOT NULL,
 	style_active tinyint(1) UNSIGNED DEFAULT '1' NOT NULL,
-	template_id smallint(4) UNSIGNED DEFAULT '0' NOT NULL,
-	theme_id smallint(4) UNSIGNED DEFAULT '0' NOT NULL,
-	imageset_id smallint(4) UNSIGNED DEFAULT '0' NOT NULL,
+	template_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
+	theme_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
+	imageset_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	PRIMARY KEY (style_id),
 	UNIQUE style_name (style_name),
 	KEY template_id (template_id),
@@ -730,12 +735,14 @@ CREATE TABLE phpbb_styles (
 
 # Table: 'phpbb_styles_template'
 CREATE TABLE phpbb_styles_template (
-	template_id smallint(4) UNSIGNED NOT NULL auto_increment,
+	template_id mediumint(8) UNSIGNED NOT NULL auto_increment,
 	template_name varchar(255) DEFAULT '' NOT NULL,
 	template_copyright varchar(255) DEFAULT '' NOT NULL,
 	template_path varchar(100) DEFAULT '' NOT NULL,
 	bbcode_bitfield varchar(255) DEFAULT 'kNg=' NOT NULL,
 	template_storedb tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
+	template_inherits_id int(4) UNSIGNED DEFAULT '0' NOT NULL,
+	template_inherit_path varchar(255) DEFAULT '' NOT NULL,
 	PRIMARY KEY (template_id),
 	UNIQUE tmplte_nm (template_name)
 ) CHARACTER SET `utf8` COLLATE `utf8_bin`;
@@ -743,7 +750,7 @@ CREATE TABLE phpbb_styles_template (
 
 # Table: 'phpbb_styles_template_data'
 CREATE TABLE phpbb_styles_template_data (
-	template_id smallint(4) UNSIGNED DEFAULT '0' NOT NULL,
+	template_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	template_filename varchar(100) DEFAULT '' NOT NULL,
 	template_included text NOT NULL,
 	template_mtime int(11) UNSIGNED DEFAULT '0' NOT NULL,
@@ -755,7 +762,7 @@ CREATE TABLE phpbb_styles_template_data (
 
 # Table: 'phpbb_styles_theme'
 CREATE TABLE phpbb_styles_theme (
-	theme_id smallint(4) UNSIGNED NOT NULL auto_increment,
+	theme_id mediumint(8) UNSIGNED NOT NULL auto_increment,
 	theme_name varchar(255) DEFAULT '' NOT NULL,
 	theme_copyright varchar(255) DEFAULT '' NOT NULL,
 	theme_path varchar(100) DEFAULT '' NOT NULL,
@@ -769,7 +776,7 @@ CREATE TABLE phpbb_styles_theme (
 
 # Table: 'phpbb_styles_imageset'
 CREATE TABLE phpbb_styles_imageset (
-	imageset_id smallint(4) UNSIGNED NOT NULL auto_increment,
+	imageset_id mediumint(8) UNSIGNED NOT NULL auto_increment,
 	imageset_name varchar(255) DEFAULT '' NOT NULL,
 	imageset_copyright varchar(255) DEFAULT '' NOT NULL,
 	imageset_path varchar(100) DEFAULT '' NOT NULL,
@@ -780,13 +787,13 @@ CREATE TABLE phpbb_styles_imageset (
 
 # Table: 'phpbb_styles_imageset_data'
 CREATE TABLE phpbb_styles_imageset_data (
-	image_id smallint(4) UNSIGNED NOT NULL auto_increment,
+	image_id mediumint(8) UNSIGNED NOT NULL auto_increment,
 	image_name varchar(200) DEFAULT '' NOT NULL,
 	image_filename varchar(200) DEFAULT '' NOT NULL,
 	image_lang varchar(30) DEFAULT '' NOT NULL,
 	image_height smallint(4) UNSIGNED DEFAULT '0' NOT NULL,
 	image_width smallint(4) UNSIGNED DEFAULT '0' NOT NULL,
-	imageset_id smallint(4) UNSIGNED DEFAULT '0' NOT NULL,
+	imageset_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	PRIMARY KEY (image_id),
 	KEY i_d (imageset_id)
 ) CHARACTER SET `utf8` COLLATE `utf8_bin`;
@@ -800,7 +807,7 @@ CREATE TABLE phpbb_topics (
 	topic_attachment tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
 	topic_approved tinyint(1) UNSIGNED DEFAULT '1' NOT NULL,
 	topic_reported tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
-	topic_title varchar(100) DEFAULT '' NOT NULL COLLATE utf8_unicode_ci,
+	topic_title varchar(255) DEFAULT '' NOT NULL COLLATE utf8_unicode_ci,
 	topic_poster mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	topic_time int(11) UNSIGNED DEFAULT '0' NOT NULL,
 	topic_time_limit int(11) UNSIGNED DEFAULT '0' NOT NULL,
@@ -816,7 +823,7 @@ CREATE TABLE phpbb_topics (
 	topic_last_poster_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	topic_last_poster_name varchar(255) DEFAULT '' NOT NULL,
 	topic_last_poster_colour varchar(6) DEFAULT '' NOT NULL,
-	topic_last_post_subject varchar(100) DEFAULT '' NOT NULL,
+	topic_last_post_subject varchar(255) DEFAULT '' NOT NULL,
 	topic_last_post_time int(11) UNSIGNED DEFAULT '0' NOT NULL,
 	topic_last_view_time int(11) UNSIGNED DEFAULT '0' NOT NULL,
 	topic_moved_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
@@ -914,7 +921,7 @@ CREATE TABLE phpbb_users (
 	user_timezone decimal(5,2) DEFAULT '0' NOT NULL,
 	user_dst tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
 	user_dateformat varchar(30) DEFAULT 'd M Y H:i' NOT NULL,
-	user_style smallint(4) UNSIGNED DEFAULT '0' NOT NULL,
+	user_style mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	user_rank mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	user_colour varchar(6) DEFAULT '' NOT NULL,
 	user_new_privmsg int(4) DEFAULT '0' NOT NULL,

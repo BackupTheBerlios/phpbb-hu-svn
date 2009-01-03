@@ -1,6 +1,6 @@
 Subject: "{SITENAME}" - e-mail egy barátodtól
 
-Kedves {USERNAME}!
+Kedves {TO_USERNAME}!
 
 Ezt az e-mailt a "{SITENAME}" fórumról {FROM_USERNAME} küldte neked, mert azt gondolta, a következő téma érdekelni fog: {TOPIC_NAME}
 

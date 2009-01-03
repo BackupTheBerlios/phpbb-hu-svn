@@ -70,7 +70,7 @@ header('Content-type: text/html; charset=UTF-8');
 <meta http-equiv="content-style-type" content="text/css" />
 <meta http-equiv="imagetoolbar" content="no" />
 
-<title>Hibajelentő adatok konvertálása</title>
+<title>HibajelentÅ adatok konvertÃ¡lÃ¡sa</title>
 
 <link href="../adm/style/admin.css" rel="stylesheet" type="text/css" media="screen" />
 
@@ -87,9 +87,9 @@ header('Content-type: text/html; charset=UTF-8');
 				<div id="content">
 					<div id="main">
 
-	<h1>Hibajelentő adatainak konvertálása</h1>
+	<h1>HibajelentÅ adatainak konvertÃ¡lÃ¡sa</h1>
 	
-	<!-- <h2>Kezdeti lépések</h2> -->
+	<!-- <h2>Kezdeti lÃ©pÃ©sek</h2> -->
 
 	<br />
 <?php 
@@ -134,7 +134,7 @@ $result = $olddb->sql_query($sql);
 $insert_sql_array = $olddb->sql_fetchrowset($result);
 $db->sql_multi_insert(BUGS_STATUSES_TABLE, $insert_sql_array);
 
-print '<p><strong>Státuszok</strong> áthozva.</p>';
+print '<p><strong>StÃ¡tuszok</strong> Ã¡thozva.</p>';
 flush();
 
 
@@ -147,7 +147,7 @@ $result = $olddb->sql_query($sql);
 $insert_sql_array = $olddb->sql_fetchrowset($result);
 $db->sql_multi_insert(BUGS_COMPONENTS_TABLE, $insert_sql_array);
 
-print '<p><strong>Komponensek</strong> áthozva.</p>';
+print '<p><strong>Komponensek</strong> Ã¡thozva.</p>';
 flush();
 
 
@@ -160,7 +160,7 @@ $result = $olddb->sql_query($sql);
 $insert_sql_array = $olddb->sql_fetchrowset($result);
 $db->sql_multi_insert(BUGS_VERSIONS_TABLE, $insert_sql_array);
 
-print '<p><strong>Verziók</strong> áthozva.</p>';
+print '<p><strong>VerziÃ³k</strong> Ã¡thozva.</p>';
 flush();
 
 
@@ -295,7 +295,7 @@ while ($row2 = $olddb->sql_fetchrow($result2))
 		'forum_id'		=> $forum_data['forum_id'],
 	);
 }
-print '<p><strong>Projektek</strong> áthozva.</p>';
+print '<p><strong>Projektek</strong> Ã¡thozva.</p>';
 flush();
 
 
@@ -334,11 +334,11 @@ while ($row = $olddb->sql_fetchrow($result))
 	decode_message($row['bug_suggested_text'], $row['bug_bbcode_uid']);
 	if (!empty($row['bug_wrong_text']))
 	{
-		$row['bug_description'] .= "\n[b]Hibás szöveg:[/b][quote]{$row['bug_wrong_text']}[/quote]";
+		$row['bug_description'] .= "\n[b]HibÃ¡s szÃ¶veg:[/b][quote]{$row['bug_wrong_text']}[/quote]";
 	}
 	if (!empty($row['bug_suggested_text']))
 	{
-		$row['bug_description'] .= "\n[b]Javasolt szöveg:[/b][quote]{$row['bug_suggested_text']}[/quote]";
+		$row['bug_description'] .= "\n[b]Javasolt szÃ¶veg:[/b][quote]{$row['bug_suggested_text']}[/quote]";
 	}
 	
 	$report_data = array(
@@ -473,7 +473,7 @@ while ($row = $olddb->sql_fetchrow($result))
 	);
 }
 
-print '<p><strong>Jelentések</strong> áthozva.</p>';
+print '<p><strong>JelentÃ©sek</strong> Ã¡thozva.</p>';
 flush();
 
 
@@ -540,7 +540,7 @@ while ($row = $olddb->sql_fetchrow($result))
 	//submit_post('edit', $row['comment_title'], '', POST_NORMAL, $poll, $data);
 }
 
-print '<p><strong>Hozzászólások</strong> áthozva.</p>';
+print '<p><strong>HozzÃ¡szÃ³lÃ¡sok</strong> Ã¡thozva.</p>';
 flush();
 
 
@@ -551,7 +551,7 @@ $db->sql_transaction('commit');
 
 ?>
 <br /><br />
-<p><strong>A konvertálás sikeresen befejeződött. Ne feletsd el újraszinkronizálni az érintett fórumokat!</strong></p>
+<p><strong>A konvertÃ¡lÃ¡s sikeresen befejezÅdÃ¶tt. Ne feletsd el ÃºjraszinkronizÃ¡lni az Ã©rintett fÃ³rumokat!</strong></p>
 					</div>
 				</div>
 			<span class="corners-bottom"><span></span></span>

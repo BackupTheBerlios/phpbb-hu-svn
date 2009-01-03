@@ -241,6 +241,7 @@ CREATE TABLE phpbb_forums (
 	forum_last_poster_name varchar(255) NOT NULL DEFAULT '',
 	forum_last_poster_colour varchar(6) NOT NULL DEFAULT '',
 	forum_flags tinyint(4) NOT NULL DEFAULT '32',
+	display_subforum_list INTEGER UNSIGNED NOT NULL DEFAULT '1',
 	display_on_index INTEGER UNSIGNED NOT NULL DEFAULT '1',
 	enable_indexing INTEGER UNSIGNED NOT NULL DEFAULT '1',
 	enable_icons INTEGER UNSIGNED NOT NULL DEFAULT '1',
@@ -303,10 +304,11 @@ CREATE TABLE phpbb_groups (
 	group_sig_chars INTEGER UNSIGNED NOT NULL DEFAULT '0',
 	group_receive_pm INTEGER UNSIGNED NOT NULL DEFAULT '0',
 	group_message_limit INTEGER UNSIGNED NOT NULL DEFAULT '0',
+	group_max_recipients INTEGER UNSIGNED NOT NULL DEFAULT '0',
 	group_legend INTEGER UNSIGNED NOT NULL DEFAULT '1'
 );
 
-CREATE INDEX phpbb_groups_group_legend ON phpbb_groups (group_legend);
+CREATE INDEX phpbb_groups_group_legend_name ON phpbb_groups (group_legend, group_name);
 
 # Table: 'phpbb_icons'
 CREATE TABLE phpbb_icons (
@@ -531,6 +533,7 @@ CREATE TABLE phpbb_profile_fields (
 	field_validation varchar(20) NOT NULL DEFAULT '',
 	field_required INTEGER UNSIGNED NOT NULL DEFAULT '0',
 	field_show_on_reg INTEGER UNSIGNED NOT NULL DEFAULT '0',
+	field_show_profile INTEGER UNSIGNED NOT NULL DEFAULT '0',
 	field_hide INTEGER UNSIGNED NOT NULL DEFAULT '0',
 	field_no_view INTEGER UNSIGNED NOT NULL DEFAULT '0',
 	field_active INTEGER UNSIGNED NOT NULL DEFAULT '0',
@@ -637,6 +640,7 @@ CREATE INDEX phpbb_search_wordmatch_post_id ON phpbb_search_wordmatch (post_id);
 CREATE TABLE phpbb_sessions (
 	session_id char(32) NOT NULL DEFAULT '',
 	session_user_id INTEGER UNSIGNED NOT NULL DEFAULT '0',
+	session_forum_id INTEGER UNSIGNED NOT NULL DEFAULT '0',
 	session_last_visit INTEGER UNSIGNED NOT NULL DEFAULT '0',
 	session_start INTEGER UNSIGNED NOT NULL DEFAULT '0',
 	session_time INTEGER UNSIGNED NOT NULL DEFAULT '0',
@@ -652,6 +656,7 @@ CREATE TABLE phpbb_sessions (
 
 CREATE INDEX phpbb_sessions_session_time ON phpbb_sessions (session_time);
 CREATE INDEX phpbb_sessions_session_user_id ON phpbb_sessions (session_user_id);
+CREATE INDEX phpbb_sessions_session_fid ON phpbb_sessions (session_forum_id);
 
 # Table: 'phpbb_sessions_keys'
 CREATE TABLE phpbb_sessions_keys (
@@ -710,7 +715,9 @@ CREATE TABLE phpbb_styles_template (
 	template_copyright varchar(255) NOT NULL DEFAULT '',
 	template_path varchar(100) NOT NULL DEFAULT '',
 	bbcode_bitfield varchar(255) NOT NULL DEFAULT 'kNg=',
-	template_storedb INTEGER UNSIGNED NOT NULL DEFAULT '0'
+	template_storedb INTEGER UNSIGNED NOT NULL DEFAULT '0',
+	template_inherits_id INTEGER UNSIGNED NOT NULL DEFAULT '0',
+	template_inherit_path varchar(255) NOT NULL DEFAULT ''
 );
 
 CREATE UNIQUE INDEX phpbb_styles_template_tmplte_nm ON phpbb_styles_template (template_name);

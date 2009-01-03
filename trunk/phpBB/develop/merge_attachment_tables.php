@@ -5,7 +5,7 @@
 //
 // FILENAME  : merge_attachment_tables.php
 // STARTED   : Tue Nov 04, 2003
-// COPYRIGHT : ï¿½ 2001, 2003 phpBB Group
+// COPYRIGHT : © 2001, 2003 phpBB Group
 // WWW       : http://www.phpbb.com/
 // LICENCE   : GPL vs2.0 [ see /docs/COPYING ] 
 // 

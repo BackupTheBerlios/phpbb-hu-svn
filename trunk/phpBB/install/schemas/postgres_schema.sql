@@ -6,80 +6,80 @@
 
 BEGIN;
 
-/*
-	Domain definition
-*/
-CREATE DOMAIN varchar_ci AS varchar(255) NOT NULL DEFAULT ''::character varying;
-
-/*
-	Operation Functions
-*/
-CREATE FUNCTION _varchar_ci_equal(varchar_ci, varchar_ci) RETURNS boolean AS 'SELECT LOWER($1) = LOWER($2)' LANGUAGE SQL STRICT;
-CREATE FUNCTION _varchar_ci_not_equal(varchar_ci, varchar_ci) RETURNS boolean AS 'SELECT LOWER($1) != LOWER($2)' LANGUAGE SQL STRICT;
-CREATE FUNCTION _varchar_ci_less_than(varchar_ci, varchar_ci) RETURNS boolean AS 'SELECT LOWER($1) < LOWER($2)' LANGUAGE SQL STRICT;
-CREATE FUNCTION _varchar_ci_less_equal(varchar_ci, varchar_ci) RETURNS boolean AS 'SELECT LOWER($1) <= LOWER($2)' LANGUAGE SQL STRICT;
-CREATE FUNCTION _varchar_ci_greater_than(varchar_ci, varchar_ci) RETURNS boolean AS 'SELECT LOWER($1) > LOWER($2)' LANGUAGE SQL STRICT;
-CREATE FUNCTION _varchar_ci_greater_equals(varchar_ci, varchar_ci) RETURNS boolean AS 'SELECT LOWER($1) >= LOWER($2)' LANGUAGE SQL STRICT;
-
-/*
-	Operators
-*/
-CREATE OPERATOR <(
-  PROCEDURE = _varchar_ci_less_than,
-  LEFTARG = varchar_ci,
-  RIGHTARG = varchar_ci,
-  COMMUTATOR = >,
-  NEGATOR = >=,
-  RESTRICT = scalarltsel,
-  JOIN = scalarltjoinsel);
-
-CREATE OPERATOR <=(
-  PROCEDURE = _varchar_ci_less_equal,
-  LEFTARG = varchar_ci,
-  RIGHTARG = varchar_ci,
-  COMMUTATOR = >=,
-  NEGATOR = >,
-  RESTRICT = scalarltsel,
-  JOIN = scalarltjoinsel);
-
-CREATE OPERATOR >(
-  PROCEDURE = _varchar_ci_greater_than,
-  LEFTARG = varchar_ci,
-  RIGHTARG = varchar_ci,
-  COMMUTATOR = <,
-  NEGATOR = <=,
-  RESTRICT = scalargtsel,
-  JOIN = scalargtjoinsel);
-
-CREATE OPERATOR >=(
-  PROCEDURE = _varchar_ci_greater_equals,
-  LEFTARG = varchar_ci,
-  RIGHTARG = varchar_ci,
-  COMMUTATOR = <=,
-  NEGATOR = <,
-  RESTRICT = scalargtsel,
-  JOIN = scalargtjoinsel);
-
-CREATE OPERATOR <>(
-  PROCEDURE = _varchar_ci_not_equal,
-  LEFTARG = varchar_ci,
-  RIGHTARG = varchar_ci,
-  COMMUTATOR = <>,
-  NEGATOR = =,
-  RESTRICT = neqsel,
-  JOIN = neqjoinsel);
-
-CREATE OPERATOR =(
-  PROCEDURE = _varchar_ci_equal,
-  LEFTARG = varchar_ci,
-  RIGHTARG = varchar_ci,
-  COMMUTATOR = =,
-  NEGATOR = <>,
-  RESTRICT = eqsel,
-  JOIN = eqjoinsel,
-  HASHES,
-  MERGES,
-  SORT1= <);
+/*
+	Domain definition
+*/
+CREATE DOMAIN varchar_ci AS varchar(255) NOT NULL DEFAULT ''::character varying;
+
+/*
+	Operation Functions
+*/
+CREATE FUNCTION _varchar_ci_equal(varchar_ci, varchar_ci) RETURNS boolean AS 'SELECT LOWER($1) = LOWER($2)' LANGUAGE SQL STRICT;
+CREATE FUNCTION _varchar_ci_not_equal(varchar_ci, varchar_ci) RETURNS boolean AS 'SELECT LOWER($1) != LOWER($2)' LANGUAGE SQL STRICT;
+CREATE FUNCTION _varchar_ci_less_than(varchar_ci, varchar_ci) RETURNS boolean AS 'SELECT LOWER($1) < LOWER($2)' LANGUAGE SQL STRICT;
+CREATE FUNCTION _varchar_ci_less_equal(varchar_ci, varchar_ci) RETURNS boolean AS 'SELECT LOWER($1) <= LOWER($2)' LANGUAGE SQL STRICT;
+CREATE FUNCTION _varchar_ci_greater_than(varchar_ci, varchar_ci) RETURNS boolean AS 'SELECT LOWER($1) > LOWER($2)' LANGUAGE SQL STRICT;
+CREATE FUNCTION _varchar_ci_greater_equals(varchar_ci, varchar_ci) RETURNS boolean AS 'SELECT LOWER($1) >= LOWER($2)' LANGUAGE SQL STRICT;
+
+/*
+	Operators
+*/
+CREATE OPERATOR <(
+  PROCEDURE = _varchar_ci_less_than,
+  LEFTARG = varchar_ci,
+  RIGHTARG = varchar_ci,
+  COMMUTATOR = >,
+  NEGATOR = >=,
+  RESTRICT = scalarltsel,
+  JOIN = scalarltjoinsel);
+
+CREATE OPERATOR <=(
+  PROCEDURE = _varchar_ci_less_equal,
+  LEFTARG = varchar_ci,
+  RIGHTARG = varchar_ci,
+  COMMUTATOR = >=,
+  NEGATOR = >,
+  RESTRICT = scalarltsel,
+  JOIN = scalarltjoinsel);
+
+CREATE OPERATOR >(
+  PROCEDURE = _varchar_ci_greater_than,
+  LEFTARG = varchar_ci,
+  RIGHTARG = varchar_ci,
+  COMMUTATOR = <,
+  NEGATOR = <=,
+  RESTRICT = scalargtsel,
+  JOIN = scalargtjoinsel);
+
+CREATE OPERATOR >=(
+  PROCEDURE = _varchar_ci_greater_equals,
+  LEFTARG = varchar_ci,
+  RIGHTARG = varchar_ci,
+  COMMUTATOR = <=,
+  NEGATOR = <,
+  RESTRICT = scalargtsel,
+  JOIN = scalargtjoinsel);
+
+CREATE OPERATOR <>(
+  PROCEDURE = _varchar_ci_not_equal,
+  LEFTARG = varchar_ci,
+  RIGHTARG = varchar_ci,
+  COMMUTATOR = <>,
+  NEGATOR = =,
+  RESTRICT = neqsel,
+  JOIN = neqjoinsel);
+
+CREATE OPERATOR =(
+  PROCEDURE = _varchar_ci_equal,
+  LEFTARG = varchar_ci,
+  RIGHTARG = varchar_ci,
+  COMMUTATOR = =,
+  NEGATOR = <>,
+  RESTRICT = eqsel,
+  JOIN = eqjoinsel,
+  HASHES,
+  MERGES,
+  SORT1= <);
 
 /*
 	Table: 'phpbb_attachments'
@@ -304,7 +304,7 @@ CREATE TABLE phpbb_drafts (
 	topic_id INT4 DEFAULT '0' NOT NULL CHECK (topic_id >= 0),
 	forum_id INT4 DEFAULT '0' NOT NULL CHECK (forum_id >= 0),
 	save_time INT4 DEFAULT '0' NOT NULL CHECK (save_time >= 0),
-	draft_subject varchar(100) DEFAULT '' NOT NULL,
+	draft_subject varchar(255) DEFAULT '' NOT NULL,
 	draft_message TEXT DEFAULT '' NOT NULL,
 	PRIMARY KEY (draft_id)
 );
@@ -361,7 +361,7 @@ CREATE TABLE phpbb_forums (
 	forum_desc_uid varchar(8) DEFAULT '' NOT NULL,
 	forum_link varchar(255) DEFAULT '' NOT NULL,
 	forum_password varchar(40) DEFAULT '' NOT NULL,
-	forum_style INT2 DEFAULT '0' NOT NULL CHECK (forum_style >= 0),
+	forum_style INT4 DEFAULT '0' NOT NULL CHECK (forum_style >= 0),
 	forum_image varchar(255) DEFAULT '' NOT NULL,
 	forum_rules varchar(4000) DEFAULT '' NOT NULL,
 	forum_rules_link varchar(255) DEFAULT '' NOT NULL,
@@ -376,11 +376,12 @@ CREATE TABLE phpbb_forums (
 	forum_topics_real INT4 DEFAULT '0' NOT NULL CHECK (forum_topics_real >= 0),
 	forum_last_post_id INT4 DEFAULT '0' NOT NULL CHECK (forum_last_post_id >= 0),
 	forum_last_poster_id INT4 DEFAULT '0' NOT NULL CHECK (forum_last_poster_id >= 0),
-	forum_last_post_subject varchar(100) DEFAULT '' NOT NULL,
+	forum_last_post_subject varchar(255) DEFAULT '' NOT NULL,
 	forum_last_post_time INT4 DEFAULT '0' NOT NULL CHECK (forum_last_post_time >= 0),
 	forum_last_poster_name varchar(255) DEFAULT '' NOT NULL,
 	forum_last_poster_colour varchar(6) DEFAULT '' NOT NULL,
 	forum_flags INT2 DEFAULT '32' NOT NULL,
+	display_subforum_list INT2 DEFAULT '1' NOT NULL CHECK (display_subforum_list >= 0),
 	display_on_index INT2 DEFAULT '1' NOT NULL CHECK (display_on_index >= 0),
 	enable_indexing INT2 DEFAULT '1' NOT NULL CHECK (enable_indexing >= 0),
 	enable_icons INT2 DEFAULT '1' NOT NULL CHECK (enable_icons >= 0),
@@ -454,11 +455,12 @@ CREATE TABLE phpbb_groups (
 	group_sig_chars INT4 DEFAULT '0' NOT NULL CHECK (group_sig_chars >= 0),
 	group_receive_pm INT2 DEFAULT '0' NOT NULL CHECK (group_receive_pm >= 0),
 	group_message_limit INT4 DEFAULT '0' NOT NULL CHECK (group_message_limit >= 0),
+	group_max_recipients INT4 DEFAULT '0' NOT NULL CHECK (group_max_recipients >= 0),
 	group_legend INT2 DEFAULT '1' NOT NULL CHECK (group_legend >= 0),
 	PRIMARY KEY (group_id)
 );
 
-CREATE INDEX phpbb_groups_group_legend ON phpbb_groups (group_legend);
+CREATE INDEX phpbb_groups_group_legend_name ON phpbb_groups (group_legend, group_name);
 
 /*
 	Table: 'phpbb_icons'
@@ -605,7 +607,7 @@ CREATE TABLE phpbb_posts (
 	enable_magic_url INT2 DEFAULT '1' NOT NULL CHECK (enable_magic_url >= 0),
 	enable_sig INT2 DEFAULT '1' NOT NULL CHECK (enable_sig >= 0),
 	post_username varchar(255) DEFAULT '' NOT NULL,
-	post_subject varchar(100) DEFAULT '' NOT NULL,
+	post_subject varchar(255) DEFAULT '' NOT NULL,
 	post_text TEXT DEFAULT '' NOT NULL,
 	post_checksum varchar(32) DEFAULT '' NOT NULL,
 	post_attachment INT2 DEFAULT '0' NOT NULL CHECK (post_attachment >= 0),
@@ -643,7 +645,7 @@ CREATE TABLE phpbb_privmsgs (
 	enable_smilies INT2 DEFAULT '1' NOT NULL CHECK (enable_smilies >= 0),
 	enable_magic_url INT2 DEFAULT '1' NOT NULL CHECK (enable_magic_url >= 0),
 	enable_sig INT2 DEFAULT '1' NOT NULL CHECK (enable_sig >= 0),
-	message_subject varchar(100) DEFAULT '' NOT NULL,
+	message_subject varchar(255) DEFAULT '' NOT NULL,
 	message_text TEXT DEFAULT '' NOT NULL,
 	message_edit_reason varchar(255) DEFAULT '' NOT NULL,
 	message_edit_user INT4 DEFAULT '0' NOT NULL CHECK (message_edit_user >= 0),
@@ -735,6 +737,7 @@ CREATE TABLE phpbb_profile_fields (
 	field_validation varchar(20) DEFAULT '' NOT NULL,
 	field_required INT2 DEFAULT '0' NOT NULL CHECK (field_required >= 0),
 	field_show_on_reg INT2 DEFAULT '0' NOT NULL CHECK (field_show_on_reg >= 0),
+	field_show_profile INT2 DEFAULT '0' NOT NULL CHECK (field_show_profile >= 0),
 	field_hide INT2 DEFAULT '0' NOT NULL CHECK (field_hide >= 0),
 	field_no_view INT2 DEFAULT '0' NOT NULL CHECK (field_no_view >= 0),
 	field_active INT2 DEFAULT '0' NOT NULL CHECK (field_active >= 0),
@@ -874,6 +877,7 @@ CREATE INDEX phpbb_search_wordmatch_post_id ON phpbb_search_wordmatch (post_id);
 CREATE TABLE phpbb_sessions (
 	session_id char(32) DEFAULT '' NOT NULL,
 	session_user_id INT4 DEFAULT '0' NOT NULL CHECK (session_user_id >= 0),
+	session_forum_id INT4 DEFAULT '0' NOT NULL CHECK (session_forum_id >= 0),
 	session_last_visit INT4 DEFAULT '0' NOT NULL CHECK (session_last_visit >= 0),
 	session_start INT4 DEFAULT '0' NOT NULL CHECK (session_start >= 0),
 	session_time INT4 DEFAULT '0' NOT NULL CHECK (session_time >= 0),
@@ -889,6 +893,7 @@ CREATE TABLE phpbb_sessions (
 
 CREATE INDEX phpbb_sessions_session_time ON phpbb_sessions (session_time);
 CREATE INDEX phpbb_sessions_session_user_id ON phpbb_sessions (session_user_id);
+CREATE INDEX phpbb_sessions_session_fid ON phpbb_sessions (session_forum_id);
 
 /*
 	Table: 'phpbb_sessions_keys'
@@ -942,13 +947,13 @@ CREATE INDEX phpbb_smilies_display_on_post ON phpbb_smilies (display_on_posting)
 CREATE SEQUENCE phpbb_styles_seq;
 
 CREATE TABLE phpbb_styles (
-	style_id INT2 DEFAULT nextval('phpbb_styles_seq'),
+	style_id INT4 DEFAULT nextval('phpbb_styles_seq'),
 	style_name varchar(255) DEFAULT '' NOT NULL,
 	style_copyright varchar(255) DEFAULT '' NOT NULL,
 	style_active INT2 DEFAULT '1' NOT NULL CHECK (style_active >= 0),
-	template_id INT2 DEFAULT '0' NOT NULL CHECK (template_id >= 0),
-	theme_id INT2 DEFAULT '0' NOT NULL CHECK (theme_id >= 0),
-	imageset_id INT2 DEFAULT '0' NOT NULL CHECK (imageset_id >= 0),
+	template_id INT4 DEFAULT '0' NOT NULL CHECK (template_id >= 0),
+	theme_id INT4 DEFAULT '0' NOT NULL CHECK (theme_id >= 0),
+	imageset_id INT4 DEFAULT '0' NOT NULL CHECK (imageset_id >= 0),
 	PRIMARY KEY (style_id)
 );
 
@@ -963,12 +968,14 @@ CREATE INDEX phpbb_styles_imageset_id ON phpbb_styles (imageset_id);
 CREATE SEQUENCE phpbb_styles_template_seq;
 
 CREATE TABLE phpbb_styles_template (
-	template_id INT2 DEFAULT nextval('phpbb_styles_template_seq'),
+	template_id INT4 DEFAULT nextval('phpbb_styles_template_seq'),
 	template_name varchar(255) DEFAULT '' NOT NULL,
 	template_copyright varchar(255) DEFAULT '' NOT NULL,
 	template_path varchar(100) DEFAULT '' NOT NULL,
 	bbcode_bitfield varchar(255) DEFAULT 'kNg=' NOT NULL,
 	template_storedb INT2 DEFAULT '0' NOT NULL CHECK (template_storedb >= 0),
+	template_inherits_id INT4 DEFAULT '0' NOT NULL CHECK (template_inherits_id >= 0),
+	template_inherit_path varchar(255) DEFAULT '' NOT NULL,
 	PRIMARY KEY (template_id)
 );
 
@@ -978,7 +985,7 @@ CREATE UNIQUE INDEX phpbb_styles_template_tmplte_nm ON phpbb_styles_template (te
 	Table: 'phpbb_styles_template_data'
 */
 CREATE TABLE phpbb_styles_template_data (
-	template_id INT2 DEFAULT '0' NOT NULL CHECK (template_id >= 0),
+	template_id INT4 DEFAULT '0' NOT NULL CHECK (template_id >= 0),
 	template_filename varchar(100) DEFAULT '' NOT NULL,
 	template_included varchar(8000) DEFAULT '' NOT NULL,
 	template_mtime INT4 DEFAULT '0' NOT NULL CHECK (template_mtime >= 0),
@@ -994,7 +1001,7 @@ CREATE INDEX phpbb_styles_template_data_tfn ON phpbb_styles_template_data (templ
 CREATE SEQUENCE phpbb_styles_theme_seq;
 
 CREATE TABLE phpbb_styles_theme (
-	theme_id INT2 DEFAULT nextval('phpbb_styles_theme_seq'),
+	theme_id INT4 DEFAULT nextval('phpbb_styles_theme_seq'),
 	theme_name varchar(255) DEFAULT '' NOT NULL,
 	theme_copyright varchar(255) DEFAULT '' NOT NULL,
 	theme_path varchar(100) DEFAULT '' NOT NULL,
@@ -1012,7 +1019,7 @@ CREATE UNIQUE INDEX phpbb_styles_theme_theme_name ON phpbb_styles_theme (theme_n
 CREATE SEQUENCE phpbb_styles_imageset_seq;
 
 CREATE TABLE phpbb_styles_imageset (
-	imageset_id INT2 DEFAULT nextval('phpbb_styles_imageset_seq'),
+	imageset_id INT4 DEFAULT nextval('phpbb_styles_imageset_seq'),
 	imageset_name varchar(255) DEFAULT '' NOT NULL,
 	imageset_copyright varchar(255) DEFAULT '' NOT NULL,
 	imageset_path varchar(100) DEFAULT '' NOT NULL,
@@ -1027,13 +1034,13 @@ CREATE UNIQUE INDEX phpbb_styles_imageset_imgset_nm ON phpbb_styles_imageset (im
 CREATE SEQUENCE phpbb_styles_imageset_data_seq;
 
 CREATE TABLE phpbb_styles_imageset_data (
-	image_id INT2 DEFAULT nextval('phpbb_styles_imageset_data_seq'),
+	image_id INT4 DEFAULT nextval('phpbb_styles_imageset_data_seq'),
 	image_name varchar(200) DEFAULT '' NOT NULL,
 	image_filename varchar(200) DEFAULT '' NOT NULL,
 	image_lang varchar(30) DEFAULT '' NOT NULL,
 	image_height INT2 DEFAULT '0' NOT NULL CHECK (image_height >= 0),
 	image_width INT2 DEFAULT '0' NOT NULL CHECK (image_width >= 0),
-	imageset_id INT2 DEFAULT '0' NOT NULL CHECK (imageset_id >= 0),
+	imageset_id INT4 DEFAULT '0' NOT NULL CHECK (imageset_id >= 0),
 	PRIMARY KEY (image_id)
 );
 
@@ -1051,7 +1058,7 @@ CREATE TABLE phpbb_topics (
 	topic_attachment INT2 DEFAULT '0' NOT NULL CHECK (topic_attachment >= 0),
 	topic_approved INT2 DEFAULT '1' NOT NULL CHECK (topic_approved >= 0),
 	topic_reported INT2 DEFAULT '0' NOT NULL CHECK (topic_reported >= 0),
-	topic_title varchar(100) DEFAULT '' NOT NULL,
+	topic_title varchar(255) DEFAULT '' NOT NULL,
 	topic_poster INT4 DEFAULT '0' NOT NULL CHECK (topic_poster >= 0),
 	topic_time INT4 DEFAULT '0' NOT NULL CHECK (topic_time >= 0),
 	topic_time_limit INT4 DEFAULT '0' NOT NULL CHECK (topic_time_limit >= 0),
@@ -1067,7 +1074,7 @@ CREATE TABLE phpbb_topics (
 	topic_last_poster_id INT4 DEFAULT '0' NOT NULL CHECK (topic_last_poster_id >= 0),
 	topic_last_poster_name varchar(255) DEFAULT '' NOT NULL,
 	topic_last_poster_colour varchar(6) DEFAULT '' NOT NULL,
-	topic_last_post_subject varchar(100) DEFAULT '' NOT NULL,
+	topic_last_post_subject varchar(255) DEFAULT '' NOT NULL,
 	topic_last_post_time INT4 DEFAULT '0' NOT NULL CHECK (topic_last_post_time >= 0),
 	topic_last_view_time INT4 DEFAULT '0' NOT NULL CHECK (topic_last_view_time >= 0),
 	topic_moved_id INT4 DEFAULT '0' NOT NULL CHECK (topic_moved_id >= 0),
@@ -1177,7 +1184,7 @@ CREATE TABLE phpbb_users (
 	user_timezone decimal(5,2) DEFAULT '0' NOT NULL,
 	user_dst INT2 DEFAULT '0' NOT NULL CHECK (user_dst >= 0),
 	user_dateformat varchar(30) DEFAULT 'd M Y H:i' NOT NULL,
-	user_style INT2 DEFAULT '0' NOT NULL CHECK (user_style >= 0),
+	user_style INT4 DEFAULT '0' NOT NULL CHECK (user_style >= 0),
 	user_rank INT4 DEFAULT '0' NOT NULL CHECK (user_rank >= 0),
 	user_colour varchar(6) DEFAULT '' NOT NULL,
 	user_new_privmsg INT4 DEFAULT '0' NOT NULL,

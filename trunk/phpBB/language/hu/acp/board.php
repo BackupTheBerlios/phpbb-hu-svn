@@ -115,6 +115,7 @@ $lang = array_merge($lang, array(
 	'ALLOW_FORWARD_PM'			=> 'Privát üzenetek továbbküldésének engedélyezése',
 	'ALLOW_IMG_PM'				=> '<code>[IMG]</code> BBCode címke használatának engedélyezése',
 	'ALLOW_MASS_PM'				=> 'Privát üzenet küldésének engedélyezése egyszerre több felhasználónak és csoportnak',
+	'ALLOW_MASS_PM_EXPLAIN'		=> 'A csoport beállítások oldalon külön-külön meghatározható, hogy az adott csoportnak lehet-e küldeni.',
 	'ALLOW_PRINT_PM'			=> 'Privát üzenetek nyomtatóbarát verziójának engedélyezése',
 	'ALLOW_QUOTE_PM'			=> 'Idézetek engedélyezése privát üzenetekben',
 	'ALLOW_SIG_PM'				=> 'Aláírás engedélyezése privát üzenetekhez',
@@ -129,6 +130,8 @@ $lang = array_merge($lang, array(
 	'HOLD_NEW_MESSAGES'			=> 'Új üzenetek visszatartása',
 	'PM_EDIT_TIME'				=> 'Szerkesztés idejének korlátozása',
 	'PM_EDIT_TIME_EXPLAIN'		=> 'Korlátozza, hogy mennyi ideig lehet szerkeszteni a még nem kézbesített privát üzeneteket. A 0 érték megadásával kikapcsolható ez a viselkedés.',
+	'PM_MAX_RECIPIENTS'			=> 'Engedélyezett címzettek maximum száma',
+	'PM_MAX_RECIPIENTS_EXPLAIN'	=> 'Egy privát üzenetnek legfeljebb ennyi címzettje lehet. Ha 0-t adsz meg, nem lesz korlátozás. A beállítás a csoport beállítások oldalon csoportonként megváltoztatható.',
 ));
 
 // Post Settings
@@ -138,6 +141,11 @@ $lang = array_merge($lang, array(
 	'ALLOW_POST_LINKS_EXPLAIN'			=> 'Ha nem engedélyezett, az <code>[URL]</code> BBCode címke nem használható, és az automatikus linkké alakítás ki van kapcsolva.',
 	'ALLOW_POST_FLASH'					=> '<code>[FLASH]</code> BBCode címke használatának engedélyezése hozzászólásokban',
 	'ALLOW_POST_FLASH_EXPLAIN'			=> 'Ha nem engedélyezett, a <code>[FLASH]</code> címke nem használható a hozzászólásokban. Máskülönben a jogosultságoktól függ, használható-e a <code>[FLASH]</code> BBCode címke.',
+
+	'ENABLE_QUEUE_TRIGGER'			=> 'Hozzászólásjóváhagyás bekapcsolása',
+	'ENABLE_QUEUE_TRIGGER_EXPLAIN'	=> 'Ennek a funkciónak a segítségével megvalósítható, hogy az újonnan regisztrált felhasználók hozzászólásainak jóváhagyáson kelljen átesniük, amíg a hozzászólásszámuk el nem éri az alább meghatározott értéket. Ez nincs hatással a hozzászólás/téma jóváhagyás jogosultság beállításra.',
+	'QUEUE_TRIGGER_POSTS'			=> 'Maximum hozzászólásszám hozzászólásjóváhagyáshoz',
+	'QUEUE_TRIGGER_POSTS_EXPLAIN'	=> 'Ha a hozzászólásjóváhagyás be van kapcsolva, az újonnan regisztrált felhasználók hozzászólásainak ezen hozzászólásszám elérése után nem kell átesniük jóváhagyáson. Ha a felhasználó hozzászólásszáma ennél kisebb, a hozzászólás automatikusan a moderálandók közé kerül.',
 
 	'BUMP_INTERVAL'					=> 'Előreugrasztás időköz',
 	'BUMP_INTERVAL_EXPLAIN'			=> 'Az utolsó hozzászólás után ennyi idő múlva lehet előreugrasztani egy témát.',
@@ -392,8 +400,7 @@ $lang = array_merge($lang, array(
 	'REF_HOST'						=> 'Csak hoszt ellenőrzése',
 	'REF_PATH'						=> 'Elérési út ellenőrzése is',
 	'REFERER_VALID'					=> 'Hivatkozó oldal (referer) ellenőrzése',
-	'REFERER_VALID_EXPLAIN'			=> 'Ha be van kapcsolva, a POST kérések hivatkozó oldalainak címe (referer) összevetésre kerül a hoszt/szkript elérési út beállításokkal. Ez gondot okozhat egyszerre több domaint vagy külső bejelentkező oldalt használó fórumoknál.
-If enabled, the referer of POST requests will be checked against the host/script path settings. This may cause issues with boards using several domains and or external logins.',
+	'REFERER_VALID_EXPLAIN'			=> 'Ha be van kapcsolva, a POST kérések hivatkozó oldalainak címe (referer) összevetésre kerül a hoszt/szkript elérési út beállításokkal. Ez gondot okozhat egyszerre több domaint vagy külső bejelentkező oldalt használó fórumoknál.',
 	'TPL_ALLOW_PHP'					=> 'Php engedélyezése sablonokban',
 	'TPL_ALLOW_PHP_EXPLAIN'			=> 'Ha be van kapcsolva a beállítás, akkor a sablonokban a <code>PHP</code> és az <code>INCLUDEPHP</code> címkék is értelmezésre kerülnek.',
 ));
@@ -454,8 +461,8 @@ $lang = array_merge($lang, array(
 	'JAB_SETTINGS_CHANGED'		=> 'A Jabber beállítások sikeresen megváltoztatásra kerültek.',
 	'JAB_USE_SSL'				=> 'SSL használata a kapcsolódáshoz',
 	'JAB_USE_SSL_EXPLAIN'		=> 'Ha be van kapcsolva, egy biztonságos kapcsolat kerül kiépítésre. A Jabber portja 5223-ra lesz módosítva, ha az 5222-es port volt megadva.',
-	'JAB_USERNAME'				=> 'Jabber felhasználónév',
-	'JAB_USERNAME_EXPLAIN'		=> 'Adj meg egy regisztrált felhasználónevet. A felhasználónév létezése nem kerül ellenőrzésre.',
+	'JAB_USERNAME'				=> 'Jabber felhasználónév vagy JID',
+	'JAB_USERNAME_EXPLAIN'		=> 'Adj meg egy regisztrált felhasználónevet vagy egy valós JID-t. A felhasználónév létezése nem kerül ellenőrzésre. Ha csak egy felhasználónevet adsz meg, a JID a felhasználónév és a fent megadott szerver lesz. Ha nem ezt szeretnéd, adj meg egy helyes JID-t, pl. felhasznalo@jabber.org.',
 ));
 
 ?>

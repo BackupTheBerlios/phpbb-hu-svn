@@ -546,7 +546,7 @@ function trim_text($text, $max_length)
 		$text = substr($text, 0, strrpos ($text, ' '));
 
 		// Append three dots indicating that this is not the real end of the text
-		return $text . ' …';
+		return $text . ' â¦';
 	}
 	else
 	{
@@ -603,7 +603,7 @@ function trim_post ($text, $uid, $max_length, $bitfield = '', $enable_bbcode = t
 		$text = substr($text, 0, strrpos ($text, ' '));
 
 		// Append three dots indicating that this is not the real end of the text
-		$text .= ' …';
+		$text .= ' â¦';
 		
 		if (!$enable_bbcode)
 		{
@@ -651,7 +651,7 @@ function trim_post ($text, $uid, $max_length, $bitfield = '', $enable_bbcode = t
 	{
 		if (($start_pos = strrpos($text, $tag[0])) > strrpos($text, $tag[1]))
 		{
-			$text = substr($text, 0, $start_pos) . ' …';
+			$text = substr($text, 0, $start_pos) . ' â¦';
 		}
 	}
 

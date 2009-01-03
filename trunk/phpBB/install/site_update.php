@@ -826,7 +826,7 @@ if (version_compare($current_version, '0.0.0', '<='))
 
 	?>
 
-	<p><strong>Oldal és tartalom jogosultságok hozzáadva.</strong></p>
+	<p><strong>Oldal Ã©s tartalom jogosultsÃ¡gok hozzÃ¡adva.</strong></p>
 	
 	<?php
 }

@@ -71,7 +71,7 @@ header('Content-type: text/html; charset=UTF-8');
 <meta http-equiv="content-style-type" content="text/css" />
 <meta http-equiv="imagetoolbar" content="no" />
 
-<title>Útmutatók konvertálása</title>
+<title>ÃtmutatÃ³k konvertÃ¡lÃ¡sa</title>
 
 <link href="../adm/style/admin.css" rel="stylesheet" type="text/css" media="screen" />
 
@@ -88,7 +88,7 @@ header('Content-type: text/html; charset=UTF-8');
 				<div id="content">
 					<div id="main">
 
-	<h1>Útmutatók konvertálása</h1>
+	<h1>ÃtmutatÃ³k konvertÃ¡lÃ¡sa</h1>
 
 	<br />
 <?php 
@@ -316,7 +316,7 @@ while ($row = $olddb->sql_fetchrow($result))
 	$db->sql_multi_insert(TAGMATCH_TABLE, $sql_insert_ary);	
 }
 
-print '<p><strong>Útmutatók</strong> áthozva.</p>';
+print '<p><strong>ÃtmutatÃ³k</strong> Ã¡thozva.</p>';
 flush();
 
 
@@ -326,7 +326,7 @@ $db->sql_transaction('commit');
 
 ?>
 <br /><br />
-<p><strong>A konvertálás sikeresen befejeződött. Ne feletsd el újraszinkronizálni az érintett fórumokat!</strong></p>
+<p><strong>A konvertÃ¡lÃ¡s sikeresen befejezÅdÃ¶tt. Ne feletsd el ÃºjraszinkronizÃ¡lni az Ã©rintett fÃ³rumokat!</strong></p>
 					</div>
 				</div>
 			<span class="corners-bottom"><span></span></span>
@@ -346,6 +346,6 @@ $db->sql_transaction('commit');
 // Generate id name from a title
 function generate_name_from_title($title)
 {
-	return strtolower(str_replace(array(',', '?', '!', '(', ')'), '', str_replace(array('á','é','í','ó','ö','ő','ú','ü','ű','Á','É','Í','Ó','Ö','Ő','Ú','Ü','Ű', ' '), array('a','e','i','o','o','o','u','u','u','a','e','i','o','o','o','u','u','u','-'), $title)));
+	return strtolower(str_replace(array(',', '?', '!', '(', ')'), '', str_replace(array('Ã¡','Ã©','Ã­','Ã³','Ã¶','Å','Ãº','Ã¼','Å±','Ã','Ã','Ã','Ã','Ã','Å','Ã','Ã','Å°', ' '), array('a','e','i','o','o','o','u','u','u','a','e','i','o','o','o','u','u','u','-'), $title)));
 }
 ?>

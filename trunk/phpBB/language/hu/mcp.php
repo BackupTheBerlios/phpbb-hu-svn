@@ -347,6 +347,7 @@ $lang = array_merge($lang, array(
 	'USER_WARNING_ADDED'			=> 'A felhasználó sikeresen figyelmeztetésre került.',
 
 	'VIEW_DETAILS'			=> 'Részletek megtekintése',
+	'VIEW_POST'				=> 'Hozzászólás megtekintése',
 
 	'WARNED_USERS'			=> 'Figyelmeztetett felhasználók',
 	'WARNED_USERS_EXPLAIN'	=> 'Az alábbi lista azokat a felhasználókat tartalmazza, akik még nem lejárt figyelmezetetéssel rendelkeznek.',

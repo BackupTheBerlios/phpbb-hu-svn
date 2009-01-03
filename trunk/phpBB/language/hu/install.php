@@ -277,7 +277,7 @@ $lang = array_merge($lang, array(
 	'NO_CONVERT_SPECIFIED'		=> 'Nem került konvertáló kiválasztásra.',
 	'NO_LOCATION'				=> 'Nem sikerült meghatározni a helyét. Ha tudod, hogy az Imagemagick telepítve van, később megadhatod az elérési helyét az adminisztrátori vezérlőpultban.',
 	'NO_TABLES_FOUND'			=> 'Nem találhatók adatbázistáblák.',
-	'OVERVIEW_BODY'				=> 'Üdvözlünk a phpBB3-ban!<br /><br />A phpBB™ a legelterjedtebb nyílt forrású fórumrendszer a világon. A phpBB3 egy hét éves fejlesztés legfrissebb eleme, mely az elődeihez hasonlóan funkciógazdag, felhasználóbarát és teljes mértékben támogatott a phpBB Team által. A phpBB3 nagyot lép előre a phpBB2-t népszerűvé tevő területeken, számos általánosan kívánt funkciót tesz elérhetővé, melyek a korábbi verziókban nem voltak jelen. Reméljük, meghaladja várakozásaidat.<br /><br />Ez a telepítőrendszer végig fog vezetni a phpBB3 telepítésén, a phpBB3 legújabb verziójára való frissítésén, valamint más fórumrendszer phpBB3-ra való konvertálásán (beleértve a phpBB2-t). További információért, bátorítunk, hogy olvasd el az (angol nyelvű) <a href="../docs/INSTALL.html">telepítési útmutatót</a>.<br /><br />A phpBB3 licencének megtekintéséhez, a támogatás elérésének helyéhez, ill. a phpBB Team ehhez való hozzáállásának megismeréséhez, válaszd ki a megfelelő elemet az oldalsó menüből. A folytatáshoz, kérjük, válaszd ki fentebb a megfelelő fület.',
+	'OVERVIEW_BODY'				=> 'Üdvözlünk a phpBB3-ban!<br /><br />A phpBB™ a legelterjedtebb nyílt forrású fórumrendszer a világon. A phpBB3 a 2000-ben kezdődött fejlesztés legfrissebb eleme, mely az elődeihez hasonlóan funkciógazdag, felhasználóbarát és teljes mértékben támogatott a phpBB Team által. A phpBB3 nagyot lép előre a phpBB2-t népszerűvé tevő területeken, számos általánosan kívánt funkciót tesz elérhetővé, melyek a korábbi verziókban nem voltak jelen. Reméljük, meghaladja várakozásaidat.<br /><br />Ez a telepítőrendszer végig fog vezetni a phpBB3 telepítésén, a phpBB3 legújabb verziójára való frissítésén, valamint más fórumrendszer phpBB3-ra való konvertálásán (beleértve a phpBB2-t). További információért, bátorítunk, hogy olvasd el az (angol nyelvű) <a href="../docs/INSTALL.html">telepítési útmutatót</a>.<br /><br />A phpBB3 licencének megtekintéséhez, a támogatás elérésének helyéhez, ill. a phpBB Team ehhez való hozzáállásának megismeréséhez, válaszd ki a megfelelő elemet az oldalsó menüből. A folytatáshoz, kérjük, válaszd ki fentebb a megfelelő fület.',
 
 	'PCRE_UTF_SUPPORT'				=> 'PCRE UTF-8 támogatás',
 	'PCRE_UTF_SUPPORT_EXPLAIN'		=> 'A phpBB <strong>nem</strong> fog működni, ha a PHP a PCRE kiterjesztés UTF-8 támogatása nélkül került fordításra.',
@@ -294,7 +294,7 @@ $lang = array_merge($lang, array(
 	'PHP_SETTINGS_EXPLAIN'			=> '<strong>Szükséges</strong> – A phpBB telepítéséhez legalább 4.3.3-as verziójú PHP-val kell rendelkezned. Ha alább megjelenik a <var>biztonságos mód</var> felirat, akkor a PHP ebben a módban fut. Ez korlátozásokkal jár a távoli adminisztráció és ehhez hasonló funkciók terén.',
 	'PHP_URL_FOPEN_SUPPORT'			=> '<var>allow_url_fopen</var> PHP beállítás bekapcsolva',
 	'PHP_URL_FOPEN_SUPPORT_EXPLAIN'	=> '<strong>Opcionális</strong> – Ez a beállítás opcionális, bár a phpBB néhány funkciója, mint például a külső avatarok, nem fog rendesen működni nélküle.',
-	'PHP_VERSION_REQD'				=> 'PHP verzió >= 4.3.3',
+	'PHP_VERSION_REQD'				=> 'PHP verzió ≥ 4.3.3',
 	'POST_ID'						=> 'Hozzászólás azonosító',
 	'PREFIX_FOUND'					=> 'Az adatbázistábláid azt mutatják, hogy van már egy telepített phpBB-d, melynek a tábla előtagja <strong>%s</strong>.',
 	'PREPROCESS_STEP'				=> 'Függvények/parancsok előfeldolgozásának végrehajtása',
@@ -381,7 +381,8 @@ $lang = array_merge($lang, array(
 	'COLLECTED_INFORMATION_EXPLAIN'	=> 'Az alábbi lista információkat tartalmaz a frissítendő állományokról. Olvasd el a blokkok előtti magyarázó szöveget, hogy tudd milyen állományok tartoznak oda, és mit kell ezekkel tenned a sikeres frissítés érdekében.',
 	'COLLECTING_FILE_DIFFS'			=> 'Állományok közötti különbségek összegyűjtése',
 	'COMPLETE_LOGIN_TO_BOARD'		=> 'Most <a href="../ucp.php?mode=login">lépj be a fórumon</a>, és ellenőrizd, hogy minden rendesen működik-e. Ne felejtsd el törölni, átnevezni vagy áthelyezni az install könyvtárat!',
-	'CONTINUE_UPDATE_NOW'			=> 'Frissítés folytatása most',
+	'CONTINUE_UPDATE_NOW'			=> 'Frissítési folyamat folytatása most',	// Shown within the database update script at the end if called from the updater
+	'CONTINUE_UPDATE'				=> 'Frissítés folytatása most',				// Shown after file upload to indicate the update process is not yet finished
 	'CURRENT_FILE'					=> 'Jelenlegi eredeti állomány kezdete',
 	'CURRENT_VERSION'				=> 'Jelenlegi verzió',
 
@@ -399,6 +400,7 @@ $lang = array_merge($lang, array(
 	'DONE'								=> 'Kész',
 	'DOWNLOAD'							=> 'Letöltés',
 	'DOWNLOAD_AS'						=> 'Tömörítés',
+	'DOWNLOAD_UPDATE_METHOD_BUTTON'		=> 'Módosított állományok letöltése (javasolt mód)',
 	'DOWNLOAD_UPDATE_METHOD'			=> 'Megváltozott állományokat tartalmazó csomag letöltése',
 	'DOWNLOAD_UPDATE_METHOD_EXPLAIN'	=> 'Miután letöltötted a csomagot, tömörítsd ki. A csomagban található megváltozott állományokat töltsd fel a phpBB-d gyökérkönyvtárába, a megfelelő helyükre. Miután feltöltötted az összes állományt, vesd össze újra az állományokat a másik alábbi gomb segítségével.',
 
@@ -499,6 +501,8 @@ $lang = array_merge($lang, array(
 	'STATUS_UP_TO_DATE'			=> 'Már frissített állomány',
 
 	'TOGGLE_DISPLAY'			=> 'Állományok listájának megjelenítése/elrejtése',
+	'TRY_DOWNLOAD_METHOD'		=> 'Érdemes megpróbálkoznod a módosított állományok letöltése móddal.<br />Ez mindig működik, és ez a javasolt frissítési mód is.',
+	'TRY_DOWNLOAD_METHOD_BUTTON'=> 'Megpróbálkozás a móddal',
 
 	'UPDATE_COMPLETED'				=> 'Frissítés befejezve',
 	'UPDATE_DATABASE'				=> 'Adatbázis frissítése',

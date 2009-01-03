@@ -129,7 +129,7 @@ class compress
 }
 
 /**
-* Zip creation class from phpMyAdmin 2.3.0 (c) Tobias Ratschiller, Olivier Mï¿½ller, Loï¿½c Chapeaux,
+* Zip creation class from phpMyAdmin 2.3.0 (c) Tobias Ratschiller, Olivier Müller, Loïc Chapeaux,
 * Marc Delisle, http://www.phpmyadmin.net/
 *
 * Zip extraction function by Alexandre Tedeschi, alexandrebr at gmail dot com
@@ -155,7 +155,7 @@ class compress_zip extends compress
 	*/
 	function compress_zip($mode, $file)
 	{
-		return $this->fp = fopen($file, $mode . 'b');
+		return $this->fp = @fopen($file, $mode . 'b');
 	}
 
 	/**
@@ -228,7 +228,7 @@ class compress_zip extends compress
 									{
 										trigger_error("Could not create directory $folder");
 									}
-									@chmod($str, 0777);
+									phpbb_chmod($str, CHMOD_READ | CHMOD_WRITE);
 								}
 							}
 						}
@@ -257,7 +257,7 @@ class compress_zip extends compress
 								{
 									trigger_error("Could not create directory $folder");
 								}
-								@chmod($str, 0777);
+								phpbb_chmod($str, CHMOD_READ | CHMOD_WRITE);
 							}
 						}
 					}
@@ -544,7 +544,7 @@ class compress_tar extends compress
 								{
 									trigger_error("Could not create directory $folder");
 								}
-								@chmod($str, 0777);
+								phpbb_chmod($str, CHMOD_READ | CHMOD_WRITE);
 							}
 						}
 					}
@@ -571,7 +571,7 @@ class compress_tar extends compress
 							{
 								trigger_error("Could not create directory $folder");
 							}
-							@chmod($str, 0777);
+							phpbb_chmod($str, CHMOD_READ | CHMOD_WRITE);
 						}
 					}
 
@@ -580,7 +580,7 @@ class compress_tar extends compress
 					{
 						trigger_error("Couldn't create file $filename");
 					}
-					@chmod($target_filename, 0777);
+					phpbb_chmod($target_filename, CHMOD_READ);
 
 					// Grab the file contents
 					fwrite($fp, ($filesize) ? $fzread($this->fp, ($filesize + 511) &~ 511) : '', $filesize);

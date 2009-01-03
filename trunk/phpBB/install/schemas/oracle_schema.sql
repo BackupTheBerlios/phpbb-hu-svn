@@ -4,42 +4,42 @@
 
 */
 
-/*
-  This first section is optional, however its probably the best method
-  of running phpBB on Oracle. If you already have a tablespace and user created
-  for phpBB you can leave this section commented out!
-
-  The first set of statements create a phpBB tablespace and a phpBB user,
-  make sure you change the password of the phpBB user before you run this script!!
-*/
-
-/*
-CREATE TABLESPACE "PHPBB"
-	LOGGING
-	DATAFILE 'E:\ORACLE\ORADATA\LOCAL\PHPBB.ora'
-	SIZE 10M
-	AUTOEXTEND ON NEXT 10M
-	MAXSIZE 100M;
-
-CREATE USER "PHPBB"
-	PROFILE "DEFAULT"
-	IDENTIFIED BY "phpbb_password"
-	DEFAULT TABLESPACE "PHPBB"
-	QUOTA UNLIMITED ON "PHPBB"
-	ACCOUNT UNLOCK;
-
-GRANT ANALYZE ANY TO "PHPBB";
-GRANT CREATE SEQUENCE TO "PHPBB";
-GRANT CREATE SESSION TO "PHPBB";
-GRANT CREATE TABLE TO "PHPBB";
-GRANT CREATE TRIGGER TO "PHPBB";
-GRANT CREATE VIEW TO "PHPBB";
-GRANT "CONNECT" TO "PHPBB";
-
-COMMIT;
-DISCONNECT;
-
-CONNECT phpbb/phpbb_password;
+/*
+  This first section is optional, however its probably the best method
+  of running phpBB on Oracle. If you already have a tablespace and user created
+  for phpBB you can leave this section commented out!
+
+  The first set of statements create a phpBB tablespace and a phpBB user,
+  make sure you change the password of the phpBB user before you run this script!!
+*/
+
+/*
+CREATE TABLESPACE "PHPBB"
+	LOGGING
+	DATAFILE 'E:\ORACLE\ORADATA\LOCAL\PHPBB.ora'
+	SIZE 10M
+	AUTOEXTEND ON NEXT 10M
+	MAXSIZE 100M;
+
+CREATE USER "PHPBB"
+	PROFILE "DEFAULT"
+	IDENTIFIED BY "phpbb_password"
+	DEFAULT TABLESPACE "PHPBB"
+	QUOTA UNLIMITED ON "PHPBB"
+	ACCOUNT UNLOCK;
+
+GRANT ANALYZE ANY TO "PHPBB";
+GRANT CREATE SEQUENCE TO "PHPBB";
+GRANT CREATE SESSION TO "PHPBB";
+GRANT CREATE TABLE TO "PHPBB";
+GRANT CREATE TRIGGER TO "PHPBB";
+GRANT CREATE VIEW TO "PHPBB";
+GRANT "CONNECT" TO "PHPBB";
+
+COMMIT;
+DISCONNECT;
+
+CONNECT phpbb/phpbb_password;
 */
 /*
 	Table: 'phpbb_attachments'
@@ -382,7 +382,7 @@ CREATE TABLE phpbb_drafts (
 	topic_id number(8) DEFAULT '0' NOT NULL,
 	forum_id number(8) DEFAULT '0' NOT NULL,
 	save_time number(11) DEFAULT '0' NOT NULL,
-	draft_subject varchar2(300) DEFAULT '' ,
+	draft_subject varchar2(765) DEFAULT '' ,
 	draft_message clob DEFAULT '' ,
 	CONSTRAINT pk_phpbb_drafts PRIMARY KEY (draft_id)
 )
@@ -485,7 +485,7 @@ CREATE TABLE phpbb_forums (
 	forum_desc_uid varchar2(8) DEFAULT '' ,
 	forum_link varchar2(765) DEFAULT '' ,
 	forum_password varchar2(120) DEFAULT '' ,
-	forum_style number(4) DEFAULT '0' NOT NULL,
+	forum_style number(8) DEFAULT '0' NOT NULL,
 	forum_image varchar2(255) DEFAULT '' ,
 	forum_rules clob DEFAULT '' ,
 	forum_rules_link varchar2(765) DEFAULT '' ,
@@ -500,11 +500,12 @@ CREATE TABLE phpbb_forums (
 	forum_topics_real number(8) DEFAULT '0' NOT NULL,
 	forum_last_post_id number(8) DEFAULT '0' NOT NULL,
 	forum_last_poster_id number(8) DEFAULT '0' NOT NULL,
-	forum_last_post_subject varchar2(300) DEFAULT '' ,
+	forum_last_post_subject varchar2(765) DEFAULT '' ,
 	forum_last_post_time number(11) DEFAULT '0' NOT NULL,
 	forum_last_poster_name varchar2(765) DEFAULT '' ,
 	forum_last_poster_colour varchar2(6) DEFAULT '' ,
 	forum_flags number(4) DEFAULT '32' NOT NULL,
+	display_subforum_list number(1) DEFAULT '1' NOT NULL,
 	display_on_index number(1) DEFAULT '1' NOT NULL,
 	enable_indexing number(1) DEFAULT '1' NOT NULL,
 	enable_icons number(1) DEFAULT '1' NOT NULL,
@@ -601,12 +602,13 @@ CREATE TABLE phpbb_groups (
 	group_sig_chars number(8) DEFAULT '0' NOT NULL,
 	group_receive_pm number(1) DEFAULT '0' NOT NULL,
 	group_message_limit number(8) DEFAULT '0' NOT NULL,
+	group_max_recipients number(8) DEFAULT '0' NOT NULL,
 	group_legend number(1) DEFAULT '1' NOT NULL,
 	CONSTRAINT pk_phpbb_groups PRIMARY KEY (group_id)
 )
 /
 
-CREATE INDEX phpbb_groups_group_legend ON phpbb_groups (group_legend)
+CREATE INDEX phpbb_groups_group_legend_name ON phpbb_groups (group_legend, group_name)
 /
 
 CREATE SEQUENCE phpbb_groups_seq
@@ -848,7 +850,7 @@ CREATE TABLE phpbb_posts (
 	enable_magic_url number(1) DEFAULT '1' NOT NULL,
 	enable_sig number(1) DEFAULT '1' NOT NULL,
 	post_username varchar2(765) DEFAULT '' ,
-	post_subject varchar2(300) DEFAULT '' ,
+	post_subject varchar2(765) DEFAULT '' ,
 	post_text clob DEFAULT '' ,
 	post_checksum varchar2(32) DEFAULT '' ,
 	post_attachment number(1) DEFAULT '0' NOT NULL,
@@ -907,7 +909,7 @@ CREATE TABLE phpbb_privmsgs (
 	enable_smilies number(1) DEFAULT '1' NOT NULL,
 	enable_magic_url number(1) DEFAULT '1' NOT NULL,
 	enable_sig number(1) DEFAULT '1' NOT NULL,
-	message_subject varchar2(300) DEFAULT '' ,
+	message_subject varchar2(765) DEFAULT '' ,
 	message_text clob DEFAULT '' ,
 	message_edit_reason varchar2(765) DEFAULT '' ,
 	message_edit_user number(8) DEFAULT '0' NOT NULL,
@@ -1054,6 +1056,7 @@ CREATE TABLE phpbb_profile_fields (
 	field_validation varchar2(60) DEFAULT '' ,
 	field_required number(1) DEFAULT '0' NOT NULL,
 	field_show_on_reg number(1) DEFAULT '0' NOT NULL,
+	field_show_profile number(1) DEFAULT '0' NOT NULL,
 	field_hide number(1) DEFAULT '0' NOT NULL,
 	field_no_view number(1) DEFAULT '0' NOT NULL,
 	field_active number(1) DEFAULT '0' NOT NULL,
@@ -1280,6 +1283,7 @@ CREATE INDEX phpbb_search_wordmatch_post_id ON phpbb_search_wordmatch (post_id)
 CREATE TABLE phpbb_sessions (
 	session_id char(32) DEFAULT '' ,
 	session_user_id number(8) DEFAULT '0' NOT NULL,
+	session_forum_id number(8) DEFAULT '0' NOT NULL,
 	session_last_visit number(11) DEFAULT '0' NOT NULL,
 	session_start number(11) DEFAULT '0' NOT NULL,
 	session_time number(11) DEFAULT '0' NOT NULL,
@@ -1297,6 +1301,8 @@ CREATE TABLE phpbb_sessions (
 CREATE INDEX phpbb_sessions_session_time ON phpbb_sessions (session_time)
 /
 CREATE INDEX phpbb_sessions_session_user_id ON phpbb_sessions (session_user_id)
+/
+CREATE INDEX phpbb_sessions_session_fid ON phpbb_sessions (session_forum_id)
 /
 
 /*
@@ -1382,13 +1388,13 @@ END;
 	Table: 'phpbb_styles'
 */
 CREATE TABLE phpbb_styles (
-	style_id number(4) NOT NULL,
+	style_id number(8) NOT NULL,
 	style_name varchar2(765) DEFAULT '' ,
 	style_copyright varchar2(765) DEFAULT '' ,
 	style_active number(1) DEFAULT '1' NOT NULL,
-	template_id number(4) DEFAULT '0' NOT NULL,
-	theme_id number(4) DEFAULT '0' NOT NULL,
-	imageset_id number(4) DEFAULT '0' NOT NULL,
+	template_id number(8) DEFAULT '0' NOT NULL,
+	theme_id number(8) DEFAULT '0' NOT NULL,
+	imageset_id number(8) DEFAULT '0' NOT NULL,
 	CONSTRAINT pk_phpbb_styles PRIMARY KEY (style_id),
 	CONSTRAINT u_phpbb_style_name UNIQUE (style_name)
 )
@@ -1421,12 +1427,14 @@ END;
 	Table: 'phpbb_styles_template'
 */
 CREATE TABLE phpbb_styles_template (
-	template_id number(4) NOT NULL,
+	template_id number(8) NOT NULL,
 	template_name varchar2(765) DEFAULT '' ,
 	template_copyright varchar2(765) DEFAULT '' ,
 	template_path varchar2(100) DEFAULT '' ,
 	bbcode_bitfield varchar2(255) DEFAULT 'kNg=' NOT NULL,
 	template_storedb number(1) DEFAULT '0' NOT NULL,
+	template_inherits_id number(4) DEFAULT '0' NOT NULL,
+	template_inherit_path varchar2(255) DEFAULT '' ,
 	CONSTRAINT pk_phpbb_styles_template PRIMARY KEY (template_id),
 	CONSTRAINT u_phpbb_tmplte_nm UNIQUE (template_name)
 )
@@ -1453,7 +1461,7 @@ END;
 	Table: 'phpbb_styles_template_data'
 */
 CREATE TABLE phpbb_styles_template_data (
-	template_id number(4) DEFAULT '0' NOT NULL,
+	template_id number(8) DEFAULT '0' NOT NULL,
 	template_filename varchar2(100) DEFAULT '' ,
 	template_included clob DEFAULT '' ,
 	template_mtime number(11) DEFAULT '0' NOT NULL,
@@ -1470,7 +1478,7 @@ CREATE INDEX phpbb_styles_template_data_tfn ON phpbb_styles_template_data (templ
 	Table: 'phpbb_styles_theme'
 */
 CREATE TABLE phpbb_styles_theme (
-	theme_id number(4) NOT NULL,
+	theme_id number(8) NOT NULL,
 	theme_name varchar2(765) DEFAULT '' ,
 	theme_copyright varchar2(765) DEFAULT '' ,
 	theme_path varchar2(100) DEFAULT '' ,
@@ -1503,7 +1511,7 @@ END;
 	Table: 'phpbb_styles_imageset'
 */
 CREATE TABLE phpbb_styles_imageset (
-	imageset_id number(4) NOT NULL,
+	imageset_id number(8) NOT NULL,
 	imageset_name varchar2(765) DEFAULT '' ,
 	imageset_copyright varchar2(765) DEFAULT '' ,
 	imageset_path varchar2(100) DEFAULT '' ,
@@ -1533,13 +1541,13 @@ END;
 	Table: 'phpbb_styles_imageset_data'
 */
 CREATE TABLE phpbb_styles_imageset_data (
-	image_id number(4) NOT NULL,
+	image_id number(8) NOT NULL,
 	image_name varchar2(200) DEFAULT '' ,
 	image_filename varchar2(200) DEFAULT '' ,
 	image_lang varchar2(30) DEFAULT '' ,
 	image_height number(4) DEFAULT '0' NOT NULL,
 	image_width number(4) DEFAULT '0' NOT NULL,
-	imageset_id number(4) DEFAULT '0' NOT NULL,
+	imageset_id number(8) DEFAULT '0' NOT NULL,
 	CONSTRAINT pk_phpbb_styles_imageset_data PRIMARY KEY (image_id)
 )
 /
@@ -1573,7 +1581,7 @@ CREATE TABLE phpbb_topics (
 	topic_attachment number(1) DEFAULT '0' NOT NULL,
 	topic_approved number(1) DEFAULT '1' NOT NULL,
 	topic_reported number(1) DEFAULT '0' NOT NULL,
-	topic_title varchar2(300) DEFAULT '' ,
+	topic_title varchar2(765) DEFAULT '' ,
 	topic_poster number(8) DEFAULT '0' NOT NULL,
 	topic_time number(11) DEFAULT '0' NOT NULL,
 	topic_time_limit number(11) DEFAULT '0' NOT NULL,
@@ -1589,7 +1597,7 @@ CREATE TABLE phpbb_topics (
 	topic_last_poster_id number(8) DEFAULT '0' NOT NULL,
 	topic_last_poster_name varchar2(765) DEFAULT '' ,
 	topic_last_poster_colour varchar2(6) DEFAULT '' ,
-	topic_last_post_subject varchar2(300) DEFAULT '' ,
+	topic_last_post_subject varchar2(765) DEFAULT '' ,
 	topic_last_post_time number(11) DEFAULT '0' NOT NULL,
 	topic_last_view_time number(11) DEFAULT '0' NOT NULL,
 	topic_moved_id number(8) DEFAULT '0' NOT NULL,
@@ -1731,7 +1739,7 @@ CREATE TABLE phpbb_users (
 	user_timezone number(5, 2) DEFAULT '0' NOT NULL,
 	user_dst number(1) DEFAULT '0' NOT NULL,
 	user_dateformat varchar2(90) DEFAULT 'd M Y H:i' NOT NULL,
-	user_style number(4) DEFAULT '0' NOT NULL,
+	user_style number(8) DEFAULT '0' NOT NULL,
 	user_rank number(8) DEFAULT '0' NOT NULL,
 	user_colour varchar2(6) DEFAULT '' ,
 	user_new_privmsg number(4) DEFAULT '0' NOT NULL,

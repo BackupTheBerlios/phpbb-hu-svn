@@ -60,7 +60,7 @@ $lang = array_merge($lang, array(
 	'ATTACH_MAX_FILESIZE'				=> 'Maximum állományméret',
 	'ATTACH_MAX_FILESIZE_EXPLAIN'		=> 'Legfeljebb ekkorák lehetnek az állományok. A 0 érték kikapcsolja a korlátozást.',
 	'ATTACH_MAX_PM_FILESIZE'			=> 'Maximum állományméret privát üzenetnél',
-	'ATTACH_MAX_PM_FILESIZE_EXPLAIN'	=> 'Felhasználónként legfeljebb ekkora hely áll rendelkezésre a privát üzenetek csatolmányaihoz. A 0 érték kikapcsolja a korlátozást.',
+	'ATTACH_MAX_PM_FILESIZE_EXPLAIN'	=> 'Privát üzenethez csatolható legnagyobb állomány mérete. A 0 érték kikapcsolja a korlátozást.',
 	'ATTACH_ORPHAN_URL'					=> 'Árva csatolmányok',
 	'ATTACH_POST_ID'					=> 'Hozzászólás azonosító',
 	'ATTACH_QUOTA'						=> 'Csatolmányok tárhelye',
@@ -157,7 +157,7 @@ $lang = array_merge($lang, array(
 	'UPLOADING_FILE_TO'				=> '„%1$s” állomány feltöltése a %2$d azonosítójú hozzászóláshoz…',
 	'UPLOAD_DENIED_FORUM'			=> 'Nincs jogosultságod állományt feltölteni a „%s” fórumba.',
 	'UPLOAD_DIR'					=> 'Feltöltési könyvtár',
-	'UPLOAD_DIR_EXPLAIN'			=> 'A csatolmányok tárolási helye. Kérjük, vedd figyelembe, hogy ha megváltoztatod ezt a könyvtárt, miközben már vannak feltöltött csatolmányok, ezeket az állományokat kézzel kell átmásolnod az új helyre.',
+	'UPLOAD_DIR_EXPLAIN'			=> 'A csatolmányok tárolási helye. Kérjük, vedd figyelembe, hogy ha megváltoztatod ezt a könyvtárat, miközben már vannak feltöltött csatolmányok, ezeket az állományokat kézzel kell átmásolnod az új helyre.',
 	'UPLOAD_ICON'					=> 'Feltöltési ikon',
 	'UPLOAD_NOT_DIR'				=> 'A megadott feltöltési hely úgy tűnik, nem könyvtár.',
 ));

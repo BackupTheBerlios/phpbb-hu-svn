@@ -167,6 +167,8 @@ $lang = array_merge($lang, array(
 	'ERR_JAB_AUTH'						=> 'Nem sikerült az azonosítás a Jabber szerveren. ',
 	'ERR_JAB_CONNECT'					=> 'Nem sikerült csatlakozni a Jabber szerverhez.',
 	'ERR_UNABLE_TO_LOGIN'				=> 'A megadott felhasználói név vagy jelszó hibás.',
+	'ERR_UNWATCHING'					=> 'Hiba lépett fel a leiratkozás során.',
+	'ERR_WATCHING'						=> 'Hiba lépett fel a feliratkozás során.',
 	'ERR_WRONG_PATH_TO_PHPBB'			=> 'A megadott phpBB elérési útvonal feltehetőleg hibás.',
 	'EXPAND_VIEW'						=> 'Kinyitás',
 	'EXTENSION'							=> 'Kiterjesztés',
@@ -186,7 +188,7 @@ $lang = array_merge($lang, array(
 	'FORM_INVALID'			=> 'Az elküldött űrlap érvénytelen. Próbáld meg újra elküldeni.',
 	'FORUM'					=> 'Fórum',
 	'FORUMS'				=> 'Fórumok',
-	'FORUMS_MARKED'			=> 'Minden fórumot megjelölésre került olvasottként.',
+	'FORUMS_MARKED'			=> 'Minden fórum megjelölésre került olvasottként.',
 	'FORUM_CAT'				=> 'Fórum kategória',
 	'FORUM_INDEX'			=> 'Fórum kezdőlap',
 	'FORUM_LINK'			=> 'Fórum link',
@@ -279,7 +281,7 @@ $lang = array_merge($lang, array(
 	'JOINED'				=> 'Csatlakozott',
 	'JUMP_PAGE'				=> 'Add meg annak az oldalnak a számát, ahová menni szeretnél',
 	'JUMP_TO'				=> 'Ugrás',
-	'JUMP_TO_PAGE'			=> 'Kattints ide egy fel nem sorolt oldalra való ugráshoz.',
+	'JUMP_TO_PAGE'			=> 'Kattints ide egy fel nem sorolt oldalra való ugráshoz',
 
 	'KB'					=> 'KB',
 	'KIB'					=> 'KiB',
@@ -354,7 +356,7 @@ $lang = array_merge($lang, array(
 	'NOTIFY_ADMIN_EMAIL'		=> 'Kérjük, értesítsd a fórum adminisztrátorát vagy a webmestert: <a href="mailto:%1$s">%1$s</a>',
 	'NO_ACCESS_ATTACHMENT'		=> 'Nincs jogosultságod hozzáférni ehhez az állományhoz.',
 	'NO_ACTION'					=> 'Nincs semmilyen teendő.',
-	'NO_ADMINISTRATORS'			=> 'A fórumnak nincs adminisztrátora.',
+	'NO_ADMINISTRATORS'			=> 'Nincs adminisztrátor.',
 	'NO_AUTH_ADMIN'				=> 'Nem férhetsz hozzá az adminisztrátori vezérlőpulthoz, mivel nincs adminisztrátori jogosultságod.',
 	'NO_AUTH_ADMIN_USER_DIFFER'	=> 'Nem azonosíthatod magad egy másik felhasználóként.',
 	'NO_AUTH_OPERATION'			=> 'Nincs meg a megfelelő jogosultságod ezen művelet elvégzéséhez.',
@@ -371,7 +373,7 @@ $lang = array_merge($lang, array(
 	'NO_MEMBERS'				=> 'Nincs a keresési feltételeknek megfelelő felhasználó.',
 	'NO_MESSAGES'				=> 'Nincs üzenet.',
 	'NO_MODE'					=> 'Nem adtál meg módot.',
-	'NO_MODERATORS'				=> 'A fórumnak nincs moderátora.',
+	'NO_MODERATORS'				=> 'Nincs moderátor.',
 	'NO_NEW_MESSAGES'			=> 'Nincs új üzenet.',
 	'NO_NEW_PM'					=> '<strong>0</strong> új üzenet',
 	'NO_NEW_POSTS'				=> 'Nincs új hozzászólás',
@@ -390,6 +392,12 @@ $lang = array_merge($lang, array(
 	'NO_USER'					=> 'A keresett felhasználó nem létezik.',
 	'NO_USERS'					=> 'A keresett felhasználók nem léteznek.',
 	'NO_USER_SPECIFIED'			=> 'Nem adtál meg felhasználónevet.',
+
+	// Nullar/Singular/Plural language entry. The key numbers define the number range in which a certain grammatical expression is valid.
+	'NUM_POSTS_IN_QUEUE'		=> array(
+		0			=> 'Nincs moderálandó hozzászólás.',		// 0
+		1			=> '%d moderálandó hozzászólás van.',	// 1+
+	),
 
 	'OCCUPATION'				=> 'Foglalkozás',
 	'OFFLINE'					=> 'Offline',
@@ -538,10 +546,12 @@ $lang = array_merge($lang, array(
 	'SUBJECT'					=> 'Téma',
 	'SUBMIT'					=> 'Elküld',
 
-	'TERMS_USE'			=> 'Felhasználási feltételek',
+	'TERMS_USE'			=> 'Használati feltételek',
 	'TEST_CONNECTION'	=> 'Kapcsolat tesztelése',
 	'THE_TEAM'			=> 'A csapat',
 	'TIME'				=> 'Idő',
+
+	'TOO_LONG'						=> 'A megadott érték túl hosszú.',
 
 	'TOO_LONG_AIM'					=> 'A megadott AIM azonosító túl hosszú.',
 	'TOO_LONG_CONFIRM_CODE'			=> 'A megadott megerősítő kód túl hosszú.',
@@ -562,6 +572,8 @@ $lang = array_merge($lang, array(
 	'TOO_LONG_YIM'					=> 'A megadott Yahoo! Messenger azonosító túl hosszú.',
 
 	'TOO_MANY_VOTE_OPTIONS'			=> 'Túl sok lehetőségre próbáltál meg szavazni.',
+
+	'TOO_SHORT'						=> 'A megadott érték túl rövid.',
 
 	'TOO_SHORT_AIM'					=> 'A megadott AIM azonosító túl rövid.',
 	'TOO_SHORT_CONFIRM_CODE'		=> 'A megadott megerősítő kód túl rövid.',
@@ -685,6 +697,12 @@ $lang = array_merge($lang, array(
 		'TOMORROW'	=> 'Holnap, ',
 		'YESTERDAY'	=> 'Tegnap, ',
 
+		'AGO'		=> array(
+			0		=> 'kevesebb mint egy perce',
+			1		=> '%d perccel ezelőtt',
+			60		=> '1 órával ezelőt',
+		),
+
 		'Sunday'	=> 'vasárnap',
 		'Monday'	=> 'hétfő',
 		'Tuesday'	=> 'kedd',
@@ -738,6 +756,7 @@ $lang = array_merge($lang, array(
 		'-7'	=> 'UTC − 7 óra',
 		'-6'	=> 'UTC − 6 óra',
 		'-5'	=> 'UTC − 5 óra',
+		'-4.5'	=> 'UTC - 4,5 óra',
 		'-4'	=> 'UTC − 4 óra',
 		'-3.5'	=> 'UTC − 3,5 óra',
 		'-3'	=> 'UTC − 3 óra',
@@ -781,6 +800,7 @@ $lang = array_merge($lang, array(
 		'-7'	=> '[UTC − 7] sziklás-hegységi zónaidő',
 		'-6'	=> '[UTC − 6] közép zónaidő',
 		'-5'	=> '[UTC − 5] keleti zónaidő',
+		'-4.5'	=> '[UTC - 4,5] venezuelai zónaidő',
 		'-4'	=> '[UTC − 4] atlanti zónaidő',
 		'-3.5'	=> '[UTC − 3,5] újfundlandi zónaidő',
 		'-3'	=> '[UTC − 3] amazoni zónaidő, közép-grönlandi idő',

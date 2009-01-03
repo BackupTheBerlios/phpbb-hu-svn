@@ -39,7 +39,7 @@ if (!$auth->acl_get('f_c_see', KB_FORUM_ID))
 if ($mode == 'listtags')
 {
 	http_status(404);
-	trigger_error('Ez a funkció még nem került implementálásra.');
+	trigger_error('Ez a funkciÃ³ mÃ©g nem kerÃ¼lt implementÃ¡lÃ¡sra.');
 }
 
 /**
@@ -86,7 +86,7 @@ elseif ($mode == 'article')
 		*  - present a confirm window first
 		*  - maybe we could leave this out entirely as this feature already exists in the MCP
 		*/
-		trigger_error('Ez a funkció egyelőre (?) nem működik. A jóváhagyáshoz vagy elutasításhoz menj a moderátori vezérlőpultba.');
+		trigger_error('Ez a funkciÃ³ egyelÅre (?) nem mÅ±kÃ¶dik. A jÃ³vÃ¡hagyÃ¡shoz vagy elutasÃ­tÃ¡shoz menj a moderÃ¡tori vezÃ©rlÅpultba.');
 	}
 	
 	// Query tags

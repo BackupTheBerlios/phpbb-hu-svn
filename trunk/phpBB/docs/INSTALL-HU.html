@@ -1,0 +1,448 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="hu" xml:lang="hu">
+<head>
+
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<meta http-equiv="content-style-type" content="text/css" />
+<meta http-equiv="content-language" content="hu" />
+<meta http-equiv="imagetoolbar" content="no" />
+<meta name="resource-type" content="document" />
+<meta name="distribution" content="global" />
+<meta name="copyright" content="2007 phpBB Group & phpbb.hu" />
+<meta name="keywords" content="" />
+<meta name="description" content="phpBB 3.0.x telepítés, frissítés és konvertálás információk" />
+<title>phpBB3 &bull; Telepítés</title>
+
+<link href="stylesheet.css" rel="stylesheet" type="text/css" media="screen, projection" />
+
+</head>
+
+<body id="phpbb" class="section-docs">
+
+<div id="wrap">
+	<a id="top" name="top" accesskey="t"></a>
+	<div id="page-header">
+		<div class="headerbar">
+			<div class="inner"><span class="corners-top"><span></span></span>
+
+			<div id="doc-description">
+				<a href="../index.php" id="logo"><img src="site_logo.gif" alt="" /></a>
+				<h1>phpBB 3.0.x Telepítés</h1>
+				<p>phpBB 3.0.x telepítés, frissítés és konvertálás információk</p>
+				<p style="display: none;"><a href="#start_here">Skip</a></p>
+			</div>
+
+			<span class="corners-bottom"><span></span></span></div>
+		</div>
+	</div>
+
+	<a name="start_here"></a>
+
+	<div id="page-body">
+
+<!-- BEGIN DOCUMENT -->
+
+<p><strong>Kérünk, olvasd végig ezt az írást mielőtt belekezdenél a telepítésbe, frissítésbe vagy konvertálásba.</strong></p>
+
+<p>Ez az írás végig fog vezetni a fórumszoftver telepítésének, frissítésének és konvertálásának alapjain.</p>
+
+<p>A phpBB3 futtatásáról a <a href="README-HU.html">README</a> állományban találhatsz egy rövid áttekintést. Kérünk, ezen írást mellett olvasd el azt a dokumentumot is! Részletesebb tudnivalókért a phpBB3 használatáról, telepítéséről, frissítéséről és konvertálásáról keresd fel az internetes <a href="http://www.phpbb.com/support/documentation/3.0/">dokumentációt</a>.</p>
+
+<h1>Telepítés</h1>
+
+	<div class="paragraph menu">
+		<div class="inner"><span class="corners-top"><span></span></span>
+
+		<div class="content">
+
+<ol>
+	<li><a href="#quickinstall">Gyors telepítés</a></li>
+	<li><a href="#require">Követelmények</a></li>
+	<li><a href="#install">Új telepítés</a></li>
+	<li><a href="#update">Frissítés a phpBB 3.0.x stabil kiadásairól</a>
+	<ol style="list-style-type: lower-roman;">
+		<li><a href="#update_full">Teljes csomag</a></li>
+		<li><a href="#update_files">Csak megváltozott állományok</a></li>
+		<li><a href="#update_patch">Patch állomány</a></li>
+		<li><a href="#update_auto">Automatikus frissítő csomag</a></li>
+		<li><a href="#update_all">Összes csomagtípus</a></li>
+	</ol>
+	</li>
+	<li><a href="#convert">Konvertálás phpBB 2.0.x-ről phpBB 3.0.x-re</a>
+	<ol style="list-style-type: lower-roman;">
+		<li><a href="#prereq">Követelmények a konvertáláshoz</a></li>
+		<li><a href="#conversion">Konvertálás</a></li>
+		<li><a href="#postreq">Teendők a konvertálás után</a></li>
+		<li><a href="#convprob">Gyakori konvertálási problémák</a></li>
+	</ol>
+	</li>
+	<li><a href="#postinstall">Fontos (biztonsággal kapcsolatos) telepítés utáni feladatok az összes telepítési módhoz</a>
+	<ol style="list-style-type: lower-roman;">
+		<li><a href="#avatars">Feltölthető avatarok</a></li>
+	</ol>
+	</li>
+	<li><a href="#disclaimer">Nyilatkozat</a></li>
+</ol>
+
+		</div>
+
+		<span class="corners-bottom"><span></span></span></div>
+	</div>
+
+	<hr />
+
+	<a name="quickinstall"></a><h2>1. Gyors telepítés</h2>
+
+	<div class="paragraph">
+		<div class="inner"><span class="corners-top"><span></span></span>
+
+		<div class="content">
+
+	<p>Ha rendelkezel alap FTP-használati ismeretekkel, és biztos vagy benne, hogy a tárhelyszolgáltatódnál vagy a szervereden futni fog a phpBB3, rögtön belevághatsz a telepítésbe ezen lépések elvégzésével. Ha részletesebb leírást igényelsz, lépj tovább a <a href="#require">2. fejezetre</a> alább.</p>
+
+	<ol>
+		<li>Csomagold ki a phpBB3 csomagot egy helyi könyvtárba a rendszereden.</li>
+		<li>A csomag összes állományát (a könyvtárstruktúrát megtartva) töltsd fel a tárhelyedre vagy szerveredre egy webről elérhető könyvtárba.</li>
+		<li>Változtasd meg a config.php jogosultságait, hogy mindenki által írható legyen (az FTP-kliensedben 666 vagy -rw-rw-rw-).</li>
+		<li>Változtasd meg a következő könyvtárak jogosultságait, hogy mindenki által írhatók legyenek (az FTP-kliensedben 777 vagy -rwxrwxrwx):<br />
+			<code>store/</code>, <code>cache/</code>, <code>files/</code> és <code>images/avatars/upload/</code>.</li>
+		<li>A böngésződdel látogass el az oldalra, ahol elhelyezted a phpBB3-at. A webcímhez tedd hozzá az install/index.php-t, vagy csak menj az install/ könyvtárba, pl. http://valami.hu/phpBB3/install/, http://www.valami.hu/forum/install/ stb.</li>
+		<li>Kattints a <em>TELEPÍTÉS</em> fülre, majd kövesd a lépéseket, és add meg a kért adatokat.</li>
+		<li>Változtasd meg a config.php jogosultságait, hogy csak saját magad által legyen írható (az FTP-kliensedben 644 vagy -rw-r--r--).</li>
+		<li>A phpBB3-madnak most már elérhetőnek kell lennie. Kérünk, olvasd el <strong>LEGALÁBB</strong> a <a href="#postinstall">6. fejezetet</a>, mely fontos, biztonsággal kapcsolatos telepítés után elvégezendő utasításokat tartalmaz.</li>
+	</ol>
+
+	<p>Ha a telepítés során problémák léptek volna föl, vagy nem tudod, hogyan lépj tovább a fenti lépések bármelyikénél, kérünk, olvasd el ezen írás többi részét is.</p>
+
+		</div>
+
+		<div class="back2top"><a href="#wrap" class="top">Vissza a tetejére</a></div>
+
+		<span class="corners-bottom"><span></span></span></div>
+	</div>
+
+	<hr />
+
+	<a name="require"></a><h2>2. Követelmények</h2>
+
+	<div class="paragraph">
+		<div class="inner"><span class="corners-top"><span></span></span>
+
+		<div class="content">
+
+	<p>A phpBB3 néhány követelményt támaszt, melyeknek teljesülniük kell, hogy a fórumrendszert telepíteni majd használni lehessen.</p>
+
+	<ul>
+		<li>Egy webszerver vagy egy tárhely, melyen bármelyik nagyobb operációs rendszer fut, és támogatja a PHP-t.</li>
+		<li>Egy SQL adatbáziskezelő-rendszer, az alábbiak közül <strong>egy</strong>:
+		<ul>
+			<li>MySQL 3.23 vagy újabb (MySQLi is támogatott)</li>
+			<li>PostgreSQL 7.3+</li>
+			<li>SQLite 2.8.2+</li>
+			<li>Firebird 2.0+</li>
+			<li>MS SQL Server 2000 vagy újabb (közvetlenül vagy ODBC-n keresztül)</li>
+			<li>Oracle</li>
+		</ul>
+		</li>
+		<li><strong>PHP 4.3.3+ (>=4.3.3, >4.4.x, >5.x.x, >6.0-dev (kompatibilis))</strong> a használni kívánt adatbázishoz való támogatással.</li>
+		<li>A getimagesize() függvénynek engedélyezve kell lennie.</li>
+		<li>Az alábbi PHP modulok megléte nem szükséges, csak opcionálisak, azonban velük extra funkciók válnak elérhetővé:
+		<ul>
+			<li>zlib tömörítés támogatás</li>
+			<li>Távoli FTP támogatás</li>
+			<li>XML támogatás</li>
+			<li>Imagemagick támogatás</li>
+			<li>GD támogatás</li>
+		</ul>
+		</li>
+	</ul>
+
+	<p>Ha a szervered vagy tárhelyed nem felel meg a fentebbi követelményeknek, attól tartunk, a phpBB3 nem lesz jó neked.</p>
+
+		</div>
+
+		<div class="back2top"><a href="#wrap" class="top">Vissza a tetejére</a></div>
+
+		<span class="corners-bottom"><span></span></span></div>
+	</div>
+
+	<hr />
+
+	<a name="install"></a><h2>3. Új telepítés</h2>
+
+	<div class="paragraph">
+		<div class="inner"><span class="corners-top"><span></span></span>
+
+		<div class="content">
+
+	<p>A phpBB3 telepítése a szereveredtől és az adatbázisodtól függően változhat. Ha rendelkezel <em>parancssori (shell) hozzáféréssel</em> az azonosítódhoz (pl. telneten vagy ssh-n keresztül), érdemes lehet a teljes phpBB3 csomagot feltölteni (bináris módban!) a tárhelyedre egy könyvtárba, és ott kicsomagolni.</p>
+
+	<p>Ha nincs parancssori hozzáférésed, vagy nem szeretnéd használni, csomagold ki a phpBB3 csomagot egy helyi könyvtárba a rendszereden a kedvenc tömörítőprogramoddal, pl. winzip, rar, zip stb. Ezután az <strong>ÖSSZES</strong> állományt FTP-n keresztül töltsd fel a tárhelyedre (ügyelj rá, hogy a könyvtárstruktúra, ill. az állománynevek ne változzanak). Kérünk, győződj meg róla, hogy az állománynevek kis-/nagybetűérzékenysége megmarad, <strong>NE</strong> engedd, hogy az FTP-kliensed az összes állománynevet kis- vagy nagybetűsítse, mivel ez később hibát fog okozni.</p>
+
+	<p>A .php, .inc, .sql, .cfg, .html és .txt állományokat <strong>ASCII</strong> módban kell feltölteni, míg a képeket <strong>BINÁRIS</strong> módban. Ha nem vagy tisztában ennek jelentésével, fordulj az FTP-kliensed dokumentációjához. A legtöbb esetben ezt az FTP-kliens feltűnés nélkül lekezeli, de ha később problémák lépnének föl, biztosnak kell lenned benne, hogy az állományok az itt leírt, helyes módon kerültek feltöltésre.</p>
+
+	<p>A phpBB3 alapból angol nyelvi támogatással tölthető le. Mindemellett számos különálló csomag érhető el különböző nyelvekhez. Amennyiben az anyanyelved nem angol a folytatás előtt érdemes telepítened egyet vagy többet ezekből a csomagokból. A telepítő lehetővé teszi, hogy kiválassz az elérhetők közül egy alapértelmezett nyelvet (melyet később természetesen megváltoztathatsz). További információért a nyelvi csomagokról, hogy honnan lehet letölteni vagy hogyan lehet telepíteni őket, lásd a <a href="README-HU.html#i18n">README</a>-t.</p>
+
+	<p>Ha az összes állomány feltöltésre került, a böngésződdel menj erre az oldalra, és a webcímhez tedd hozzá az <code>install/</code> könyvtárat. Például ha a domain neved <em>valami.hu</em>, és a phpBB3-at a web gyökérkönyvtárad /phpBB3 könyvtárába raktad, akkor <em>http://valami.hu/phpBB3/install/</em>-t vagy (választhatóan) <em>http://valami.hu/phpBB3/install/index.php</em>-t kell megadnod a böngésződ címsorában. Ha ezt megtetted, meg kell jelennie a phpBB3 telepítőjének.</p>
+
+	<h4>Bevezető</h4>
+
+	<p>A telepítő az első oldalon egy rövid bevezetővel kezd a phpBB-ről. Itt elolvashatod a phpBB3 licencét (General Public Lincense – Általános Nyilvános Licenc), és információkkal lát el, honnan kaphatsz támogatást a rendszerhez. A telepítés megkezdéséhez kattints a <em>Telepítés</em> gombra.</p>
+
+	<h4>Követelmények</h4>
+
+	<p>A telepítés elkezdése után az első oldalon a követelmények listáját láthatod. A phpBB3 automatikusan leellenőrzi, hogy minden telepítve van-e a szerveren, mely a futásához szükséges. A telepítés folytatásához legalább a megjelölt verziójú PHP-val kell rendelkezned, illetve legalább egy adatbázisnak elérhetőnek kell lennie. Az is fontos, hogy az összes felsorolt könyvtár elérhető legyen, és a megfelelő jogosultságokkal rendelkezzen. Vannak olyan beállítások, melyek megléte nem szükséges csak ajánlott, ez minden részben külön meg van jelölve. Ha minden rendben van, folytathatod a telepítést a <em>Telepítés megkezdése</em> gombra kattintva.</p>
+
+	<h4>Adatbázis adatok</h4>
+
+	<p>Itt meg kell adnod, milyen adatbázist szeretnél használni. A támogatott adatbázisokról lásd a <a href="#require">Követelmények fejezetet</a>. Ha nem ismered ezeket az adatbázis adatokat, lépj kapcsolatba a tárhelyszolgáltatóddal, és érdeklődd meg őket, nélkülük nem fogsz tudni továbblépni. A következőkre van szükséged:</p>
+
+	<ul>
+		<li>az adatbázis típusára – milyen adatbázisrendszert fogsz használni;</li>
+		<li>az adatbázisszerver hosztnevére vagy DSN-jére – az adatbázisszerver címe, elérhetősége;</li>
+		<li>az adatbázisszerver portjára – milyen porton lehet csatlakozni az adatbázisszerverhez (az esetek nagy többségében ez nem szükséges);</li>
+		<li>az adatbázis nevére – az adatbázis neve a szerveren;</li>
+		<li>az adatbázis-felhasználónévre és az ehhez tartozó jelszóra – a kapcsolódáshoz szükséges adatok.</li>
+	</ul>
+
+	<div class="indent">
+		<p><strong>Megjegyzés:</strong> ha SQLite-ot használsz, a DSN mezőben a teljes elérési utat add meg az adatbázishoz, valamint hagyd a felhasználónév és a jelszó mezőt üresen. Biztonsági szempontból fontos, hogy az adatbázis-állomány ne egy webről elérhető könyvtárban legyen tárolva.</p>
+	</div>
+
+	<p>Az adatbázis adatoknál a táblák előtagja beállítást nem szükséges megváltoztatnod, hacsak nem tervezel egy adatbázisban több phpBB-t futtatni. Ebben az esetben minden telepített példánynál használj másik tábla előtagot.</p>
+
+	<p>Miután megadtad az adatokat, lépj tovább a Tovább a következő lépésre gombbal. Ezután a phpBB3 ellenőrzi, hogy a megadott adatokkal lehet-e csatlakozni az adatbázishoz és hogy léteznek-e már táblák a megadott előtaggal.</p>
+
+	<p>A <em>„Nem sikerült csatlakozni az adatbázishoz”</em> hiba azt jelenti, hogy nem jól adtad meg az adatbázis adatokat, és hogy a phpBB nem tud csatlakozni. Győződj meg róla, hogy mindent helyesen adtál meg, majd próbálkozz újra. Ismét, ha nem vagy biztos az adatbázisod adataiban, lépj kapcsolatba a tárhelyszolgáltatóddal.</p>
+
+	<p>Ha telepítettél már egy másik phpBB-t ugyanabba az adatbázisba ugyanazzal a tábla előtaggal, a phpBB értesíteni fog erről, és egyszerűen csak meg kell adnod egy másik tábla előtagot.</p>
+
+	<p>Ha a Sikeres kapcsolódás üzenetet látod, továbbléphetsz a következő lépésre.</p>
+
+	<h4>Adminisztrátor adatok</h4>
+
+	<p>Most lére kell hoznod az adminisztrátor felhasználót. Ez a felhasználó teljes adminisztrátori hozzáféréssel fog rendelkezni, és ő lesz az első felhasználó a fórumon. Az oldalon szereplő összes mező kitöltése szükséges. Ezen az oldalon állíthatod be a fórumod alapértelmezett nyelvét is. A sima phpBB3 csomag csak az angol nyelvi csomagot tartalmazza. További nyelveket a <a href="http://www.phpbb.com/">www.phpbb.com</a> weboldalról tölthetsz le, és a telepítés előtt vagy után veheted fel őket.</p>
+
+	<h4>Konfigurációs állomány</h4>
+
+	<p>Ebben a lépésben, a phpBB megpróbálja automatikusan kiírni a konfigurációs állományt. A fórumnak szüksége van erre, hogy futni tudjon. Ez tartalmazza az adatbázis adatokat, így nélküle a phpBB nem fog tudni hozzáférni az adatbázishoz.</p>
+
+	<p>Általában a konfigurációs állomány automatikus kiírása tökéletesen működik. Azonban néhány esetben nem mehet végbe például rossz állomány jogosultságok miatt. Ebben az esetben az állományt kézzel kell feltöltened. A phpBB felajánlja a config.php-t letöltésre, és leírja, hogy mit kell tenned vele. Kérünk, olvasd el az utasításokat rendesen. Miután feltöltötted az állományt, kattints a <em>Kész</em> gombra, hogy továbbléphess az utolsó lépésre. Ha ugyanarra az oldalra jutsz vissza, és nem jelenik meg értesítő üzenet a feltöltés sikerességéről, nem töltötted fel az állományt rendesen.</p>
+
+	<h4>Haladó beállítások</h4>
+
+	<p>A Haladó beállítások lethetővé teszik, hogy megváltoztasd az alapértelmezett fórum konfigurációt. Nem kötelező őket megadni, és később is megváltoztathatók. Tehát, ha nem vagy biztos ezen beállítások jelentésében, lépj tovább a befejező lépésre ezzel befejezve a telepítést.</p>
+
+	<p>Ha a telepítés sikeres volt, most már a Belépés gomb segítségével beléphetsz az adminisztrációs vezérlőpultba. Gratulálunk, sikeresen telepítetted a phpBB3-mat. Azonban még mindig van hátra egy kis munka!</p>
+
+	<p>Ha nem sikerült telepítened a phpBB3-mat még ezen útmutató elolvasása után se, nézd meg a támogatás részt, hogy hol kérhetsz további segítséget.</p>
+
+	<p>Ezen a ponton, ha phpBB 2.0.x-ről konvertálsz, folytasd a <a href="#convert">konvertálást leíró lépésekkel</a>. Amennyiben nem, töröld a szereveredről az install könyvtárat, mivel ameddig az létezik, csak az adminisztrátori vezérlőpult lesz elérhető.</p>
+
+		</div>
+
+		<div class="back2top"><a href="#wrap" class="top">Vissza a tetejére</a></div>
+
+		<span class="corners-bottom"><span></span></span></div>
+	</div>
+
+	<hr />
+
+	<a name="update"></a><h2>4. Frissítés a phpBB 3.0.x stabil kiadásairól</h2>
+
+	<div class="paragraph">
+		<div class="inner"><span class="corners-top"><span></span></span>
+
+		<div class="content">
+
+<p>Ha jelenleg a phpBB3 egy stabil kiadását használod, a legújabb verzióra való frissítés nagyon egyszerű. Négy csomag letöltése közül választhatsz, és a csomag típusától függ, hogy mit kell tenned. <strong>Kérjük, vedd figyelembe,</strong> hogy erősen ajánljuk, a frissítés előtt készíts egy <em>teljes biztonsági mentést az adatbázisodról és a phpBB3 állományairól</em>! Ha bizonytalan vagy ennek módjáról, fordulj tanácsokért a tárhelyszolgáltatódhoz.</p>
+
+<p><strong>Kérünk, győződj meg róla, hogy frissíted a phpBB3 forrásállományait is, még akkor is, ha lefuttattad a <code>database_update.php</code> állományt.</strong></p>
+
+<a name="update_full"></a><h3>4.i. Teljes csomag</h3>
+
+	<p>A teljes csomag alapvetően csak új telepítésekhez való, azonban ha az összes forrásfájl ki szeretnéd cserélni, jól jön ez a csomag.</p>
+
+	<p>Először is készíts egy másolatot a <em>config.php</em> állományodról, és ezt helyezd el egy biztonságos helyre! Ezután töröld a phpBB3 összes létező állományát, azonban a <code>files/</code> és az <code>images/</code> könyvtárat érdemes meghagyni. Az alternatív megjelenéseket is a helyükön hagyhatod. Ha ezzel kész vagy, töltsd fel az új phpBB3 állományokat (ha szükséges részletekért lásd az <a href="#install">Új telepítés</a> fejezetet). A következő lépésben másold vissza az elmentett <em>config.php</em>-det felülírva az újat. Másik módszer az eredeti állományok egyszerű <strong>kicserélése</strong> az új csomagban lévőkével – azonban itt vigyázz, hogy <strong>ne</strong> írd  felül a config.php-t.</p>
+
+	<p>Most futtasd az <code>install/database_update.php</code>-t, mely az előző verziótól függően néhány adatbázis-változtatást fog elvégezni. Ennek folyamán lehet, hogy kapsz néhány <em>FAILURE</em>-t, ezek azonban nem okozhatnak problémát, hacsak nem egy <em>ERROR</em> jelenik meg, aminek következtében viszont a szkript futása meg fog állni (ebben az esetben fordulj a fórumunkhoz vagy a hibajelentőhöz).</p>
+
+	<p>Ha az install/database_update.php futása befejeződött, lépj be az adminisztrátori vezérlőpultba, ellenőrzid a verziót, és töröld az install könyvtárat.</p>
+
+<a name="update_files"></a><h3>4.ii. Csak megváltozott állományok</h3>
+
+	<p>Ez a csomag azoknak nyújt megoldást, akik csak az előző verzió óta megváltozott állományokat szeretnék kicserélni a legújabb verzióra. Ez a csomag általában az előző öt verzió óta megváltozott állományokat tartalmazza.</p>
+
+	<p>Ez a csomag több alcsomagot tartalmaz, mindegyik egy bizonyos és a legújabb verzió között megváltozott állományokat tartalmazza. A jelenlegi verziódnak megfelelő csomagot kell kiválasztanod, pl. ha jelenleg <samp>3.0.0</samp>-d van, a phpBB-3.0.0_to_3.0.1.zip/tar.gz állományt kell kiválasztanod.</p>
+
+	<p>A csomagokban a könyvtárstruktúra megtartásra kerül, mely lehetővé teszi, hogy a csomag tartalmát egyszerűen csak feltöltsd a szervereden a megfelelő helyre, azaz hogy a jelenlegi állományaidat felülírd az új verzióval. Ne feletkezz meg róla, hogy ha telepítettél MOD-o(ka)t, az új állományok felül fogják írni a régieket ezzel eltűntetve a MOD által végzett módosításokat. Emiatt a feltöltés előtt minden érintett állományon újra el kell végezned a MOD módosításait.</p>
+
+	<p>A többi frissítési módhoz hasonlóan az állományok frissítése után itt is le kell futtatnod az <b>install/database_update.php</b>-t. Ez frissíti az adatbázis szerkezetét, és megnövelni a verziószámot.</p>
+
+<a name="update_patch"></a><h3>4.iii. Patch állomány</h3>
+
+	<p>A patch csomag azoknak nyújt megoldást, akik a patch alkalmazással szeretnének frissíteni és azt tudják kezelni.</p>
+
+	<p>A patch az egyik megoldás a sok MOD-dal vagy egyéb változtatással rendelkező fórumoknak, ha nem akarod újra elvégezni a változtatásokat, mint az fentebb olvasható. Ennek használatához szükséged lesz parancssori hozzáférésre egy standard UNIX-típusú <strong>patch</strong> alkalmazáshoz. Ha nincs hozzáférésed ilyen alkalmazáshoz, de hasonló módon szeretnél frissíteni, határozottan ajánljuk, hogy használd az <a href="update_auto">Automatikus frissítő csomagot</a>, melynek leírását alább találod meg – többek között ez a preferált frissítési mód is.</p>
+
+	<p>A csomag a korábbi stabil kiadásokról való frissítés megkönnyítésének érdekében több patch állományt is tartalmaz. Válaszd ki a megfelelő patch állományt, pl. ha a jelenlegi verziód 3.0.0, a phpBB-3.0.0_to_3.0.1.patch állományra lesz szükséged. A megfelelő patch állományt helyezd el a phpBB3 gyökérkönyvtárában (mely a fő PHP állományokat tartalmazza, pl. index.php, viewforum.php stb.). Ezután futtasd a következő parancsot: <strong>patch -cl -d [PHPBB KÖNYVTÁRA] -p1 &lt; [PATCH NEVE]</strong> (ahol a PHPBB KÖNYVTÁRA az a könyvtár, amiben a phpBB állományai vannak, pl. phpBB3, valamint a PATCH NEVE a kiválasztott patch állomány neve). Ennek gyorsan be kell fejeződnie, remélhetőleg bármilyen hiba nélkül.</p>
+
+	<p>Ha mégis lépnének fel hibák, nézd meg a <a href="#update_files">Csak megváltozott fájlok</a> csomagot, és írd felül az állományokat, melyeknek meghiúsult a frissítése. Kérünk, vedd figyelembe, hogy ezeken az állományokon manuálisan újra el kell végezned a MOD-ok által végzett változtatásokat. Ha esetleg tudod, hogyan kell a .rej állományokból kideríteni, mely állományok patchelése hiúsult meg, a kódban való változtatással tehetsz lépéseket a patch állomány futtatásának megkönnyítésére.</p>
+
+	<p>Természetesen a használat a patch állományt (vagy állományokat) törölnöd kell. A többi frissítési módhoz hasonlóan az állományok frissítése után itt is le kell futtatnod az <b>install/database_update.php</b>-t. Ez frissíti az adatbázis szerkezetét, és megnövelni a verziószámot.</p>
+
+<a name="update_auto"></a><h3>4.iv. Automatikus frissítő csomag</h3>
+
+	<p>A frissítésnek ez a preferált módja. Ez a csomag lehetővé teszi a megváltozott állományok automatikus felismerését, és a változtatásokat egyesíti.</p>
+
+	<p>Az automatikus frissítő csomag – a többi csomaggal ellentétben – csak a legutóbb kiadott verzió és a legújabb elérhető verzió közötti változtatásokat tartalmazza. Ezt a csomagot az automatikus frissítővel lehet használni.</p>
+
+	<p>A frissítés elvégzéséhez vagy kövesd az <code>Adminisztrátori vezérlőpult-&gt;Rendszer</code> fül utasításait – mely fel fogja hívni a figyelmed, hogy egy régi verziót futtatsz, majd ezután végig fog vezetni a frissítésen –, vagy kövesd az alábbi utasításokat.</p>
+
+	<ul>
+		<li>Menj a <a href="http://www.phpbb.com/downloads/">letöltési oldalra</a>, és töltsd le a jelenlegi verziódnak megfelelő legújabb frissítő csomagot.</li>
+		<li>Töltsd fel a csomag tartalmát a phpBB állományaid közé – csak az install könyvtár szükséges. Töltsd fel a teljes install könyvtárat megtartva a könyvtárstruktúrát.</li>
+		<li>Miután az install könyvtár megjelenik a rendszerben, a phpBB3 automatikusan kikapcsol.</li>
+		<li>Menj a böngésződdel az install könyvtárba, pl. <samp>http://valami.hu/phpBB3/install/</samp></li>
+		<li>Válaszd ki a „Frissítés” fület, és kövesd az utasításokat.</li>
+	</ul>
+
+	<p>&nbsp;</p>
+
+<a name="update_all"></a><h3>4.v. Összes csomagtípus</h3>
+
+	<p>Ha a fórumodra telepítettél egy angoltól különböző nyelvi csomagot, nézd meg, hogy van-e a csomagból újabb verzió. Az új verzióban lehet, hogy több új nyelvi elem is hozzáadásra került, melyek nem feltétlenül nélkülözhetetlenek, de a felhasználók számára hasznosak lehetnek. Kérünk, vedd figyelembe, hogy az ellenőrzés pillanatában nem biztos, hogy már az összes nyelvi csomag frissítésre került, így lehet, hogy bizonyos időközönként újra és újra ellenőrizned kell, van-e frissítés.</p>
+
+		</div>
+
+		<div class="back2top"><a href="#wrap" class="top">Vissza a tetejére</a></div>
+
+		<span class="corners-bottom"><span></span></span></div>
+	</div>
+
+	<hr />
+
+	<a name="convert"></a><h2>5. Konvertálás phpBB 2.0.x-ről phpBB 3.0.x-re</h2>
+
+	<div class="paragraph">
+		<div class="inner"><span class="corners-top"><span></span></span>
+
+		<div class="content">
+
+<p>Ez a fejezet a phpBB2-es fórumod phpBB3-masra való átkonvertáláshoz szükséges lépéseket írja le.</p>
+
+<a name="prereq"></a><h3>5.i. Követelmények a konvertáláshoz</h3>
+
+	<p>A konvertálás előtt erősen ajánljuk, hogy készíts <em>teljes biztonsági mentést az adatbázisodról és az állományaidról</em>! Ha bizonytalan vagy ennek módjáról, fordulj tanácsokért a tárhelyszolgáltatódhoz. Ezután alapvetően az <a href="#install">Új telepítés</a> fejezetben leírtakat kell követned. Kérjük, <strong>ne</strong> írd felül a régi állományokat – a phpBB3-mat más helyre telepítsd.</p>
+
+	<p>Miután mindenről készítettél biztonsági mentést, és a phpBB3-mat is telepítetted, elkezdheted a konvertálást.</p>
+
+	<p>Kérjük, vedd figyelembe, hogy a konvertáláshoz a phpBB3 adatbázis felhasználójának szüksége van CREATE és DROP jogosultságokra.</p>
+
+<a name="conversion"></a><h3>5.ii. Konvertálás</h3>
+
+	<p>To begin the conversion visit the install folder of your phpBB3 installation (the same as you have done for installing). Now you will see a new tab <em>Convert</em>. Click this tab.</p>
+
+	<p>As with install the conversion is automated. Your previous 2.0.x database tables will not be changed as well as the original 2.0.x files remaining unaltered. The conversion is actually only filling your phpBB3 database tables and copying additional data over to your phpBB3 installation. This has the benefit that if something goes wrong you are able to either re-run the conversion or continue a conversion, while your old board is still accessible. We really recommend you disable your old installation while converting, else you may have inconsistent data after the conversion.</p>
+
+	<p>Please note that this conversion process may take quite some time and depending on your hosting provider this may result in it failing (due to web server or other timeout issues). If this is the case you should ask your provider if they are willing to allow the convert script to temporarily exceed their limits (be nice and they will probably be quite helpful).</p>
+
+	<p>Once completed your board should be immediately available. If you encountered errors you should report the problems to our bug tracker or seek help via our forums (see <a href="README.html">README</a> for details).</p>
+
+<a name="postreq"></a><h3>5.iii. Things to do after conversion</h3>
+
+	<p>After successful conversion there may be a few items you need to do - apart from checking if the installation is accessible and everything displayed correctly.</p>
+
+	<p>The first thing you may want to do is going to the administration control panel and checking every configuration item within the general tab. Thereafter you may want to adjust the forum descriptions/names if you entered HTML there. You also may want to access the other administrative sections, e.g. adjusting permissions, smilies, icons, ranks, etc.</p>
+
+	<p>Within the conversion the search index has not been created or transferred. This means after conversion you are not able to find any matches if you want to search for something. We recommend you rebuild your search index within <code>Admin -&gt; Maintenance -&gt; Database -&gt; Search Index</code>.</p>
+
+	<p>After verifying the settings in the ACP, you can delete the install directory to enable the board. The board will stay disabled until you do so.</p>
+
+	<p>Once you are pleased with your new installation you may want to give it the name of your old installation, changing the directory name. With phpBB3 this is possible without any problems - but you may still want to check your cookie settings within the administration panel, if the cookie path need to be adjusted prior to renaming.</p>
+
+<a name="convprob"></a><h3>5.iv. Common conversion problems</h3>
+
+	<p><strong>Broken non-latin characters</strong> The conversion script assumes that the database encoding in the source phpBB2 matches the encoding defined in the <code>lang_main.php</code> file of the default language pack of the source installation. Edit that file to match the database's encoding and re-start the conversion procedure.</p>
+
+	<p><strong>http 500 / white pages</strong> The conversion is a load-heavy procedure. Restrictions imposed by some server hosting providers can cause problems. The most common causes are: too low values for the php settings <code>memory_limit</code> and <code>max_execution_time</code>. Limits on the allowed CPU time are also a frequent cause for such errors, as are caps on the number of database queries allowed. If you cannot change such settings, then contact your hosting provider or run the conversion procedure on a different computer. The phpBB.com forums are also an excellent location to ask for support.</p>
+
+	<p><strong>Password conversion</strong> Due to the utf-8 based handling of passwords in phpBB3, it is not always possible to transfer all passwords. For passwords "lost in translation" the easiest workaround is to use the "forgotten password" function.</p>
+
+	<p><strong>Path to your former board</strong> The converter expects the relative path to your old board's files. So, -for instance - if the new board is located at <code>http://www.yourdomain.com/forum</code> and the phpBB3 is located at <code>http://www.yourdomain.com/phpBB3</code>, then the correct value would be <code>../forum</code>. Note that the webserver user must be able to access the source installation's files.</p>
+
+	<p><strong>Missing images</strong> If your default board language's language pack does not include all images, then some images might be missing in your installation. Always use a complete language pack as default language.</p> 
+
+	<p><strong>Smilies</strong> During the conversion you might see warnings about image files where the copying failed. That can happen if the old board's smilies have the same file names as those on the new board. Copy those files manually after the conversion, if you want to continue using the old smilies.</p> 
+
+
+		</div>
+
+		<div class="back2top"><a href="#wrap" class="top">Back to Top</a></div>
+
+		<span class="corners-bottom"><span></span></span></div>
+	</div>
+
+	<hr />
+
+	<a name="postinstall"></a><h2>6. Important (security related) post-Install tasks for all installation methods</h2>
+
+	<div class="paragraph">
+		<div class="inner"><span class="corners-top"><span></span></span>
+
+		<div class="content">
+
+	<p>Once you have successfully installed phpBB3 you <strong>MUST</strong> ensure you remove the entire install/ directory. Leaving the install directory in place is a <em>very serious potential security issue</em> which may lead to deletion or alteration of files, etc. Please note that until this directory is removed, phpBB3 will not operate and a warning message will be displayed. Beyond this <strong>essential</strong> deletion, you may also wish to delete the docs/ directories if you wish.</p>
+
+	<p>With these directories deleted you should proceed to the administration panel. Depending on how the installation completed you may have been directed there automatically. If not, login as the administrator you specified during install/conversion and click the <strong>Administration Panel</strong> link at the bottom of any page. Ensure that details specified in <code>Admin -&gt; General</code> are correct!</p>
+
+<a name="avatars"></a><h3>6.i. Uploadable avatars</h3>
+
+	<p>phpBB3 supports several methods for allowing users to select their own <em>avatar</em> (an avatar is a small image generally unique to a user and displayed just below their username in posts).</p>
+
+	<p>Two of these options allow users to upload an avatar from their machine or a remote location (via a URL). If you wish to enable this function you should first ensure the correct paths for uploadeable avatars is set in <code>Admin -&gt; General -&gt; Board Configuration -&gt; Avatar settings</code>. By default this is <em>images/avatars/uploads</em> but you can set it to whatever you like, just ensure the configuration setting is updated. You must also ensure this directory can be written to by the webserver. Usually this means you have to alter its permissions to allow anyone to read and write to. Exactly how you should do this depends on your ftp client or server operating system.</p>
+
+	<p>On UNIX systems for example you set the directory to a+rwx (or ugo+rwx or even 777). This can be done from a command line on your server using chmod or via your FTP client (using the Change Permissions, chmod or other Permissions dialoge box, see your FTP clients documentation for help). Most FTP clients list permissions in the form of User (Read, Write, Execute), Group (Read, Write, Execute) and Other (Read, Write, Execute). You need to tick all of these boxes to set correct permissions.</p>
+
+	<p>On Windows system you need to ensure the directory is not write-protected and that it has global write permissions (see your servers documentation or contact your hosting provider if you are unsure on how to achieve this).</p>
+
+	<p>Please be aware that setting a directories permissions to global write access is a potential security issue. While it is unlikely that anything nasty will occur (such as all the avatars being deleted) there are always people out there to cause trouble. Therefore you should monitor this directory and if possible make regular backups.</p>
+
+		</div>
+
+		<div class="back2top"><a href="#wrap" class="top">Back to Top</a></div>
+
+		<span class="corners-bottom"><span></span></span></div>
+	</div>
+
+	<hr />
+
+<a name="disclaimer"></a><h2>7. Copyright and disclaimer</h2>
+
+	<div class="paragraph">
+		<div class="inner"><span class="corners-top"><span></span></span>
+
+		<div class="content">
+
+	<p>This application is opensource software released under the <a href="http://opensource.org/licenses/gpl-license.php">GPL</a>. Please see source code and the docs directory for more details. This package and its contents are Copyright (c) 2000, 2002, 2005, 2007 <a href="http://www.phpbb.com/">phpBB Group</a>, All Rights Reserved.</p>
+
+		</div>
+
+		<div class="back2top"><a href="#wrap" class="top">Back to Top</a></div>
+
+		<span class="corners-bottom"><span></span></span></div>
+	</div>
+
+<!-- END DOCUMENT -->
+
+	<div id="page-footer">
+		<div class="version">&nbsp;</div>
+	</div>
+</div></div>
+
+<div>
+	<a id="bottom" name="bottom" accesskey="z"></a>
+</div>
+
+</body>
+</html>

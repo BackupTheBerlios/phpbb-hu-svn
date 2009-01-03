@@ -66,9 +66,9 @@ $lang = array_merge($lang, array(
 	'DISPLAY_AT_PROFILE'			=> 'Megjelenítés a felhasználói vezérlőpultban',
 	'DISPLAY_AT_PROFILE_EXPLAIN'	=> 'A felhasználó a profil mező értékét a felhasználói vezérlőpultban módosíthatja.',
 	'DISPLAY_AT_REGISTER'			=> 'Megjelenítés regisztrációkor',
-	'DISPLAY_AT_REGISTER_EXPLAIN'	=> 'Ha ez van beállítva, a mező megjelenítésre kerül a regisztrációkor, és a felhasználói vezérlőpultból módosítható.',
+	'DISPLAY_AT_REGISTER_EXPLAIN'	=> 'Ha ez be van állítva, a mező megjelenítésre kerül a regisztrációkor.',
 	'DISPLAY_PROFILE_FIELD'			=> 'Profil mező megjelenítése',
-	'DISPLAY_PROFILE_FIELD_EXPLAIN'	=> 'A profil mező az összes a terhelés beállításokban megadott helyen megjelenítésre kerül. Ha nemre állítod, nem fog megjelenni a téma oldalakon, a profilban és a taglistában.',
+	'DISPLAY_PROFILE_FIELD_EXPLAIN'	=> 'A profil mező az összes, a terhelés beállításokban megadott helyen megjelenítésre kerül. Ha nemre állítod, nem fog megjelenni a téma oldalakon, a profilban és a taglistában.',
 	'DROPDOWN_ENTRIES_EXPLAIN'		=> 'Add meg a választási lehetőségeket, mindegyik lehetőséget külön sorba írd.',
 
 	'EDIT_DROPDOWN_LANG_EXPLAIN'	=> 'Kérjük, vedd figyelembe, hogy megváltoztathatod a jelenlegi lehetőségek szövegét, és újakat is hozzáadhatsz a lista végére. A már meglévők közé nem tanácsos új lehetőségeket felvenni, mivel ez azt eredményezheti, hogy a felhasználókhoz a változtatás után rossz lehetőség lesz hozzárendelve. Ez akkor is előfordulhat, ha a lista közepéből távolítasz el elemeket. Ha a végéről törölsz lehetőségeket, akkor a jelenleg ezt kiválasztott felhasználóknak az alapértelmezett érték kerül beállításra.',
@@ -96,7 +96,7 @@ $lang = array_merge($lang, array(
 	'FIRST_OPTION'				=> 'Első lehetőség',
 
 	'HIDE_PROFILE_FIELD'			=> 'Profil mező elrejtése',
-	'HIDE_PROFILE_FIELD_EXPLAIN'	=> 'A mezőt csak az adminisztrátorok láthatják, ill. módosíthatják. Ha ez van beállítva, a profil mező csak a felhasználók profiljában fog megjelenni.',
+	'HIDE_PROFILE_FIELD_EXPLAIN'	=> 'A profil mező elrejtése az adott felhasználón, az adminisztrátoron és a moderátorokon kívül mindenki számára. Ha a megjelenítés a felhasználói vezérlőpultban beállítás nemre van állítva, a felhasználó nem láthatja és nem is változtathatja meg a mező értékét, ez esetben az értékét csak egy adminisztrátor módosíthatja.',
 
 	'INVALID_CHARS_FIELD_IDENT'	=> 'A mezőazonosító csak latin kisbetűket (a-z) és alulvonást (_) tartalmazhat.',
 	'INVALID_FIELD_IDENT_LEN'	=> 'A mezőazonosító csak 17 karakter hosszú lehet.',
@@ -125,7 +125,7 @@ $lang = array_merge($lang, array(
 	'RADIO_BUTTONS'				=> 'Választógomb',
 	'REMOVED_PROFILE_FIELD'		=> 'A profil mező sikeresen törlésre került.',
 	'REQUIRED_FIELD'			=> 'Kötelező mező',
-	'REQUIRED_FIELD_EXPLAIN'	=> 'A felhasználóknak kötelezően ki kell tölteniük a mezőt, vagy ki kell választaniuk egy értéket. A profil mező a regisztrációnál és a felhasználói vezérlőpultban is meg fog jelenni.',
+	'REQUIRED_FIELD_EXPLAIN'	=> 'A felhasználóknak kötelezően ki kell tölteniük a mezőt, vagy ki kell választaniuk egy értéket. Amennyiben a megjelenítés regisztrációkor ki van kapcsolva, a mezőt csak a profil szerkesztésekor kell kitölteni.',
 	'ROWS'						=> 'sor',
 
 	'SAVE'							=> 'Elmentés',

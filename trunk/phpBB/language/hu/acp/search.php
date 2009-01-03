@@ -41,7 +41,7 @@ $lang = array_merge($lang, array(
 	'ACP_SEARCH_SETTINGS_EXPLAIN'			=> 'Itt beállíthatod, hogy a fórum melyik keresőmodult használja a hozzászólások indexeléséhez és a keresésekhez. Emellett további beállításokat adhatsz meg, melyek ezeknek a műveleteknek a teljesítményigényét befolyásolják. A beállítások egy része az összes keresőmodulnál ugyanaz.',
 
 	'COMMON_WORD_THRESHOLD'					=> 'Gyakori szó küszöb',
-	'COMMON_WORD_THRESHOLD_EXPLAIN'			=> 'A szavak, melyek a hozzászólások ennél nagyobb százalékában megtalálhatók, gyakoriaknak lesznek tekintve. A gyakori szavak mellőzésre kerülnek a keresési kifejezésekből. A kikapcsoláshoz állítsd 0-ra. Csak akkor lesz alkalmazva, ha 100-nál több hozzászólás van.',
+	'COMMON_WORD_THRESHOLD_EXPLAIN'			=> 'A szavak, melyek a hozzászólások ennél nagyobb százalékában megtalálhatók, gyakorinak lesznek tekintve. A gyakori szavak mellőzésre kerülnek a keresési kifejezésből. A kikapcsoláshoz állítsd 0-ra. Csak akkor lesz alkalmazva, ha 100-nál több hozzászólás van. Ha felül szeretnéd vizsgálni a már gyakorinak tekintett szavakat, újra létre kell hoznod az indexet.',
 	'CONFIRM_SEARCH_BACKEND'				=> 'Biztosan át akarsz váltani egy másik keresőmodulra? A váltás után létre kell hoznod az új keresőmodulhoz tartozó indexet. Ha nem tervezel visszaváltani a régi keresőmodulhoz, törölheted az ahhoz tartozó indexet, ezáltal is fölszabadítva a rendszer erőforrásait.',
 	'CONTINUE_DELETING_INDEX'				=> 'Korábbi indexeltávolítási folyamat folytatása',
 	'CONTINUE_DELETING_INDEX_EXPLAIN'		=> 'Egy indexeltávolítási folyamat el lett indítva. Hogy hozzáférj a keresőindex oldalhoz, először azt be kell fejezned, vagy törölnöd kell.',

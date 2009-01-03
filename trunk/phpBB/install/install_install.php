@@ -77,7 +77,7 @@ class install_install extends module
 
 			case 'database':
 				$this->obtain_database_settings($mode, $sub);
-			
+
 			break;
 
 			case 'administrator':
@@ -87,7 +87,7 @@ class install_install extends module
 
 			case 'config_file':
 				$this->create_config_file($mode, $sub);
-			
+
 			break;
 
 			case 'advanced':
@@ -105,7 +105,7 @@ class install_install extends module
 				$this->add_language($mode, $sub);
 				$this->add_bots($mode, $sub);
 				$this->email_admin($mode, $sub);
-				
+
 				// Remove the lock file
 				@unlink($phpbb_root_path . 'cache/install_lock');
 
@@ -151,7 +151,7 @@ class install_install extends module
 
 			// We also give feedback on whether we're running in safe mode
 			$result = '<strong style="color:green">' . $lang['YES'];
-			if (@ini_get('safe_mode') || strtolower(@ini_get('safe_mode')) == 'on')
+			if (@ini_get('safe_mode') == '1' || strtolower(@ini_get('safe_mode')) == 'on')
 			{
 				$result .= ', ' . $lang['PHP_SAFE_MODE'];
 			}
@@ -184,8 +184,8 @@ class install_install extends module
 			'S_EXPLAIN'		=> true,
 			'S_LEGEND'		=> false,
 		));
-		
-		
+
+
 		// Check for url_fopen
 		if (@ini_get('allow_url_fopen') == '1' || strtolower(@ini_get('allow_url_fopen')) == 'on')
 		{
@@ -204,8 +204,8 @@ class install_install extends module
 			'S_EXPLAIN'		=> true,
 			'S_LEGEND'		=> false,
 		));
-		
-		
+
+
 		// Check for getimagesize
 		if (@function_exists('getimagesize'))
 		{
@@ -398,7 +398,7 @@ class install_install extends module
 					$location .= '/';
 				}
 
-				if (@is_readable($location . 'mogrify' . $exe) && @filesize($location . 'mogrify' . $exe) > 3000)
+				if (@file_exists($location) && @is_readable($location . 'mogrify' . $exe) && @filesize($location . 'mogrify' . $exe) > 3000)
 				{
 					$img_imagick = str_replace('\\', '/', $location);
 					continue;
@@ -438,16 +438,13 @@ class install_install extends module
 			if (!file_exists($phpbb_root_path . $dir))
 			{
 				@mkdir($phpbb_root_path . $dir, 0777);
-				@chmod($phpbb_root_path . $dir, 0777);
+				phpbb_chmod($phpbb_root_path . $dir, CHMOD_READ | CHMOD_WRITE);
 			}
 
 			// Now really check
 			if (file_exists($phpbb_root_path . $dir) && is_dir($phpbb_root_path . $dir))
 			{
-				if (!@is_writable($phpbb_root_path . $dir))
-				{
-					@chmod($phpbb_root_path . $dir, 0777);
-				}
+				phpbb_chmod($phpbb_root_path . $dir, CHMOD_READ | CHMOD_WRITE);
 				$exists = true;
 			}
 
@@ -551,7 +548,7 @@ class install_install extends module
 			}
 			else
 			{
-				$connect_test = connect_check_db(true, $error, $available_dbms[$data['dbms']], $data['table_prefix'], $data['dbhost'], $data['dbuser'], $data['dbpasswd'], $data['dbname'], $data['dbport']);
+				$connect_test = connect_check_db(true, $error, $available_dbms[$data['dbms']], $data['table_prefix'], $data['dbhost'], $data['dbuser'], htmlspecialchars_decode($data['dbpasswd']), $data['dbname'], $data['dbport']);
 			}
 
 			$template->assign_block_vars('checks', array(
@@ -802,7 +799,7 @@ class install_install extends module
 				$s_hidden_fields .= '<input type="hidden" name="' . $config_key . '" value="' . $data[$config_key] . '" />';
 			}
 		}
-		
+
 		$s_hidden_fields .= ($data['img_imagick']) ? '<input type="hidden" name="img_imagick" value="' . addslashes($data['img_imagick']) . '" />' : '';
 		$s_hidden_fields .= '<input type="hidden" name="language" value="' . $data['language'] . '" />';
 
@@ -877,28 +874,37 @@ class install_install extends module
 		}
 		@fclose($fp);
 
-		@chmod($phpbb_root_path . 'cache/install_lock', 0666);
+		@chmod($phpbb_root_path . 'cache/install_lock', 0777);
 
 		$load_extensions = implode(',', $load_extensions);
 
 		// Time to convert the data provided into a config file
 		$config_data = "<?php\n";
 		$config_data .= "// phpBB 3.0.x auto-generated configuration file\n// Do not change anything in this file!\n";
-		$config_data .= "\$dbms = '" . $available_dbms[$data['dbms']]['DRIVER'] . "';\n";
-		$config_data .= "\$dbhost = '{$data['dbhost']}';\n";
-		$config_data .= "\$dbport = '{$data['dbport']}';\n";
-		$config_data .= "\$dbname = '{$data['dbname']}';\n";
-		$config_data .= "\$dbuser = '{$data['dbuser']}';\n";
-		$config_data .= "\$dbpasswd = '{$data['dbpasswd']}';\n\n";
-		$config_data .= "\$table_prefix = '{$data['table_prefix']}';\n";
-//		$config_data .= "\$acm_type = '" . (($acm_type) ? $acm_type : 'file') . "';\n";
-		$config_data .= "\$acm_type = 'file';\n";
-		$config_data .= "\$load_extensions = '$load_extensions';\n\n";
-		$config_data .= "@define('PHPBB_INSTALLED', true);\n";
+
+		$config_data_array = array(
+			'dbms'			=> $available_dbms[$data['dbms']]['DRIVER'],
+			'dbhost'		=> $data['dbhost'],
+			'dbport'		=> $data['dbport'],
+			'dbname'		=> $data['dbname'],
+			'dbuser'		=> $data['dbuser'],
+			'dbpasswd'		=> htmlspecialchars_decode($data['dbpasswd']),
+			'table_prefix'	=> $data['table_prefix'],
+			'acm_type'		=> 'file',
+			'load_extensions'	=> $load_extensions,
+		);
+
+		foreach ($config_data_array as $key => $value)
+		{
+			$config_data .= "\${$key} = '" . str_replace("'", "\\'", str_replace('\\', '\\\\', $value)) . "';\n";
+		}
+		unset($config_data_array);
+
+		$config_data .= "\n@define('PHPBB_INSTALLED', true);\n";
 		$config_data .= "// @define('DEBUG', true);\n";
 		$config_data .= "// @define('DEBUG_EXTRA', true);\n";
 		$config_data .= '?' . '>'; // Done this to prevent highlighting editors getting confused!
-	
+
 		// Attempt to write out the config file directly. If it works, this is the easiest way to do it ...
 		if ((file_exists($phpbb_root_path . 'config.' . $phpEx) && is_writable($phpbb_root_path . 'config.' . $phpEx)) || is_writable($phpbb_root_path))
 		{
@@ -921,7 +927,8 @@ class install_install extends module
 
 			if ($written)
 			{
-				@chmod($phpbb_root_path . 'config.' . $phpEx, 0644);
+				// We may revert back to chmod() if we see problems with users not able to change their config.php file directly
+				phpbb_chmod($phpbb_root_path . 'config.' . $phpEx, CHMOD_READ);
 			}
 		}
 
@@ -1009,8 +1016,17 @@ class install_install extends module
 		$s_hidden_fields = ($data['img_imagick']) ? '<input type="hidden" name="img_imagick" value="' . addslashes($data['img_imagick']) . '" />' : '';
 		$s_hidden_fields .= '<input type="hidden" name="language" value="' . $data['language'] . '" />';
 
+		// HTTP_HOST is having the correct browser url in most cases...
+		$server_name = (!empty($_SERVER['HTTP_HOST'])) ? strtolower($_SERVER['HTTP_HOST']) : ((!empty($_SERVER['SERVER_NAME'])) ? $_SERVER['SERVER_NAME'] : getenv('SERVER_NAME'));
+
+		// HTTP HOST can carry a port number...
+		if (strpos($server_name, ':') !== false)
+		{
+			$server_name = substr($server_name, 0, strpos($server_name, ':'));
+		}
+
 		$data['email_enable'] = ($data['email_enable'] !== '') ? $data['email_enable'] : true;
-		$data['server_name'] = ($data['server_name'] !== '') ? $data['server_name'] : ((!empty($_SERVER['SERVER_NAME'])) ? $_SERVER['SERVER_NAME'] : getenv('SERVER_NAME'));
+		$data['server_name'] = ($data['server_name'] !== '') ? $data['server_name'] : $server_name;
 		$data['server_port'] = ($data['server_port'] !== '') ? $data['server_port'] : ((!empty($_SERVER['SERVER_PORT'])) ? (int) $_SERVER['SERVER_PORT'] : (int) getenv('SERVER_PORT'));
 		$data['server_protocol'] = ($data['server_protocol'] !== '') ? $data['server_protocol'] : ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://');
 		$data['cookie_secure'] = ($data['cookie_secure'] !== '') ? $data['cookie_secure'] : ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? true : false);
@@ -1100,7 +1116,17 @@ class install_install extends module
 			$this->p_master->redirect("index.$phpEx?mode=install");
 		}
 
-		$cookie_domain = ($data['server_name'] != '') ? $data['server_name'] : (!empty($_SERVER['SERVER_NAME'])) ? $_SERVER['SERVER_NAME'] : getenv('SERVER_NAME');
+		// HTTP_HOST is having the correct browser url in most cases...
+		$server_name = (!empty($_SERVER['HTTP_HOST'])) ? strtolower($_SERVER['HTTP_HOST']) : ((!empty($_SERVER['SERVER_NAME'])) ? $_SERVER['SERVER_NAME'] : getenv('SERVER_NAME'));
+		$referer = (!empty($_SERVER['HTTP_REFERER'])) ? strtolower($_SERVER['HTTP_REFERER']) : getenv('HTTP_REFERER');
+
+		// HTTP HOST can carry a port number...
+		if (strpos($server_name, ':') !== false)
+		{
+			$server_name = substr($server_name, 0, strpos($server_name, ':'));
+		}
+
+		$cookie_domain = ($data['server_name'] != '') ? $data['server_name'] : $server_name;
 
 		// Try to come up with the best solution for cookie domain...
 		if (strpos($cookie_domain, 'www.') === 0)
@@ -1124,7 +1150,7 @@ class install_install extends module
 
 		// Instantiate the database
 		$db = new $sql_db();
-		$db->sql_connect($data['dbhost'], $data['dbuser'], $data['dbpasswd'], $data['dbname'], $data['dbport'], false, false);
+		$db->sql_connect($data['dbhost'], $data['dbuser'], htmlspecialchars_decode($data['dbpasswd']), $data['dbname'], $data['dbport'], false, false);
 
 		// NOTE: trigger_error does not work here.
 		$db->sql_return_on_error(true);
@@ -1132,7 +1158,7 @@ class install_install extends module
 		// If mysql is chosen, we need to adjust the schema filename slightly to reflect the correct version. ;)
 		if ($data['dbms'] == 'mysql')
 		{
-			if (version_compare($db->mysql_version, '4.1.3', '>='))
+			if (version_compare($db->sql_server_info(true), '4.1.3', '>='))
 			{
 				$available_dbms[$data['dbms']]['SCHEMA'] .= '_41';
 			}
@@ -1305,11 +1331,11 @@ class install_install extends module
 			'UPDATE ' . $data['table_prefix'] . "config
 				SET config_value = '" . $db->sql_escape($data['admin_name']) . "'
 				WHERE config_name = 'newest_username'",
-			
+
 			'UPDATE ' . $data['table_prefix'] . "config
 				SET config_value = '" . md5(mt_rand()) . "'
 				WHERE config_name = 'avatar_salt'",
-				
+
 			'UPDATE ' . $data['table_prefix'] . "users
 				SET username = '" . $db->sql_escape($data['admin_name']) . "', user_password='" . $db->sql_escape(md5($data['admin_pass1'])) . "', user_ip = '" . $db->sql_escape($user_ip) . "', user_lang = '" . $db->sql_escape($data['default_lang']) . "', user_email='" . $db->sql_escape($data['board_email1']) . "', user_dateformat='" . $db->sql_escape($lang['default_dateformat']) . "', user_email_hash = " . (crc32($data['board_email1']) . strlen($data['board_email1'])) . ", username_clean = '" . $db->sql_escape(utf8_clean_string($data['admin_name'])) . "'
 				WHERE username = 'Admin'",
@@ -1338,6 +1364,10 @@ class install_install extends module
 
 			'UPDATE ' . $data['table_prefix'] . "forums
 				SET forum_last_post_time = $current_time",
+
+			'UPDATE ' . $data['table_prefix'] . "config
+				SET config_value = '" . $db->sql_escape($db->sql_server_info(true)) . "'
+				WHERE config_name = 'dbms_version'",
 		);
 
 		if (@extension_loaded('gd') || can_load_dll('gd'))
@@ -1345,6 +1375,15 @@ class install_install extends module
 			$sql_ary[] = 'UPDATE ' . $data['table_prefix'] . "config
 				SET config_value = '1'
 				WHERE config_name = 'captcha_gd'";
+		}
+
+		$ref = substr($referer, strpos($referer, '://') + 3);
+
+		if (!(stripos($ref, $server_name) === 0))
+		{
+			$sql_ary[] = 'UPDATE ' . $data['table_prefix'] . "config
+				SET config_value = '0'
+				WHERE config_name = 'referer_validation'";
 		}
 
 		// We set a (semi-)unique cookie name to bypass login issues related to the cookie name.
@@ -1408,7 +1447,7 @@ class install_install extends module
 
 		// Instantiate the database
 		$db = new $sql_db();
-		$db->sql_connect($data['dbhost'], $data['dbuser'], $data['dbpasswd'], $data['dbname'], $data['dbport'], false, false);
+		$db->sql_connect($data['dbhost'], $data['dbuser'], htmlspecialchars_decode($data['dbpasswd']), $data['dbname'], $data['dbport'], false, false);
 
 		// NOTE: trigger_error does not work here.
 		$db->sql_return_on_error(true);
@@ -1451,7 +1490,7 @@ class install_install extends module
 
 		include_once($phpbb_root_path . 'includes/acp/acp_modules.' . $phpEx);
 
-		$_module = &new acp_modules();
+		$_module = new acp_modules();
 		$module_classes = array('acp', 'mcp', 'ucp');
 
 		// Add categories
@@ -1568,7 +1607,7 @@ class install_install extends module
 				$result = $db->sql_query($sql);
 				$row = $db->sql_fetchrow($result);
 				$db->sql_freeresult($result);
-	
+
 				$_module->move_module_by($row, 'move_up', 4);
 
 				// Move permissions intro screen module 4 up...
@@ -1580,7 +1619,7 @@ class install_install extends module
 				$result = $db->sql_query($sql);
 				$row = $db->sql_fetchrow($result);
 				$db->sql_freeresult($result);
-	
+
 				$_module->move_module_by($row, 'move_up', 4);
 
 				// Move manage users screen module 5 up...
@@ -1592,7 +1631,7 @@ class install_install extends module
 				$result = $db->sql_query($sql);
 				$row = $db->sql_fetchrow($result);
 				$db->sql_freeresult($result);
-	
+
 				$_module->move_module_by($row, 'move_up', 5);
 			}
 
@@ -1607,7 +1646,7 @@ class install_install extends module
 				$result = $db->sql_query($sql);
 				$row = $db->sql_fetchrow($result);
 				$db->sql_freeresult($result);
-	
+
 				$_module->move_module_by($row, 'move_down', 4);
 			}
 
@@ -1688,7 +1727,7 @@ class install_install extends module
 
 			if (is_dir($path) && file_exists($path . '/iso.txt'))
 			{
-				$lang_file = file("{$phpbb_root_path}language/$path/iso.txt");
+				$lang_file = file("$path/iso.txt");
 
 				$lang_pack = array(
 					'lang_iso'			=> basename($path),
@@ -1832,7 +1871,7 @@ class install_install extends module
 				'user_dateformat'		=> $lang['default_dateformat'],
 				'user_allow_massemail'	=> 0,
 			);
-			
+
 			$user_id = user_add($user_row);
 
 			if (!$user_id)
@@ -1948,7 +1987,7 @@ class install_install extends module
 			'dbhost'		=> request_var('dbhost', ''),
 			'dbport'		=> request_var('dbport', ''),
 			'dbuser'		=> request_var('dbuser', ''),
-			'dbpasswd'		=> htmlspecialchars_decode(request_var('dbpasswd', '', true)),
+			'dbpasswd'		=> request_var('dbpasswd', '', true),
 			'dbname'		=> request_var('dbname', ''),
 			'table_prefix'	=> request_var('table_prefix', ''),
 			'default_lang'	=> basename(request_var('default_lang', '')),

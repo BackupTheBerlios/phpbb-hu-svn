@@ -41,6 +41,7 @@ $lang = array_merge($lang, array(
 	'ATTACHMENT_FUNCTIONALITY_DISABLED'	=> 'A csatolmány funkciók nem elérhetők.',
 
 	'BOOKMARK_ADDED'		=> 'A téma sikeresen hozzáadásra került a kedvencekhez.',
+	'BOOKMARK_ERR'			=> 'A témát nem sikerült hozzáadni a kedvencekhez. Kérünk, próbálkozz újra.',
 	'BOOKMARK_REMOVED'		=> 'A téma sikeresen eltávolításra került a kedvencekből.',
 	'BOOKMARK_TOPIC'		=> 'Hozzáadás a kedvencekhez',
 	'BOOKMARK_TOPIC_REMOVE'	=> 'Törlés a kedvencekből',

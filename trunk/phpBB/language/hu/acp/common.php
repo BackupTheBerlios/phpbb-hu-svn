@@ -40,7 +40,7 @@ if (empty($lang) || !is_array($lang))
 $lang = array_merge($lang, array(
 	'ACP_ADMINISTRATORS'		=> 'Adminisztrátorok',
 	'ACP_ADMIN_LOGS'			=> 'Adminisztrátori napló',
-	'ACP_ADMIN_ROLES'			=> 'Adminisztártori szerepek',
+	'ACP_ADMIN_ROLES'			=> 'Adminisztrátori szerepek',
 	'ACP_ATTACHMENTS'			=> 'Csatolmányok',
 	'ACP_ATTACHMENT_SETTINGS'	=> 'Csatolmány beállítások',
 	'ACP_AUTH_SETTINGS'			=> 'Azonosítás',
@@ -363,6 +363,8 @@ $lang = array_merge($lang, array(
 	'VIEW_INACTIVE_USERS'	=> 'Inaktív felhasználók megtekintése',
 
 	'WELCOME_PHPBB'			=> 'Üdvözlünk a phpBB-ben!',
+	'WRITABLE_CONFIG'		=> 'A konfigurációs állományod (config.php) jelenleg mindenki által írható. Határozottan javasoljuk, hogy változtasd meg a jogosultságait 640-re vagy legalább 644-re (például: <a href="http://phpbb.hu/utmutatok/13" rel="external">chmod</a> 640 config.php).',
+
 ));
 
 // Inactive Users
@@ -474,12 +476,13 @@ $lang = array_merge($lang, array(
 	'LOG_APPROVE_TOPIC'			=> '<strong>Téma jóváhagyása</strong><br />» %s',
 	'LOG_BUMP_TOPIC'			=> '<strong>Téma előreugrasztása</strong><br />» %s',
 	'LOG_DELETE_POST'			=> '<strong>Hozzászólás törlése</strong><br />» %s',
+	'LOG_DELETE_SHADOW_TOPIC'	=> '<strong>Árnyék téma törlése</strong><br />» %s',
 	'LOG_DELETE_TOPIC'			=> '<strong>Téma törlése</strong><br />» %s',
 	'LOG_FORK'					=> '<strong>Téma másolása</strong><br />» %s',
 	'LOG_LOCK'					=> '<strong>Téma lezárása</strong><br />» %s',
 	'LOG_LOCK_POST'				=> '<strong>Hozzászólás lezárása</strong><br />» %s',
 	'LOG_MERGE'					=> '<strong>Hozzászólások áthelyezése</strong> másik témába:<br />» %s',
-	'LOG_MOVE'					=> '<strong>Téma áthelyezése</strong><br />» a %s fórumból',
+	'LOG_MOVE'					=> '<strong>Téma áthelyezése</strong><br />» %1$s fórumból %2$s fórumba',
 	'LOG_POST_APPROVED'			=> '<strong>Hozzászólás jóváhagyása</strong><br />» %s',
 	'LOG_POST_DISAPPROVED'		=> '<strong>„%1$s” hozzászólás elutasítása</strong><br />» ok: %2$s',
 	'LOG_POST_EDITED'			=> '<strong>„%1$s” hozzászólás szerkesztése</strong><br />» szerző: %2$s',
@@ -488,7 +491,6 @@ $lang = array_merge($lang, array(
 	'LOG_SPLIT_DESTINATION'		=> '<strong>Szétválasztott hozzászólások áthelyezése</strong><br />» %s témába',
 	'LOG_SPLIT_SOURCE'			=> '<strong>Téma szétválasztása</strong><br />» %s',
 
-	'LOG_TOPIC_DELETED'			=> '<strong>Téma törlése</strong><br />» %s',
 	'LOG_TOPIC_APPROVED'		=> '<strong>Téma jóváhagyása</strong><br />» %s',
 	'LOG_TOPIC_DISAPPROVED'		=> '<strong>„%1$s” téma elutasítása</strong><br />ok: %2$s',
 	'LOG_TOPIC_RESYNC'			=> '<strong>Téma újraszinkronizálása</strong><br />» %s',

@@ -48,6 +48,8 @@ $lang = array_merge($lang, array(
 	'BBCODE_HELPLINE'			=> 'Segítség',
 	'BBCODE_HELPLINE_EXPLAIN'	=> 'Ennek a mezőnek a tartalma fog megjelenni, ha a BBCode fölé viszed az egeret.',
 	'BBCODE_HELPLINE_TEXT'		=> 'Segítség szöveg',
+	'BBCODE_HELPLINE_TOO_LONG'	=> 'A megadott segítség szöveg túl hosszú.',
+
 	'BBCODE_INVALID_TAG_NAME'	=> 'A megadott BBCode címkenév már létezik.',
 	'BBCODE_INVALID'			=> 'A BBCode-od formátuma nem helyes.',
 	'BBCODE_OPEN_ENDED_TAG'		=> 'Az egyedi BBCode-odnak tartalmaznia kell egy nyitó és egy lezáró címkét is.',

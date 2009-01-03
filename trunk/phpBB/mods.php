@@ -122,7 +122,7 @@ if ($mode == 'tagcat')
 		{
 			foreach ($tags as $tag)
 			{
-				$sidemenu->add_link('» ' . $tag['tag_title'], "{$phpbb_root_path}mods.{$phpEx}", 'mode=listtag&amp;cat=' . $cat['tagcat_name'] . '&amp;tag=' . $tag['tag_name']);
+				$sidemenu->add_link('Â» ' . $tag['tag_title'], "{$phpbb_root_path}mods.{$phpEx}", 'mode=listtag&amp;cat=' . $cat['tagcat_name'] . '&amp;tag=' . $tag['tag_name']);
 			}
 		}
 	}

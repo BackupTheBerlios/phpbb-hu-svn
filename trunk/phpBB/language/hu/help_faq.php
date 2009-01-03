@@ -65,7 +65,7 @@ $help = array(
 	),
 	array(
 		0 => 'Mi az a COPPA?',
-		1 => 'A COPPA, vagyis az 1998-as „Child Online Privacy and Protection Act” (gyerekek online adatvédelméről intézkedő törvény) egy egyesült államokbeli törvény, mely megköveteli a honlapoktól, hogy írásos szülői vagy gondviselői beleegyezéssel rendelkezzenek 13 éven aluli személyektől való adatgyűjtéshez. Ez a törvény csak az Amerikai Egyesült Államokban lévő szervereken működő fórumokra érvényes, tehát Magyarországon nem. Ha nem vagy biztos benne, hogy ez a törvény vonatkozik-e rád, vagy a fórumra, melyre regisztrálsz, kérj jogi segítséget. Kérjük, tartsd szem előtt, hogy a phpBB Group nem tud jogi tanácsot adni, és az alább leírtakon kívül semmilyen aggály esetén sem hozzájuk kell fordulni.',
+		1 => 'A COPPA, vagyis az 1998-as „Child Online Privacy and Protection Act” (gyerekek online adatvédelméről intézkedő törvény) egy egyesült államokbeli törvény, mely megköveteli a honlapoktól, hogy írásos szülői vagy gondviselői beleegyezéssel rendelkezzenek 13 éven aluli személyektől való adatgyűjtéshez. Ez a törvény csak az Amerikai Egyesült Államokban lévő szervereken működő fórumokra érvényes, tehát Magyarországon nem. Ha nem vagy biztos benne, hogy ez a törvény vonatkozik-e rád vagy a fórumra, melyre regisztrálsz, kérj jogi segítséget. Kérjük, tartsd szem előtt, hogy a phpBB Group nem tud jogi tanácsot adni, és az alább leírtakon kívül semmilyen aggály esetén sem hozzájuk kell fordulni.',
 	),
 	array(
 		0 => 'Miért nem tudok regisztrálni?',

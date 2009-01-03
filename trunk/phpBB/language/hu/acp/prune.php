@@ -65,7 +65,7 @@ $lang = array_merge($lang, array(
 
 // Forum Pruning
 $lang = array_merge($lang, array(
-	'ACP_PRUNE_FORUMS_EXPLAIN'	=> 'Ez törölni fog minden témát, amibe nem kültek hozzászólást vagy nem tekintették meg az általad megadott napon belül. Ha nem adsz meg egy számot, az összes téma törölve lesz. Alapból nem fog eltávolítani olyan témákat, melyekben szavazás fut, illetve kiemelt témákat és közleményeket.',
+	'ACP_PRUNE_FORUMS_EXPLAIN'	=> 'Ez törölni fog minden témát, amibe nem küldtek hozzászólást vagy nem tekintették meg az általad megadott napon belül. Ha nem adsz meg egy számot, az összes téma törölve lesz. Alapból nem fog eltávolítani olyan témákat, melyekben szavazás fut, illetve kiemelt témákat és közleményeket.',
 
 	'FORUM_PRUNE'		=> 'Fórum megtisztítása',
 

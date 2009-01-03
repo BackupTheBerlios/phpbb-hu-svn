@@ -5,7 +5,7 @@
 //
 // FILENAME  : calc_email_hash.php
 // STARTED   : Tue Feb 03, 2004
-// COPYRIGHT : ï¿½ 2004 phpBB Group
+// COPYRIGHT : © 2004 phpBB Group
 // WWW       : http://www.phpbb.com/
 // LICENCE   : GPL vs2.0 [ see /docs/COPYING ] 
 // 

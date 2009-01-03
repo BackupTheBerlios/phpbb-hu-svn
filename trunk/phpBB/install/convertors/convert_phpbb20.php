@@ -31,8 +31,8 @@ unset($dbpasswd);
 */
 $convertor_data = array(
 	'forum_name'	=> 'phpBB 2.0.x',
-	'version'		=> '1.0.0',
-	'phpbb_version'	=> '3.0.0',
+	'version'		=> '1.0.2',
+	'phpbb_version'	=> '3.0.4',
 	'author'		=> '<a href="http://www.phpbb.com/">phpBB Group</a>',
 	'dbms'			=> $dbms,
 	'dbhost'		=> $dbhost,
@@ -191,7 +191,7 @@ if (!$get_info)
 	{
 		$src_db->sql_freeresult($result);
 	}
-	
+
 
 	/**
 	* Tests for further MODs can be included here.
@@ -229,6 +229,9 @@ if (!$get_info)
 	@define('DEFAULT_AVATAR_X_CUSTOM', get_config_value('avatar_max_width'));
 	@define('DEFAULT_AVATAR_Y_CUSTOM', get_config_value('avatar_max_height'));
 
+	// additional table used only during conversion
+	@define('USERCONV_TABLE', $table_prefix . 'userconv');
+
 /**
 *	Description on how to use the convertor framework.
 *
@@ -265,7 +268,7 @@ if (!$get_info)
 *								- empty string == execute nothing
 *								- string == function to execute
 *								- array == complex execution instructions
-*		
+*
 *		Complex execution instructions:
 *		@todo test complex execution instructions - in theory they will work fine
 *
@@ -307,7 +310,7 @@ if (!$get_info)
 			array('target', $convert->truncate_statement . SEARCH_WORDMATCH_TABLE),
 			array('target', $convert->truncate_statement . LOG_TABLE),
 		),
-		
+
 //	with this you are able to import all attachment files on the fly. For large boards this is not an option, therefore commented out by default.
 //	Instead every file gets copied while processing the corresponding attachment entry.
 //		if (defined("MOD_ATTACHMENT")) { import_attachment_files(); phpbb_copy_thumbnails(); }
@@ -316,7 +319,7 @@ if (!$get_info)
 		// username_clean in phpBB3 which is not possible, so we'll give the admin a list
 		// of user ids and usernames and let him deicde what he wants to do with them
 		'execute_first'	=> '
-			phpbb_check_username_collisions();
+			phpbb_create_userconv_table();
 			import_avatar_gallery();
 			if (defined("MOD_ATTACHMENT")) phpbb_import_attach_config();
 			phpbb_insert_forums();
@@ -339,6 +342,14 @@ if (!$get_info)
 		'),
 
 		'schema' => array(
+			array(
+				'target'	=> USERCONV_TABLE,
+				'query_first'   => array('target', $convert->truncate_statement . USERCONV_TABLE),
+
+
+				array('user_id',			'users.user_id', 	''),
+				array('username_clean',		'users.username',	array('function1' => 'phpbb_set_encoding', 'function2' => 'utf8_clean_string')),
+			),
 
 			array(
 				'target'		=> (defined('MOD_ATTACHMENT')) ? ATTACHMENTS_TABLE : '',
@@ -419,6 +430,7 @@ if (!$get_info)
 
 			array(
 				'target'		=> BANLIST_TABLE,
+				'execute_first'	=> 'phpbb_check_username_collisions();',
 				'query_first'	=> array('target', $convert->truncate_statement . BANLIST_TABLE),
 
 				array('ban_ip',					'banlist.ban_ip',					'decode_ban_ip'),
@@ -482,14 +494,16 @@ if (!$get_info)
 				array('topic_moved_id',			0,									''),
 				array('topic_type',				'topics.topic_type',				'phpbb_convert_topic_type'),
 				array('topic_first_post_id',	'topics.topic_first_post_id',		''),
-
+				array('topic_last_view_time',	'posts.post_time',					''),
 				array('poll_title',				'vote_desc.vote_text',				array('function1' => 'null_to_str', 'function2' => 'phpbb_set_encoding', 'function3' => 'utf8_htmlspecialchars')),
 				array('poll_start',				'vote_desc.vote_start',				'null_to_zero'),
 				array('poll_length',			'vote_desc.vote_length',			'null_to_zero'),
 				array('poll_max_options',		1,									''),
 				array('poll_vote_change',		0,									''),
 
-				'left_join'		=> 'topics LEFT JOIN vote_desc ON topics.topic_id = vote_desc.topic_id AND topics.topic_vote = 1',
+				'left_join'		=>	array (	'topics LEFT JOIN vote_desc ON topics.topic_id = vote_desc.topic_id AND topics.topic_vote = 1',
+											'topics LEFT JOIN posts ON topics.topic_last_post_id = posts.post_id',
+									),
 				'where'			=> 'topics.topic_moved_id = 0',
 			),
 
@@ -685,7 +699,7 @@ if (!$get_info)
 				array('user_id',				'users.user_id',						'phpbb_user_id'),
 				array('folder_name',			$user->lang['CONV_SAVED_MESSAGES'],		''),
 				array('pm_count',				0,										''),
-			
+
 				'where'			=> 'users.user_id <> -1',
 			),
 
@@ -709,7 +723,7 @@ if (!$get_info)
 				'where'			=> 'privmsgs.privmsgs_id = privmsgs_text.privmsgs_text_id
 										AND (privmsgs.privmsgs_type = 0 OR privmsgs.privmsgs_type = 1 OR privmsgs.privmsgs_type = 5)',
 			),
-			
+
 			// Outbox
 			array(
 				'target'		=> PRIVMSGS_TO_TABLE,
@@ -910,7 +924,7 @@ if (!$get_info)
 				array('user_sig_bbcode_bitfield',	'',												'get_bbcode_bitfield'),
 				array('',							'users.user_regdate AS post_time',				''),
 				array('user_post_order',			'users.user_post_sortby_dir',					'phpbb_convert_post_order_format'),
-				
+
 				'where'			=> 'users.user_id <> -1',
 			),
 		),

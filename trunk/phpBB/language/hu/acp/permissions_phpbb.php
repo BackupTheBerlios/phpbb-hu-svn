@@ -112,7 +112,8 @@ $lang = array_merge($lang, array(
 	'acl_u_sig'			=> array('lang' => 'Használhat aláírást', 'cat' => 'post'),
 
 	'acl_u_sendpm'		=> array('lang' => 'Küldhet privát üzenetet', 'cat' => 'pm'),
-	'acl_u_masspm'		=> array('lang' => 'Küldhet privát üzenetet egyszerre több felhasználónak vagy csoportnak', 'cat' => 'pm'),
+	'acl_u_masspm'		=> array('lang' => 'Küldhet privát üzenetet egyszerre több felhasználónak', 'cat' => 'pm'),
+	'acl_u_masspm_group'=> array('lang' => 'Küldhet privát üzenetet csoportoknak', 'cat' => 'pm'),
 	'acl_u_readpm'		=> array('lang' => 'Olvashatja a privát üzeneteit', 'cat' => 'pm'),
 	'acl_u_pm_edit'		=> array('lang' => 'Szerkesztheti a saját privát üzeneteit', 'cat' => 'pm'),
 	'acl_u_pm_delete'	=> array('lang' => 'Privát üzeneteit törölheti a  a saját mappájából', 'cat' => 'pm'),

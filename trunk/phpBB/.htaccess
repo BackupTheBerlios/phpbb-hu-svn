@@ -13,7 +13,7 @@ Deny from All
 ErrorDocument 500 /500.shtml
 
 #
-# URL rewrite - Rövid urlek
+# URL rewrite - RÃ¶vid urlek
 #
 RewriteEngine on
 

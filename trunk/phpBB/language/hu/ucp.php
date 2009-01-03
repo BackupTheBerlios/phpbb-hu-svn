@@ -38,7 +38,7 @@ if (empty($lang) || !is_array($lang))
 
 // Privacy policy and T&C
 $lang = array_merge($lang, array(
-	'TERMS_OF_USE_CONTENT'	=> 'Azzal, hogy használod a „%1$s” fórumot (a továbbiakban „mi”, „a fórum”, „%1$s”, „%2$s”) elfogadod, hogy betartod az alábbi feltételeket. Ha nem fogadod el, kérjük ne használd, illetve ne is keresd fel a fórumot. A feltételeket bármikor megváltoztathatjuk, és habár a lehető legtöbbet megtesszük, hogy értesítsünk a változásról, érdemes rendszeresen áttekinteni ezt az oldalt, mivel a fórum felhasználási feltételeinek megváltoztatása utáni további használatával beleegyezel az új feltételek betartásába.<br />
+	'TERMS_OF_USE_CONTENT'	=> 'Azzal, hogy használod a „%1$s” fórumot (a továbbiakban „mi”, „a fórum”, „%1$s”, „%2$s”) elfogadod, hogy betartod az alábbi feltételeket. Ha nem fogadod el, kérjük ne használd, illetve ne is keresd fel a fórumot. A feltételeket bármikor megváltoztathatjuk, és habár a lehető legtöbbet megtesszük, hogy értesítsünk a változásról, érdemes rendszeresen áttekinteni ezt az oldalt, mivel a fórum használati feltételeinek megváltoztatása utáni további használatával beleegyezel az új feltételek betartásába.<br />
 	<br />
 	A fórumot a phpBB hajtja, mely egy a „<a href="http://opensource.org/licenses/gpl-license.php">General Public License</a>” (a továbbiakban „GPL”) licenc alatt kiadott fórumszoftver, és a <a href="http://www.phpbb.com/">www.phpbb.com</a>, valamint magyarul a <a href="http://phpbb.hu/">phpbb.hu</a> weboldalról tölthető le. A phpBB csak lehetőséget nyújt az internet alapú kommunikációra; a phpBB Csoport nem felelős azért, hogy milyen tartalmakat, illetve magatartást engedélyezünk. További információért a phpBB-ről, kérjük, látogasd meg a <a href="http://www.phpbb.com/">http://www.phpbb.com/</a> weboldalt.<br />
 	<br />
@@ -283,13 +283,15 @@ $lang = array_merge($lang, array(
 	'NO_AUTHOR'						=> 'Az üzenethez nem tartozik feladó.',
 	'NO_AVATAR_CATEGORY'			=> 'Nincs',
 
-	'NO_AUTH_DELETE_MESSAGE'		=> 'Nincs jogosultságod privát üzenetek törléséhez.',
-	'NO_AUTH_EDIT_MESSAGE'			=> 'Nincs jogosultságod privát üzenetek szerkesztéséhez.',
-	'NO_AUTH_FORWARD_MESSAGE'		=> 'Nincs jogosultságod privát üzenetek továbbításához.',
-	'NO_AUTH_GROUP_MESSAGE'			=> 'Nincs jogosultságod privát üzenet küldéséhez csoportok részére.',
+	'NO_AUTH_DELETE_MESSAGE'		=> 'Nincs jogosultságod privát üzenetet törölni.',
+	'NO_AUTH_EDIT_MESSAGE'			=> 'Nincs jogosultságod privát üzenetet szerkeszteni.',
+	'NO_AUTH_FORWARD_MESSAGE'		=> 'Nincs jogosultságod privát üzenetet továbbítani.',
+	'NO_AUTH_GROUP_MESSAGE'			=> 'Nincs jogosultságod privát üzenet küldeni csoportok részére.',
+	'NO_AUTH_PASSWORD_REMINDER'		=> 'Nincs jogosultságod új jelszót kérni.',
+	'NO_AUTH_READ_HOLD_MESSAGE'		=> 'Nincs jogosultságod visszatartott privát üzenetet olvasni.',
 	'NO_AUTH_READ_MESSAGE'			=> 'Nincs jogosultságod privát üzenetek megtekintéséhez.',
 	'NO_AUTH_READ_REMOVED_MESSAGE'	=> 'Ezt az üzenetet nem tudod elolvasni, mivel a küldője törölte.',
-	'NO_AUTH_SEND_MESSAGE'			=> 'Nincs jogosultságod privát üzenetek küldéséhez.',
+	'NO_AUTH_SEND_MESSAGE'			=> 'Nincs jogosultságod privát üzenetet küldeni.',
 	'NO_AUTH_SIGNATURE'				=> 'Nincs jogosultságod aláírás megadásához.',
 
 	'NO_BCC_RECIPIENT'			=> 'Nincs',
@@ -313,6 +315,7 @@ $lang = array_merge($lang, array(
 	'NO_SAVED_DRAFTS'			=> 'Nincs piszkozat.',
 	'NO_TO_RECIPIENT'			=> 'Nincs',
 	'NO_WATCHED_FORUMS'			=> 'Nem iratkoztál fel egy fórumra se.',
+	'NO_WATCHED_SELECTED'		=> 'Nem választottál ki egy témát vagy fórumot se, melyre fel vagy iratkozva.',
 	'NO_WATCHED_TOPICS'			=> 'Nem iratkoztál fel egy témára se.',
 
 	'PASS_TYPE_ALPHA_EXPLAIN'	=> 'A jelszó hosszának %1$d és %2$d karakter között kell lennie, szerepelnie kell benne kis- és nagybetűknek egyaránt, valamint tartalmaznia kell számokat.',
@@ -375,7 +378,7 @@ $lang = array_merge($lang, array(
 	'SAME_PASSWORD_ERROR'		=> 'A megadott új jelszó megegyezik a jelenlegi jelszavaddal.',
 	'SEARCH_YOUR_POSTS'			=> 'Saját hozzászólások megtekintése',
 	'SEND_PASSWORD'				=> 'Jelszó elküldése',
-	'SENT_AT'					=> 'Elküldve',
+	'SENT_AT'					=> 'Elküldve',			// Used before dates in private messages
 	'SHOW_EMAIL'				=> 'E-mailek fogadása felhasználóktól',
 	'SIGNATURE_EXPLAIN'			=> 'Az aláírás egy szöveg, melyet automatikusan hozzáfűzhetsz a hozzászólásaidhoz. Legfeljebb %d karakter hosszú lehet.',
 	'SIGNATURE_PREVIEW'			=> 'Így fog megjelenni az aláírásod a hozzászólásaidban',

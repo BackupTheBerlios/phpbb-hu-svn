@@ -5,7 +5,7 @@
 //
 // FILENAME  : create_variable_overview.php
 // STARTED   : Fri Aug 15 2003
-// COPYRIGHT : ï¿½ 2003 phpBB Group
+// COPYRIGHT : © 2003 phpBB Group
 // WWW       : http://www.phpbb.com/
 // LICENCE   : GPL vs2.0 [ see /docs/COPYING ] 
 // 
