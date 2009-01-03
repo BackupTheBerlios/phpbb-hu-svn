@@ -92,7 +92,7 @@ function send_notification($users, $template_file, $vars = array())
 			FROM ' . USERS_TABLE . '
 			WHERE ' . $db->sql_in_set('user_id', $to_query);
 		$result = $db->sql_query($sql);
-	
+
 		while($row = $db->sql_fetchrow($result))
 		{
 			$users[$row['user_id']] = array(
@@ -127,27 +127,27 @@ function send_notification($users, $template_file, $vars = array())
 			$messenger->assign_vars(array(
 				'USERNAME'		=> htmlspecialchars_decode($item['name']),
 			));
-			
+
 			$messenger->send(NOTIFY_EMAIL);
 		}
 		if ($item['type'] == NOTIFY_PM || $item['type'] == NOTIFY_SBOTH)
 		{
 			// Get the text of the pm
 			$tpl_file = "{$phpbb_root_path}language/$item[lang]/email/notifs/{$template_file}_pm.txt";
-		
+
 			if (!file_exists($tpl_file))
 			{
 				trigger_error("Could not find notification template file [ $tpl_file ]", E_USER_ERROR);
 			}
-		
+
 			if (($message = @file_get_contents($tpl_file)) === false)
 			{
 				trigger_error("Failed opening template file [ $tpl_file ]", E_USER_ERROR);
 			}
-		
+
 			$message = str_replace ("'", "\'", $message);
 			$message = preg_replace('#\{([a-z0-9\-_]*?)\}#is', "' . ((isset(\$vars['\\1'])) ? \$vars['\\1'] : '') . '", $message);
-			
+
 			$vars += array(
 				'USERNAME'		=> htmlspecialchars_decode($item['name']),
 			);
@@ -171,7 +171,7 @@ function send_notification($users, $template_file, $vars = array())
 			if ($drop_header)
 			{
 				$message = trim(preg_replace('#' . $drop_header . '#s', '', $message));
-			}			
+			}
 
 			// Parse message
 			$uid = $bitfield = $options = ''; // will be modified by generate_text_for_storage
@@ -192,7 +192,7 @@ function send_notification($users, $template_file, $vars = array())
 				'address_list'			=> array('u' => array($item['uid'] => 'to')),
 			);
 
-			submit_pm('post', $subject, &$pm_data, false);
+			submit_pm('post', $subject, $pm_data, false);
 		}
 	}
 }
@@ -227,12 +227,12 @@ function site_header($page_title = '', $site_section = '', $breadcrumbs = array(
 function site_footer($run_cron = true)
 {
 	global $sidemenu;
-	
+
 	/*if (isset($sidemenu))
 	{
 		$sidemenu->display();
 	}*/
-		
+
 	page_footer($run_cron);
 }
 
@@ -248,7 +248,7 @@ function site_footer($run_cron = true)
 function get_subscribed_users($forum_id, $topic_id, $plus_ids = array(), $exclude_ids = array(), $check_status = false)
 {
 	global $auth, $db, $user;
-	
+
 	// Get banned User ID's
 	$sql = 'SELECT ban_userid
 		FROM ' . BANLIST_TABLE;
@@ -265,7 +265,7 @@ function get_subscribed_users($forum_id, $topic_id, $plus_ids = array(), $exclud
 	$db->sql_freeresult($result);
 
 	$sql_exclude_users = (empty($exclude_ids)) ? '' : ', ' .implode(', ', $exclude_ids);
-	
+
 	$sql = 'SELECT u.user_id, u.username, u.user_email, user_site_notify_type, u.user_lang, u.user_jabber
 		FROM ' . TOPICS_WATCH_TABLE . ' w, ' . USERS_TABLE . ' u
 		WHERE w.topic_id = ' . $topic_id . "
@@ -274,14 +274,14 @@ function get_subscribed_users($forum_id, $topic_id, $plus_ids = array(), $exclud
 			AND u.user_type IN (" . USER_NORMAL . ', ' . USER_FOUNDER . ')
 			AND u.user_id = w.user_id';
 	$result = $db->sql_query($sql);
-	
+
 	$users = array();
 	while ($row = $db->sql_fetchrow($result))
 	{
 		$users[$row['user_id']] = $row;
 	}
 	$db->sql_freeresult($result);
-	
+
 	// Make sure users are allowed to read the forum
 	$allowed_users = array();
 	if (!empty($allowed_users))
@@ -300,7 +300,7 @@ function get_subscribed_users($forum_id, $topic_id, $plus_ids = array(), $exclud
 	}
 	$not_authorised_users = $users;
 	$allowed_users = $users;
-	
+
 	// Query the additonal users
 	if (!empty($plus_ids))
 	{
@@ -308,7 +308,7 @@ function get_subscribed_users($forum_id, $topic_id, $plus_ids = array(), $exclud
 			FROM ' . USERS_TABLE . ' u
 			WHERE ' . $db->sql_in_set('u.user_id', $plus_ids);
 		$result = $db->sql_query($sql);
-		
+
 		while ($row = $db->sql_fetchrow($result))
 		{
 			if ($row['user_id'] != $user->data['user_id'] && !isset($allowed_users[$row['user_id']]))
@@ -318,7 +318,7 @@ function get_subscribed_users($forum_id, $topic_id, $plus_ids = array(), $exclud
 		}
 		$db->sql_freeresult($result);
 	}
-	
+
 	// Update the db if necessary
 	if ($check_status)
 	{
@@ -328,7 +328,7 @@ function get_subscribed_users($forum_id, $topic_id, $plus_ids = array(), $exclud
 				AND " . $db->sql_in_set('user_id', array_keys($allowed_users));
 		$db->sql_query($sql);
 	}
-	
+
 	// Now delete the user_ids not authorised to receive notifications on this topic
 	if (!empty($not_authorised_user_ids))
 	{
@@ -337,7 +337,7 @@ function get_subscribed_users($forum_id, $topic_id, $plus_ids = array(), $exclud
 				AND " . $db->sql_in_set('user_id', $not_authorised_user_ids);
 		$db->sql_query($sql);
 	}
-	
+
 	return $allowed_users;
 }
 
@@ -352,7 +352,7 @@ function generate_content_post($template_file, $vars)
 {
 	global $phpbb_root_path, $phpEx;
 	global $config;
-	
+
 	// Load the template file
 	$tpl_file = "{$phpbb_root_path}language/{$config['default_lang']}/email/content/{$template_file}.txt";
 
@@ -368,22 +368,22 @@ function generate_content_post($template_file, $vars)
 
 	$message = str_replace ("'", "\'", $message);
 	$message = preg_replace('#\{([a-z0-9\-_]*?)\}#is', "' . ((isset(\$vars['\\1'])) ? \$vars['\\1'] : '') . '", $message);
-	
+
 	eval("\$message = '$message';");
-	
+
 	return $message;
 }
 
 
 /**
 * Class representing the menu on the (right) side
-* 
+*
 * Only used as a wrapper for the time being
 */
 class sidemenu
 {
 	//protected $blocks = array();
-	
+
 	/**
 	* Add a new sidemenu block
 	*
@@ -393,7 +393,7 @@ class sidemenu
 	public function add_block($title, $url = null)
 	{
 		global $template, $user;
-		
+
 		$template->assign_block_vars('sidemenublock', array(
 			'BLOCK_TITLE'	=> isset($user->lang[$title]) ? $user->lang[$title] : $title,
 			'BLOCK_URL'		=> !empty($url) ? append_sid($url) : false,
@@ -405,7 +405,7 @@ class sidemenu
 			'items'	=> array(),
 		);*/
 	}
-	
+
 	/**
 	* Add a new link element to the last opened block
 	*
@@ -417,7 +417,7 @@ class sidemenu
 	public function add_link($title, $url, $url_params = false, $force_sid = false)
 	{
 		global $template, $user, $url_rewriter;
-		
+
 		$template->assign_block_vars('sidemenublock.element', array(
 			'ITEM_TITLE'	=> isset($user->lang[$title]) ? $user->lang[$title] : $title,
 			'U_ITEM'		=> (!$force_sid) ? append_sid($url, $url_params) : $url_rewriter->rewrite($url, $url_params),
@@ -428,7 +428,7 @@ class sidemenu
 			'url'	=> $url,
 		);*/
 	}
-	
+
 	/**
 	* Add a new key-value pair type of element to the last opened block
 	*
@@ -438,24 +438,24 @@ class sidemenu
 	public function add_kv_pair($key, $value)
 	{
 		global $template, $user;
-		
+
 		$template->assign_block_vars('sidemenublock.element', array(
 			'ITEM_TITLE'	=> isset($user->lang[$key]) ? $user->lang[$key] : $key,
 			'ITEM_VALUE'	=> isset($user->lang[$value]) ? $user->lang[$value] : $value,
 		));
 	}
-	
+
 	/**
 	* Output collected data
 	*/
 	/*public function display()
 	{
-		
+
 	}*/
 }
 
 /**
- * Generate a list formatted with BBCode of the assigned tags for an item 
+ * Generate a list formatted with BBCode of the assigned tags for an item
  *
  * @param array $assigned_tags IDs of the assigned tags
  * @param array $all_tagcats Multidimensional array, the first level key is the id of a tagcat and its value is an array of the tags the tagcat contains
@@ -464,7 +464,7 @@ class sidemenu
 function generate_tags_bbcode_list($assigned_tags, $all_tagcats, $tag_url_scheme)
 {
 	global $url_rewriter;
-	
+
 	// Group the assigned tags into categories by tag category id
 	$assigned_tagcats = array();
 	foreach ($all_tagcats as $tagcat)
@@ -477,7 +477,7 @@ function generate_tags_bbcode_list($assigned_tags, $all_tagcats, $tag_url_scheme
 			}
 		}
 	}
-	
+
 	// Generate BBCode list
 	$tags_list = '[list]';
 	foreach ($assigned_tagcats as $tagcat)
@@ -490,7 +490,7 @@ function generate_tags_bbcode_list($assigned_tags, $all_tagcats, $tag_url_scheme
 		$tags_list .= '[/list][/*]';
 	}
 	$tags_list .= '[/list]';
-	
+
 	return $tags_list;
 }
 
@@ -507,7 +507,7 @@ function increase_mem_limit($new_mem_limit)
 	{
 		$unit = strtolower(substr($mem_limit, -1, 1));
 		$mem_limit = (int) $mem_limit;
-	
+
 		if ($unit == 'k')
 		{
 			$mem_limit = floor($mem_limit / 1024);
@@ -526,7 +526,7 @@ function increase_mem_limit($new_mem_limit)
 	{
 		$mem_limit = $new_mem_limit . 'M';
 	}
-	
+
 	@ini_set('memory_limit', $mem_limit);
 }
 
@@ -566,7 +566,7 @@ function trim_text($text, $max_length)
 */
 function trim_post ($text, $uid, $max_length, $bitfield = '', $enable_bbcode = true)
 {
-	// If there is any custom BBCode that can have space in its argument, turn this on, 
+	// If there is any custom BBCode that can have space in its argument, turn this on,
 	// but else I suggest turning this off as it adds one additional (cached) SQL query
 	$check_custom_bbcodes = true;
 
@@ -604,7 +604,7 @@ function trim_post ($text, $uid, $max_length, $bitfield = '', $enable_bbcode = t
 
 		// Append three dots indicating that this is not the real end of the text
 		$text .= ' â¦';
-		
+
 		if (!$enable_bbcode)
 		{
 			return $text;
@@ -690,7 +690,7 @@ function trim_post ($text, $uid, $max_length, $bitfield = '', $enable_bbcode = t
 		// Close remaining open BBCode tags
 		foreach ($open_tags as $tag)
 		{
-			$text .= '[/' . $tag['name'] . $tag['plus'] . ':' . $uid . ']';	
+			$text .= '[/' . $tag['name'] . $tag['plus'] . ':' . $uid . ']';
 		}
 	}
 
