@@ -1,6 +1,6 @@
 
 <h3 id="review">
-	<span class="right-box"><a href="#review" onclick="viewableArea(getElementById('topicreview'), true); var rev_text = getElementById('review').getElementsByTagName('a').item(0).firstChild; if (rev_text.data == '{LA_EXPAND_VIEW}'){rev_text.data = '{LA_COLLAPSE_VIEW}'; } else if (rev_text.data == '{LA_COLLAPSE_VIEW}'){rev_text.data = '{LA_EXPAND_VIEW}'};">{L_EXPAND_VIEW}</a></span>
+	<span class="right-box"><a href="{PAGE_URL}#review" onclick="viewableArea(getElementById('topicreview'), true); var rev_text = getElementById('review').getElementsByTagName('a').item(0).firstChild; if (rev_text.data == '{LA_EXPAND_VIEW}'){rev_text.data = '{LA_COLLAPSE_VIEW}'; } else if (rev_text.data == '{LA_COLLAPSE_VIEW}'){rev_text.data = '{LA_EXPAND_VIEW}'};">{L_EXPAND_VIEW}</a></span>
 	{L_TOPIC_REVIEW}: {TOPIC_TITLE}
 </h3>
 
@@ -41,7 +41,7 @@
 <hr />
 
 <!-- IF S_MCP_REPORT -->
-	<p><a href="#report" class="top2">{L_BACK_TO_TOP}</a></p>
+	<p><a href="{PAGE_URL}#report" class="top2">{L_BACK_TO_TOP}</a></p>
 <!-- ELSE -->
-	<p><a href="#postingbox" class="top2">{L_BACK_TO_TOP}</a></p>
+	<p><a href="{PAGE_URL}#postingbox" class="top2">{L_BACK_TO_TOP}</a></p>
 <!-- ENDIF -->
